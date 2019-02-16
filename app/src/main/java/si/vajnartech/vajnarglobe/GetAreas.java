@@ -1,19 +1,29 @@
 package si.vajnartech.vajnarglobe;
 
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import static si.vajnartech.vajnarglobe.Login.GET_ALL;
 
 public class GetAreas extends REST<AreaQ>
 {
-  private Runnable r;
-  GetAreas()
+  private Runnable r = null;
+  private Runnable onFail;
+
+  private GetAreas(final MainActivity act)
   {
     super(GET_ALL);
+    onFail = new Runnable() {
+      @Override public void run()
+      {
+        Toast.makeText(act, act.tx(R.string.server_conn_error), Toast.LENGTH_LONG).show();
+      }
+    };
   }
 
-  GetAreas(Runnable run)
+  GetAreas(MainActivity act, Runnable run)
   {
-    super(GET_ALL);
+    this(act);
     r = run;
   }
 
@@ -34,6 +44,10 @@ public class GetAreas extends REST<AreaQ>
       }
       if (r != null )
         r.run();
+    }
+    else
+    {
+      onFail.run();
     }
   }
 }

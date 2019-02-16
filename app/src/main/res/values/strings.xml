@@ -13,4 +13,5 @@
   <string name="track">track</string>
   <string name="construct">Construct</string>
   <string name="longitude">Longitude</string>
+  <string name="server_conn_error">Unable to contact server</string>
 </resources>

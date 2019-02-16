@@ -102,7 +102,7 @@ public class WhereAmI extends GPS
     xOffset = new Normal(currentLocation.getLongitude(), 3).value();
     yOffset = new Normal(currentLocation.getLatitude(), 2).value();
     if (!ready) {
-      new GetAreas(new Runnable()
+      new GetAreas(act, new Runnable()
       {
         @Override
         public void run()
@@ -262,7 +262,7 @@ class Normal
     res *= Math.pow(10, spoo);
   }
 
-  public int value()
+  int value()
   {
     return res;
   }

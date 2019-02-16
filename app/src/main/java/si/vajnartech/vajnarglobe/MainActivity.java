@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Display;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -25,6 +26,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
   {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+    Display display = getWindowManager().getDefaultDisplay();
+    display.getSize(C.size);
+    C.O = new Vector(0, 0);
     Toolbar toolbar = findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
@@ -52,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
   @Override
   public void onBackPressed()
   {
-    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+    DrawerLayout drawer = findViewById(R.id.drawer_layout);
     if (drawer.isDrawerOpen(GravityCompat.START)) {
       drawer.closeDrawer(GravityCompat.START);
     } else {
@@ -131,6 +135,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
   public MyFragment getCurrentFragment()
   {
     return currentFragment;
+  }
+
+  public String tx(int stringId, Object... formatArgs)
+  {
+    if (formatArgs.length > 0)
+      return getString(stringId, formatArgs);
+    return getString(stringId);
   }
 }
 
