@@ -2,46 +2,42 @@ package si.vajnartech.vajnarglobe.math;
 
 import java.util.ArrayList;
 
-class RnFloat extends Rn<Float, RnFloat>
+class RnDouble extends Rn<Double, RnDouble>
 {
   private int n;
 
-  RnFloat(int n)
+  RnDouble(int n)
   {
-    super(new ArrayList<Float>());
+    super(new ArrayList<Double>());
     this.n = n;
   }
 
-  @Override
-  public RnFloat mul(RnFloat val)
+  @Override RnDouble mul(RnDouble val)
   {
-    RnFloat res = new RnFloat(n);
+    RnDouble res = new RnDouble(n);
     for (int i = 0; i < n; n++)
       res.add(val.get(i) * get(i));
     return res;
   }
 
-  @Override
-  public RnFloat plus(RnFloat val)
+  @Override RnDouble plus(RnDouble val)
   {
-    RnFloat res = new RnFloat(n);
+    RnDouble res = new RnDouble(n);
     for (int i = 0; i < n; n++)
       res.add(val.get(i) + get(i));
     return res;
   }
 
-  @Override
-  public void is(RnFloat val)
+  @Override void eq(RnDouble val)
   {
     clear();
     for (int i = 0; i < n; n++)
       add(val.get(i));
   }
 
-  @Override
-  public RnFloat div(Float val)
+  @Override RnDouble div(Double val)
   {
-    RnFloat res = new RnFloat(n);
+    RnDouble res = new RnDouble(n);
     for (int i = 0; i < n; n++)
       res.add(get(i) / val);
     return res;
