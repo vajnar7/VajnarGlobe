@@ -3,15 +3,18 @@ package si.vajnartech.vajnarglobe;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-@SuppressWarnings("SameParameterValue")
-class Point
+import si.vajnartech.vajnarglobe.math.R2Double;
+
+class Point extends R2Double
 {
   double x, y;
 
-  Point(double x, double y)
+  Point(double x1, double x2)
   {
-    this.x = x;
-    this.y = y;
+    super(x1, x2);
+
+    x = get(0);
+    y = get(1);
   }
 
   @Override
@@ -34,12 +37,6 @@ class Point
     paint.setColor(color);
     Point o1 = a.transform(new Point(x, y), false);
     canvas.drawCircle((float) o1.x, (float) o1.y, r, paint);
-  }
-
-  void is(Point a)
-  {
-    x = a.x;
-    y = a.y;
   }
 }
 

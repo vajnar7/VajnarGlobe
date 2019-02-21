@@ -3,10 +3,12 @@ package si.vajnartech.vajnarglobe;
 
 import java.util.ArrayList;
 
-public abstract class VectorField extends ArrayList<Vector>
+import si.vajnartech.vajnarglobe.math.R2Double;
+
+public abstract class VectorField extends ArrayList<R2Double>
 {
   @Override
-  public boolean add(Vector v)
+  public boolean add(R2Double v)
   {
     if (C.Parameters.lim.getAndDecrement() > 0)
       return true;
@@ -18,14 +20,14 @@ public abstract class VectorField extends ArrayList<Vector>
     return true;
   }
 
-  private Vector average()
+  private R2Double average()
   {
-    Vector a = new Vector();
-    for (Vector v: this)
-      a._plus_je(v);
-    a._deljeno_je(new Vector(C.Parameters.n, C.Parameters.n));
+    R2Double a = new R2Double(0.0, 0.0);
+    for (R2Double v: this)
+      a.is(a.plus(v));
+    a.is(a.div((double) C.Parameters.n));
     return (a);
   }
 
-  abstract void done(Vector point);
+  abstract void done(R2Double point);
 }

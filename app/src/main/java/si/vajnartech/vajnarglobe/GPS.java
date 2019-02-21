@@ -15,6 +15,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import si.vajnartech.vajnarglobe.math.R2Double;
+
 import static si.vajnartech.vajnarglobe.C.Parameters.minDist;
 import static si.vajnartech.vajnarglobe.C.Parameters.minTime;
 import static si.vajnartech.vajnarglobe.C.TAG;
@@ -89,7 +91,7 @@ public abstract class GPS extends View implements LocationListener
   public void onProviderDisabled(String s)
   {}
 
-  protected abstract void notifyMe(Vector point);
+  protected abstract void notifyMe(R2Double point);
 
   protected abstract void notifyMe(Location loc);
 }

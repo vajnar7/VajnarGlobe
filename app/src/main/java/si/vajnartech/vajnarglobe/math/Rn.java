@@ -16,4 +16,6 @@ abstract class Rn<V, O> extends ArrayList<V>
   abstract void is(O val);
 
   abstract O div(V val);
+
+  abstract O minus(O val);
 }

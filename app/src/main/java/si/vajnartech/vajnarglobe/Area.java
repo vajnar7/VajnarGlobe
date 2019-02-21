@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import si.vajnartech.vajnarglobe.math.R2Double;
+
 abstract class Area extends ArrayList<Line>
 {
   private String areaName;
@@ -98,7 +100,7 @@ abstract class Area extends ArrayList<Line>
 
   protected abstract void save();
 
-  protected abstract Point transform(Point p, boolean norm);
+  protected abstract Point transform(R2Double p, boolean norm);
 
   private Point min(ArrayList<Point> points)
   {

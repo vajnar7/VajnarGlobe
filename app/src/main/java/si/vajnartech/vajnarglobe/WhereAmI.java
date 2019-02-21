@@ -10,13 +10,16 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import si.vajnartech.vajnarglobe.math.Function;
+import si.vajnartech.vajnarglobe.math.R2Double;
+import si.vajnartech.vajnarglobe.math.R2Function;
+
 import static si.vajnartech.vajnarglobe.C.Parameters.ZZ;
 import static si.vajnartech.vajnarglobe.C.TAG;
 import static si.vajnartech.vajnarglobe.C.scale;
 import static si.vajnartech.vajnarglobe.C.xOffset;
 import static si.vajnartech.vajnarglobe.C.yOffset;
 
-@SuppressWarnings("InfiniteLoopStatement")
 @SuppressLint("ViewConstructor")
 public class WhereAmI extends GPS
 {
@@ -24,19 +27,19 @@ public class WhereAmI extends GPS
 
   boolean  ready = false;
   Paint    paint = new Paint();
-  Function fv    = new Function();
-  Function fs    = new Function();
+  MyFunction fv    = new MyFunction();
+  MyFunction fs    = new MyFunction();
   D        ds    = new D();
   D        dt    = new D();
   D dv;
-  Point currentPosition = null;
-  Point aproxPosition   = null;
+  R2Double currentPosition = null;
+  R2Double aproxPosition   = null;
   long currentTime;
 
   VectorField H = new VectorField()
   {
     @Override
-    void done(Vector v)
+    void done(R2Double v)
     {
       _hector(v);
     }
@@ -44,13 +47,13 @@ public class WhereAmI extends GPS
 
   Aproximator A = new Aproximator(1)
   {
-    @Override void go()
+    @Override
+    void go()
     {
       if (fs != null) {
-        Vector r = fs.f(System.currentTimeMillis());
-        if (r == null)
-          return;
-        aproxPosition = r.toPoint();
+        R2Double r = fs.f(System.currentTimeMillis());
+        if (r == null) return;
+        aproxPosition = (Point) r;
         ctx.runOnUiThread(new Runnable()
         {
           @Override public void run()
@@ -59,7 +62,6 @@ public class WhereAmI extends GPS
           }
         });
       }
-
     }
   };
 
@@ -71,21 +73,17 @@ public class WhereAmI extends GPS
   }
 
   @Override
-  protected void notifyMe(Vector point)
+  protected void notifyMe(R2Double point)
   {
     H.add(point);
   }
 
-  private void _hector(Vector point)
+  private void _hector(R2Double point)
   {
     currentTime = System.currentTimeMillis();
-    dv = new D();
     fs.put(currentTime, point);
-    ds._up(point);
-    dt._up(currentTime);
-    dv._is(ds._po(dt));
     fv.put(currentTime, dv);
-    currentPosition = point.toPoint();
+    currentPosition = (Point) point;
     ctx.runOnUiThread(new Runnable()
     {
       @Override public void run()
@@ -163,11 +161,11 @@ public class WhereAmI extends GPS
     else
       return;
 
-    Vector ttt  = new Vector(predictor.x, predictor.y);
-    Vector ccc  = new Vector(currentPosition.x, currentPosition.y);
-    Vector qqq  = ttt._minus(ccc);
-    Vector sume = fv.integral();
-    Vector time = new Vector(Math.abs(qqq.x / sume.x), Math.abs(qqq.y / sume.y));
+    Point ttt  = new Point(predictor.x, predictor.y);
+    R2Double ccc  = new R2Double(currentPosition.x, currentPosition.y);
+    R2Double qqq  = ttt._minus(ccc);
+    R2Double sume = fv.integral();
+    R2Double time = new R2Double(Math.abs(qqq.x / sume.x), Math.abs(qqq.y / sume.y));
     Log.i(TAG, String.format("do meje %d bos prisel cez ", i) + (time.x + time.y) / 1000 + " sekund");
   }
 
@@ -178,56 +176,55 @@ public class WhereAmI extends GPS
   }
 }
 
-@SuppressWarnings("SuspiciousNameCombination")
-class Function extends F<Vector>
+class MyFunction extends Function<Long, R2Double>
 {
-  private F_V<LinearFun> fun = null;
+  private R2Function<LinearFun> fun = null;
 
   @Override
-  Vector f(long t)
+  public R2Double f(Long x)
   {
     if (size() < 2 || fun == null)
       return null;
-    return new Vector(fun.f1.f(t), fun.f2.f(t));
+    return new R2Double(fun.f1.f(x), fun.f2.f(x));
   }
 
   @Override
-  Vector f(String s)
+  public R2Double integral(Long x0, Long x1)
   {
-    switch (s) {
-    case "first":
-      if (size() > ZZ)
-        return get(keyAt(size() - ZZ));
-      return null;
-    }
-    return null;
-  }
-
-  @Override
-  Vector integral()
-  {
-    Vector sum = new Vector();
-    for (int i = 0; i < size(); i++) {
-      sum._plus_je(get(keyAt(i)));
-    }
-    sum._deljeno_je(new Vector(size(), size()));
+    R2Double sum = new R2Double(0.0, 0.0);
+    for (int i = keys.indexOf(x0); i <= keys.indexOf(x1); i++)
+      sum.is(sum.plus(get(keys.get(i))));
     return sum;
   }
 
-  @Override
-  public void put(long key, Vector value)
+  @SuppressWarnings("ConstantConditions")
+  public R2Double fi(Long x)
   {
-    super.put(key, value);
-    if (size() > 2) {
-      long k0 = keyAt(0);
-      long kn = keyAt(size() - 1);
+    R2Double df;
+    if (size() < 2) return null;
+    int j = keys.indexOf(x);
+    if (j == size() - 1) return null;
+    df = new R2Double(0.0, 0.0);
+    df.is(get(keys.get(j+1)).minus(get(keys.get(j))));
+    long dx = keys.get(j+1) - keys.get(j);
+    df.is(df.div((double) dx));
+    return df;
+  }
 
-      Point p11 = new Point(k0, get(k0).x);
-      Point p12 = new Point(kn, get(kn).x);
-      Point p21 = new Point(k0, get(k0).y);
-      Point p22 = new Point(kn, get(kn).y);
-      fun = new F_V<>(new LinearFun(p11, p12), new LinearFun(p21, p22));
+  @SuppressWarnings("ConstantConditions") @Override
+  public R2Double put(Long key, R2Double value)
+  {
+    R2Double res = super.put(key, value);
+    if (size() > 2) {
+      long k0 = keys.get(0);
+      long kn = keys.get(size() - 1);
+      Point p11 = new Point(k0, get(k0).get(0));
+      Point p12 = new Point(kn, get(kn).get(0));
+      Point p21 = new Point(k0, get(k0).get(1));
+      Point p22 = new Point(kn, get(kn).get(1));
+      fun = new R2Function<>(new LinearFun(p11, p12), new LinearFun(p21, p22));
     }
+    return res;
   }
 
   void draw(Canvas c, Paint paint, int color, Area area)

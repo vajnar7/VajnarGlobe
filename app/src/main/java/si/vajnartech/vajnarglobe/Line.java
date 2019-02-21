@@ -3,6 +3,9 @@ package si.vajnartech.vajnarglobe;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+import si.vajnartech.vajnarglobe.math.Function;
+import si.vajnartech.vajnarglobe.math.R2Double;
+
 class Line
 {
   Point p1;
@@ -137,7 +140,7 @@ class Line
 }
 
 @SuppressWarnings("WeakerAccess")
-class LinearFun extends  F<Double>
+class LinearFun extends Function<Long, Double>
 {
   boolean isHorizontal = false;
   boolean isVertical   = false;
@@ -145,39 +148,33 @@ class LinearFun extends  F<Double>
   double k = 0;
   double n = 0;
 
-  LinearFun(Point p1, Point p2)
+  LinearFun(R2Double p1, R2Double p2)
   {
-    double a = p2.y - p1.y; // if 0 horizontal
-    double b = p2.x - p1.x; // if 0 vertical
+    double a = p2.get(1) - p1.get(1); // if 0 horizontal
+    double b = p2.get(0) - p1.get(0); // if 0 vertical
 
     if (a == 0 && b != 0) {
-      k = p2.x > p1.x ? 1 : -1;
+      k = p2.get(0) > p1.get(0) ? 1 : -1;
       isHorizontal = true;
     } else if (a != 0 && b == 0) {
-      k = p2.y > p1.y ? 1 : -1;
+      k = p2.get(1) > p1.get(1) ? 1 : -1;
       isVertical = true;
     } else if (a == 0)
       isInvalid = true;
     else {
       k = a / b;
-      n = p1.y - (k * p1.x);
+      n = p1.get(1) - (k * p1.get(0));
     }
   }
 
   @Override
-  Double f(long t)
+  public Double f(Long x)
   {
-    return k*t + n;
+    return k*x + n;
   }
 
   @Override
-  Double f(String s)
-  {
-    return null;
-  }
-
-  @Override
-  Double integral()
+  public Double integral(Long x0, Long x1)
   {
     return null;
   }

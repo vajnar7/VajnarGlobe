@@ -20,7 +20,8 @@ class RnDouble extends Rn<Double, RnDouble>
     return res;
   }
 
-  @Override RnDouble plus(RnDouble val)
+  @Override
+  public RnDouble plus(RnDouble val)
   {
     RnDouble res = new RnDouble(n);
     for (int i = 0; i < n; n++)
@@ -28,18 +29,31 @@ class RnDouble extends Rn<Double, RnDouble>
     return res;
   }
 
-  @Override void eq(RnDouble val)
+  @Override
+  public void is(RnDouble val)
   {
     clear();
     for (int i = 0; i < n; n++)
       add(val.get(i));
   }
 
-  @Override RnDouble div(Double val)
+  @Override
+  public RnDouble div(Double val)
   {
     RnDouble res = new RnDouble(n);
     for (int i = 0; i < n; n++)
       res.add(get(i) / val);
     return res;
   }
+
+  @Override
+  public RnDouble minus(RnDouble val)
+  {
+    RnDouble res = new RnDouble(n);
+    for (int i = 0; i < n; n++)
+      res.add(val.get(i) - get(i));
+    return res;
+  }
+
+
 }
