@@ -227,10 +227,10 @@ class MyFunction extends Function<Long, R2Double>
     if (size() > 2) {
       long  k0  = keys.get(0);
       long  kn  = keys.get(size() - 1);
-      Point p11 = new Point(k0, get(k0).get(0));
-      Point p12 = new Point(kn, get(kn).get(0));
-      Point p21 = new Point(k0, get(k0).get(1));
-      Point p22 = new Point(kn, get(kn).get(1));
+      R2Double p11 = new R2Double((double) k0, get(k0).get(0));
+      R2Double p12 = new R2Double((double) kn, get(kn).get(0));
+      R2Double p21 = new R2Double((double) k0, get(k0).get(1));
+      R2Double p22 = new R2Double((double) kn, get(kn).get(1));
       fun = new R2Function<>(new LinearFun(p11, p12), new LinearFun(p21, p22));
     }
     return res;

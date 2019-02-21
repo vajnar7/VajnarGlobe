@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import si.vajnartech.vajnarglobe.math.R2Double;
+
 public class F_Capture extends MyFragment implements View.OnClickListener
 {
   GPS      gps;
@@ -33,11 +35,12 @@ public class F_Capture extends MyFragment implements View.OnClickListener
   {
     gps = new GPS(act)
     {
-      @Override protected void notifyMe(Vector point)
+      @Override protected void notifyMe(R2Double point)
       {
       }
 
-      @Override protected void notifyMe(Location loc)
+      @Override
+      protected void notifyMe(Location loc)
       {
         _printLocation();
       }

@@ -2,7 +2,7 @@ package si.vajnartech.vajnarglobe.math;
 
 import java.util.ArrayList;
 
-class RnDouble extends Rn<Double, RnDouble>
+public class RnDouble extends Rn<Double, RnDouble>
 {
   private int n;
 
@@ -12,7 +12,8 @@ class RnDouble extends Rn<Double, RnDouble>
     this.n = n;
   }
 
-  @Override RnDouble mul(RnDouble val)
+  @Override
+  public RnDouble mul(RnDouble val)
   {
     RnDouble res = new RnDouble(n);
     for (int i = 0; i < n; n++)

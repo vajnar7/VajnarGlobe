@@ -1,40 +1,23 @@
 package si.vajnartech.vajnarglobe;
 
+import si.vajnartech.vajnarglobe.math.R2Double;
 
-class D extends Vector
+@SuppressWarnings("SuspiciousNameCombination")
+class D extends R2Double
 {
-  private double q_x;
-  private double q_y;
-  private long q_s;
+  private double q_x, q_y;
 
   D()
   {
+    super(0.0, 0.0);
     q_x = 0;
     q_y = 0;
   }
 
-  void _up(long scalar)
+  void up(R2Double v)
   {
-    s = scalar - q_s;
-    q_s = scalar;
-  }
-
-  void _up(Vector v)
-  {
-    x = v.x - q_x;
-    y = v.y - q_y;
-    q_x = v.x;
-    q_y = v.y;
-  }
-
-  void _is(Vector v)
-  {
-    x = v.x;
-    y = v.y;
-  }
-
-  void _is(int v)
-  {
-    s = v;
+    q_x = v.get(0);
+    q_y = v.get(1);
+    is(new R2Double(v.get(0) - q_x, v.get(1) - q_y));
   }
 }

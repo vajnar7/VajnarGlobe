@@ -6,9 +6,11 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class C
+import si.vajnartech.vajnarglobe.math.R2Double;
+
+class C
 {
-  public static Vector O;
+  static R2Double O;
 
   static final         String                TAG           = "IZAA";
   private static final double                DEF_LONGITUDE = 13.826209;  //x
@@ -20,13 +22,13 @@ public class C
   static               Integer               xOffset       = null;
   static               Integer               yOffset       = null;
   // DB of areas
-  public static        HashMap<String, Area> areas         = new HashMap<>();
+  static        HashMap<String, Area> areas         = new HashMap<>();
   // timestamper
-  public static AtomicInteger          stamp         = new AtomicInteger(1);
+  static AtomicInteger          stamp         = new AtomicInteger(1);
   // screen dimensions
-  public static android.graphics.Point size          = new android.graphics.Point();
+  static android.graphics.Point size          = new android.graphics.Point();
 
-  public static void startTestGPSService(final MainActivity act)
+  static void startTestGPSService(final MainActivity act)
   {
     // test parameters
     final int      min  = 5;

@@ -46,4 +46,13 @@ class RnFloat extends Rn<Float, RnFloat>
       res.add(get(i) / val);
     return res;
   }
+
+  @Override
+  public RnFloat minus(RnFloat val)
+  {
+    RnFloat res = new RnFloat(n);
+    for (int i = 0; i < n; n++)
+      res.add(val.get(i) - get(i));
+    return res;
+  }
 }

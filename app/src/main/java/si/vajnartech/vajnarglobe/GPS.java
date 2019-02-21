@@ -75,7 +75,7 @@ public abstract class GPS extends View implements LocationListener
   public void onLocationChanged(Location location)
   {
     this.location = new Location(location);
-    notifyMe(new Vector(location.getLongitude(), location.getLatitude()));
+    notifyMe(new R2Double(location.getLongitude(), location.getLatitude()));
     notifyMe(location);
   }
 

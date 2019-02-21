@@ -16,6 +16,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import si.vajnartech.vajnarglobe.math.R2Double;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
   CurrentArea currentArea     = null;
@@ -28,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     setContentView(R.layout.activity_main);
     Display display = getWindowManager().getDefaultDisplay();
     display.getSize(C.size);
-    C.O = new Vector(0, 0);
+    C.O = new R2Double(0.0, 0.0);
     Toolbar toolbar = findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 

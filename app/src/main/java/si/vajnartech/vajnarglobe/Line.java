@@ -8,85 +8,85 @@ import si.vajnartech.vajnarglobe.math.R2Double;
 
 class Line
 {
-  Point p1;
-  private Point p2;
+  R2Double p1;
+  private R2Double p2;
   Fun f = null;
 
-  Line(Point p1, Point p2)
+  Line(R2Double p1, R2Double p2)
   {
     this.p1 = p1;
     this.p2 = p2;
     _defineF();
   }
 
-  Point intersection(Line l2)
+  R2Double intersection(Line l2)
   {
     double k = f.a - l2.f.a;
     double s = l2.f.c - f.c;
 
     // second line is vertical
     if (l2.f.isVertical)
-      return new Point(l2.p1.x, f.a * l2.p1.x + f.c);
+      return new R2Double(l2.p1.get(0), f.a * l2.p1.get(0) + f.c);
     // second line is horizontal
     if (l2.f.isHorizontal)
-      return new Point((l2.p1.y - f.c) / f.a, l2.p1.y);
+      return new R2Double((l2.p1.get(1) - f.c) / f.a, l2.p1.get(1));
 
     if (k == 0 || s == 0)
       return null;
 
-    double x = s / k;
-    double y = f.a * x + f.c;
-    return new Point(x, y);
+    double x1 = s / k;
+    double x2 = f.a * x1 + f.c;
+    return new R2Double(x1, x2);
   }
 
-  boolean onMe(Point p)
+  boolean onMe(R2Double p)
   {
-    Point a = p1;
-    Point b = p2;
+    R2Double a = p1;
+    R2Double b = p2;
     // horizontalna
     if (f.isHorizontal) {
-      if (p1.x > p2.x) {
+      if (p1.get(0) > p2.get(0)) {
         a = p2;
         b = p1;
       }
-      if (p.x > b.x || p.x < a.x)
+      if (p.get(0) > b.get(0) || p.get(0) < a.get(0))
         return false;
     }
     // vertical
     if (f.isVertical) {
-      if (p1.y > p2.y) {
+      if (p1.get(1) > p2.get(1)) {
         a = p2;
         b = p1;
       }
-      if (p.y > b.y || p.y < a.y)
+      if (p.get(1) > b.get(1) || p.get(1) < a.get(1))
         return false;
     }
-    if (a.x > b.x) {
+    if (a.get(0) > b.get(0)) {
       a = p2;
       b = p1;
     }
     if (f.a > 0)
-      return (!(p.x > b.x) || !(p.y > b.y)) && (!(p.x < a.x) || !(p.y < a.y));
+      return (!(p.get(0) > b.get(0)) || !(p.get(1) > b.get(1))) && (!(p.get(0) < a.get(0)) || !(p.get(1) < a.get(1)));
     else
-      return (!(p.x > b.x) || !(p.y < b.y)) && (!(p.x < a.x) || !(p.y > a.y));
+      return (!(p.get(0) > b.get(0)) || !(p.get(1) < b.get(1))) && (!(p.get(0) < a.get(0)) || !(p.get(1) > a.get(1)));
   }
 
   private void _defineF()
   {
-    double a = p2.y - p1.y; // if 0 horizontal
-    double b = p2.x - p1.x; // if 0 vertical
+    double a = p2.get(1) - p1.get(1); // if 0 horizontal
+    double b = p2.get(0) - p1.get(0); // if 0 vertical
     double m;
     if (a == 0 && b != 0) {
-      m = p2.x > p1.x ? 1 : -1;
+      m = p2.get(0) > p1.get(0) ? 1 : -1;
       f = new Fun("horizontal", m);
     } else if (a != 0 && b == 0) {
-      m = p2.y > p1.y ? 1 : -1;
+      m = p2.get(1) > p1.get(1) ? 1 : -1;
       f = new Fun("vertical", m);
     } else if (a == 0)
       f = new Fun("invalid", 0);
     else {
       m = a / b;
-      f = new Fun(m, -1, p1.y - (m * p1.x));
+      f = new Fun(m, -1, p1.get(1) - (m * p1.get(0)));
     }
   }
 
@@ -127,11 +127,12 @@ class Line
   {
     // render
     p.setColor(color);
-    Point o1 = a.transform(new Point(p1.x, p1.y), false);
-    Point o2 = a.transform(new Point(p2.x, p2.y), false);
-    c.drawLine((float) o1.x, (float) o1.y, (float) o2.x, (float) o2.y, p);
+    R2Double o1 = a.transform(new R2Double(p1.get(0), p1.get(1)), false);
+    R2Double o2 = a.transform(new R2Double(p2.get(0), p2.get(1)), false);
+    //c.drawLine((float) o1.get(0), (float) o1.get(1), (float) o2.get(0), (float) o2.get(1), p);
   }
 
+  @SuppressWarnings("NullableProblems")
   @Override
   public String toString()
   {
@@ -177,5 +178,11 @@ class LinearFun extends Function<Long, Double>
   public Double integral(Long x0, Long x1)
   {
     return null;
+  }
+
+  @Override
+  public Double fi(Long x)
+  {
+    return k;
   }
 }
