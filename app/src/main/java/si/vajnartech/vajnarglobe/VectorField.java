@@ -1,6 +1,5 @@
 package si.vajnartech.vajnarglobe;
 
-
 import java.util.ArrayList;
 
 import si.vajnartech.vajnarglobe.math.R2Double;
