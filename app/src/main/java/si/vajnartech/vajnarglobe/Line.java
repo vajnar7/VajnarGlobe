@@ -129,7 +129,11 @@ class Line
     p.setColor(color);
     R2Double o1 = a.transform(new R2Double(p1.get(0), p1.get(1)), false);
     R2Double o2 = a.transform(new R2Double(p2.get(0), p2.get(1)), false);
-    //c.drawLine((float) o1.get(0), (float) o1.get(1), (float) o2.get(0), (float) o2.get(1), p);
+    double x11 = o1.get(0);
+    double x12 = o1.get(0);
+    double x21 = o1.get(0);
+    double x22 = o1.get(0);
+    c.drawLine((float)x11, (float)x12, (float)x21, (float)x22, p);
   }
 
   @SuppressWarnings("NullableProblems")
@@ -174,15 +178,8 @@ class LinearFun extends Function<Long, Double>
     return k*x + n;
   }
 
-  @Override
-  public Double integral(Long x0, Long x1)
+  @Override public Double sum(Long x0, Long x1)
   {
     return null;
-  }
-
-  @Override
-  public Double fi(Long x)
-  {
-    return k;
   }
 }
