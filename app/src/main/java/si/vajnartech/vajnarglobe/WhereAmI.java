@@ -10,6 +10,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import si.vajnartech.vajnarglobe.math.Derivative;
 import si.vajnartech.vajnarglobe.math.Function;
 import si.vajnartech.vajnarglobe.math.R2Double;
 import si.vajnartech.vajnarglobe.math.R2Function;
@@ -31,6 +32,40 @@ public class WhereAmI extends GPS
   R2Double   currentPosition = null;
   R2Double   aproxPosition   = null;
   long       currentTime;
+
+  Derivative<Long, R2Double> fv =
+  new Derivative<Long, R2Double>(fs) {
+    @SuppressWarnings("ConstantConditions")
+    @Override
+    public R2Double f(Long x)
+    {
+      R2Double df;
+      if (size() < 2) return null;
+      int j = getKeys().indexOf(x);
+      if (j == size() - 1) return null;
+      df = (R2Double) get(getKeys().get(j + 1)).minus(get(getKeys().get(j)));
+      long dx = getKeys().get(j + 1) - getKeys().get(j);
+      return (R2Double) df.div((double) dx);
+    }
+
+    @Override
+    public R2Double sum(Long x0, Long x1)
+    {
+      int i0 = getKeys().indexOf(x0);
+      int i1 = getKeys().indexOf(x1);
+      if (x0 == null)
+      {
+        i0 = 0;
+        i1 = size() - 1;
+      }
+      R2Double res = new R2Double(0.0, 0.0);
+      for (int i = i0; i <= i1; i++)
+      {
+        res = (R2Double) res.plus(f(getKeys().get(i)));
+      }
+      return res;
+    }
+  };
 
   VectorField H = new VectorField()
   {
@@ -118,51 +153,48 @@ public class WhereAmI extends GPS
 
   private void _drawArea(Area area, Canvas canvas)
   {
-    // TODO
-//    fs.draw(canvas, paint, Color.GRAY, area);
-//    area.draw(canvas, paint, Color.BLACK);
-//    if (aproxPosition != null)
-//      aproxPosition.draw(canvas, paint, Color.GREEN, area);
-//    if (currentPosition == null)
-//      return;
-//    currentPosition.draw(canvas, paint, Color.RED, area);
-//    if (!area.isInside(currentPosition))
-//      return;
-//    ArrayList<Point> closestPoints = area.process(currentPosition);
-//    int              i             = -1;
-//    for (Point p : closestPoints) {
-//      i++;
-//      if (area.get(i).onMe(p))
-//        p.draw(canvas, paint, Color.GREEN, area);
-//
-//      Vector sp = fs.f("first");
-//      if (sp == null)
-//        continue;
-//      Point startPoint = sp.toPoint();
-//      startPoint.draw(canvas, paint, Color.BLUE, area);
-//      _predict(startPoint, canvas, area, i);
-//    }
+    fs.draw(canvas, paint, Color.GRAY, area);
+    area.draw(canvas, paint, Color.BLACK);
+    if (aproxPosition != null)
+      new Point(aproxPosition).draw(canvas, paint, Color.GREEN, 4, area);
+    if (currentPosition == null)
+      return;
+    new Point(currentPosition).draw(canvas, paint, Color.RED, 4, area);
+    if (!area.isInside(currentPosition))
+      return;
+    ArrayList<R2Double> closestPoints = area.process(currentPosition);
+    int i = -1;
+    for (R2Double p : closestPoints) {
+      i++;
+      if (area.get(i).onMe(p))
+        new Point(p).draw(canvas, paint, Color.GREEN, 4, area);
+
+      R2Double startPoint = fs.f("first");
+      if (startPoint == null)
+        continue;
+      new Point(startPoint).draw(canvas, paint, Color.BLUE, 4, area);
+      _predict(startPoint, canvas, area, i);
+    }
   }
 
+  @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
   private void _predict(R2Double startPoint, Canvas canvas, Area area, int i)
   {
-    // TODO
-//    Line approx = new Line(startPoint, currentPosition);
-//    fs.f(currentTime + 2000).toPoint().draw(canvas, paint, Color.MAGENTA, 3, area);
-//    approx.draw(canvas, paint, Color.RED, area);
-//
-//    Point predictor = approx.intersection(area.get(i));
-//    if (predictor != null && area.get(i).onMe(predictor))
-//      predictor.draw(canvas, paint, Color.MAGENTA, 5, area);
-//    else
-//      return;
-//
-//    Point ttt  = new Point(predictor.x, predictor.y);
-//    R2Double ccc  = new R2Double(currentPosition.x, currentPosition.y);
-//    R2Double qqq  = ttt._minus(ccc);
-//    R2Double sume = fv.integral();
-//    R2Double time = new R2Double(Math.abs(qqq.x / sume.x), Math.abs(qqq.y / sume.y));
-//    Log.i(TAG, String.format("do meje %d bos prisel cez ", i) + (time.x + time.y) / 1000 + " sekund");
+    Line approx = new Line(startPoint, currentPosition);
+    new Point(fs.f(currentTime + 2000)).draw(canvas, paint, Color.MAGENTA, 4, area);
+    approx.draw(canvas, paint, Color.RED, area);
+
+    R2Double predictor = approx.intersection(area.get(i));
+    if (predictor != null && area.get(i).onMe(predictor))
+      new Point(predictor).draw(canvas, paint, Color.MAGENTA, 4, area);
+    else
+      return;
+
+    R2Double qqq  = (R2Double) predictor.minus(currentPosition);
+    R2Double sum = fv.sum(null, null);
+    sum = (R2Double) sum.div((double) fs.size());
+    R2Double time = new R2Double(Math.abs(qqq.get(0) / sum.get(0)), Math.abs(qqq.get(1) / sum.get(1)));
+    Log.i(TAG, String.format("do meje %d bos prisel cez ", i) + (time.get(0) + time.get(1)) / 1000 + " sekund");
   }
 
   @Override
@@ -184,39 +216,21 @@ class MyFunction extends Function<Long, R2Double>
     return new R2Double(fun.f1.f(x), fun.f2.f(x));
   }
 
+  @Override public R2Double sum(Long x0, Long x1)
+  {
+    return null;
+  }
+
+  @SuppressWarnings("SameParameterValue")
   R2Double f(String s)
   {
     switch (s) {
     case "first":
-      Long key = keys.get((size() - ZZ));
       if (size() > ZZ)
-        return get(keys.get((size() - ZZ)));
+        return get(getKeys().get((size() - ZZ)));
       return null;
     }
     return null;
-  }
-
-  @Override
-  public R2Double integral(Long x0, Long x1)
-  {
-    R2Double sum = new R2Double(0.0, 0.0);
-    for (int i = keys.indexOf(x0); i <= keys.indexOf(x1); i++)
-      sum.is(sum.plus(get(keys.get(i))));
-    return sum;
-  }
-
-  @SuppressWarnings("ConstantConditions")
-  public R2Double fi(Long x)
-  {
-    R2Double df;
-    if (size() < 2) return null;
-    int j = keys.indexOf(x);
-    if (j == size() - 1) return null;
-    df = new R2Double(0.0, 0.0);
-    df.is(get(keys.get(j + 1)).minus(get(keys.get(j))));
-    long dx = keys.get(j + 1) - keys.get(j);
-    df.is(df.div((double) dx));
-    return df;
   }
 
   @SuppressWarnings("ConstantConditions")
@@ -225,8 +239,8 @@ class MyFunction extends Function<Long, R2Double>
   {
     R2Double res = super.put(key, value);
     if (size() > 2) {
-      long  k0  = keys.get(0);
-      long  kn  = keys.get(size() - 1);
+      long  k0  = getKeys().get(0);
+      long  kn  = getKeys().get(size() - 1);
       R2Double p11 = new R2Double((double) k0, get(k0).get(0));
       R2Double p12 = new R2Double((double) kn, get(kn).get(0));
       R2Double p21 = new R2Double((double) k0, get(k0).get(1));
@@ -236,12 +250,12 @@ class MyFunction extends Function<Long, R2Double>
     return res;
   }
 
+  @SuppressWarnings("SameParameterValue")
   void draw(Canvas c, Paint paint, int color, Area area)
   {
-    // TODO
-//    if (size() > 1)
-//      for (int i = 0; i < size() - 1; i++)
-//        new Line(get(keyAt(i)).toPoint(), get(keyAt(i + 1)).toPoint()).draw(c, paint, color, area);
+    if (size() > 1)
+      for (int i = 0; i < size() - 1; i++)
+        new Line(get(getKeys().get(i)), get(getKeys().get(i + 1))).draw(c, paint, color, area);
   }
 }
 
