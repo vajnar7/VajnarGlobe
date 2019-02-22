@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class RnDouble extends Rn<Double, RnDouble>
 {
-  private int n;
+  private final int n;
 
   RnDouble(int n)
   {
@@ -16,7 +16,7 @@ public class RnDouble extends Rn<Double, RnDouble>
   public RnDouble mul(RnDouble val)
   {
     RnDouble res = new RnDouble(n);
-    for (int i = 0; i < n; n++)
+    for (int i = 0; i < n; i++)
       res.add(val.get(i) * get(i));
     return res;
   }
@@ -25,7 +25,7 @@ public class RnDouble extends Rn<Double, RnDouble>
   public RnDouble plus(RnDouble val)
   {
     RnDouble res = new RnDouble(n);
-    for (int i = 0; i < n; n++)
+    for (int i = 0; i < n; i++)
       res.add(val.get(i) + get(i));
     return res;
   }
@@ -34,7 +34,7 @@ public class RnDouble extends Rn<Double, RnDouble>
   public void is(RnDouble val)
   {
     clear();
-    for (int i = 0; i < n; n++)
+    for (int i = 0; i < n; i++)
       add(val.get(i));
   }
 
@@ -42,7 +42,7 @@ public class RnDouble extends Rn<Double, RnDouble>
   public RnDouble div(Double val)
   {
     RnDouble res = new RnDouble(n);
-    for (int i = 0; i < n; n++)
+    for (int i = 0; i < n; i++)
       res.add(get(i) / val);
     return res;
   }
@@ -51,7 +51,7 @@ public class RnDouble extends Rn<Double, RnDouble>
   public RnDouble minus(RnDouble val)
   {
     RnDouble res = new RnDouble(n);
-    for (int i = 0; i < n; n++)
+    for (int i = 0; i < n; i++)
       res.add(val.get(i) - get(i));
     return res;
   }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 class RnFloat extends Rn<Float, RnFloat>
 {
-  private int n;
+  private final int n;
 
   RnFloat(int n)
   {
@@ -16,7 +16,7 @@ class RnFloat extends Rn<Float, RnFloat>
   public RnFloat mul(RnFloat val)
   {
     RnFloat res = new RnFloat(n);
-    for (int i = 0; i < n; n++)
+    for (int i = 0; i < n; i++)
       res.add(val.get(i) * get(i));
     return res;
   }
@@ -25,7 +25,7 @@ class RnFloat extends Rn<Float, RnFloat>
   public RnFloat plus(RnFloat val)
   {
     RnFloat res = new RnFloat(n);
-    for (int i = 0; i < n; n++)
+    for (int i = 0; i < n; i++)
       res.add(val.get(i) + get(i));
     return res;
   }
@@ -34,7 +34,7 @@ class RnFloat extends Rn<Float, RnFloat>
   public void is(RnFloat val)
   {
     clear();
-    for (int i = 0; i < n; n++)
+    for (int i = 0; i < n; i++)
       add(val.get(i));
   }
 
@@ -42,7 +42,7 @@ class RnFloat extends Rn<Float, RnFloat>
   public RnFloat div(Float val)
   {
     RnFloat res = new RnFloat(n);
-    for (int i = 0; i < n; n++)
+    for (int i = 0; i < n; i++)
       res.add(get(i) / val);
     return res;
   }
@@ -51,7 +51,7 @@ class RnFloat extends Rn<Float, RnFloat>
   public RnFloat minus(RnFloat val)
   {
     RnFloat res = new RnFloat(n);
-    for (int i = 0; i < n; n++)
+    for (int i = 0; i < n; i++)
       res.add(val.get(i) - get(i));
     return res;
   }
