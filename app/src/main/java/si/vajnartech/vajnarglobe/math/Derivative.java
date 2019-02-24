@@ -28,4 +28,10 @@ public abstract class Derivative<K,V> extends Function<K, V>
   {
     return fun.size();
   }
+
+  @Override
+  protected K getKeyAt(int i)
+  {
+    return fun.getKeyAt(i);
+  }
 }

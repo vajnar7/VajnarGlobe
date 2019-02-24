@@ -60,14 +60,6 @@ public class F_Track extends MyFragment implements View.OnClickListener, View.On
       dK.up(new R2Double(rx, ry));
       view.performClick();
       break;
-    case MotionEvent.ACTION_MOVE:
-//      TODO:
-//      view.animate()
-//          .x(event.getRawX() + dX)
-//          .y(event.getRawY() + dY)
-//          .setDuration(0)
-//          .start();
-      break;
     case MotionEvent.ACTION_UP:
       rx = event.getRawX();
       ry = event.getRawY();

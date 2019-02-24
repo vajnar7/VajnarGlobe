@@ -92,9 +92,9 @@ class Line
 
   class Fun
   {
-    double a;
-    double b             = 0;
-    double c             = 0;
+    double  a;
+    double  b            = 0;
+    double  c            = 0;
     boolean isHorizontal = false;
     boolean isVertical   = false;
     boolean isInvalid    = false;
@@ -127,13 +127,13 @@ class Line
   {
     // render
     p.setColor(color);
-    R2Double o1 = a.transform(new R2Double(p1.get(0), p1.get(1)), false);
-    R2Double o2 = a.transform(new R2Double(p2.get(0), p2.get(1)), false);
-    double x11 = o1.get(0);
-    double x12 = o1.get(0);
-    double x21 = o1.get(0);
-    double x22 = o1.get(0);
-    c.drawLine((float)x11, (float)x12, (float)x21, (float)x22, p);
+    R2Double o1  = a.transform(new R2Double(p1.get(0), p1.get(1)), false);
+    R2Double o2  = a.transform(new R2Double(p2.get(0), p2.get(1)), false);
+    double   x11 = o1.get(0);
+    double   x12 = o1.get(1);
+    double   x21 = o2.get(0);
+    double   x22 = o2.get(1);
+    c.drawLine((float) x11, (float) x12, (float) x21, (float) x22, p);
   }
 
   @SuppressWarnings("NullableProblems")
@@ -150,8 +150,8 @@ class LinearFun extends Function<Long, Double>
   boolean isHorizontal = false;
   boolean isVertical   = false;
   boolean isInvalid    = false;
-  double k = 0;
-  double n = 0;
+  double  k            = 0;
+  double  n            = 0;
 
   LinearFun(R2Double p1, R2Double p2)
   {
@@ -175,7 +175,7 @@ class LinearFun extends Function<Long, Double>
   @Override
   public Double f(Long x)
   {
-    return k*x + n;
+    return k * x + n;
   }
 
   @Override public Double sum(Long x0, Long x1)

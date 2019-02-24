@@ -39,13 +39,15 @@ public class WhereAmI extends GPS
     @Override
     public R2Double f(Long x)
     {
-      R2Double df;
+      R2Double df = new R2Double();
       if (size() < 2) return null;
       int j = getKeys().indexOf(x);
       if (j == size() - 1) return null;
-      df = (R2Double) get(getKeys().get(j + 1)).minus(get(getKeys().get(j)));
+      df.is(get(getKeyAt(j + 1)).minus(get(getKeyAt(j))));
       long dx = getKeys().get(j + 1) - getKeys().get(j);
-      return (R2Double) df.div((double) dx);
+      R2Double res = new R2Double();
+      res.is(df.div((double) dx));
+      return res;
     }
 
     @Override
@@ -58,10 +60,11 @@ public class WhereAmI extends GPS
         i0 = 0;
         i1 = size() - 1;
       }
-      R2Double res = new R2Double(0.0, 0.0);
-      for (int i = i0; i <= i1; i++)
-      {
-        res = (R2Double) res.plus(f(getKeys().get(i)));
+      R2Double res = new R2Double();
+      for (int i = i0; i < i1; i++) {
+        R2Double tmp = new R2Double();
+        tmp.is(res.plus(f(getKeyAt(i))));
+        res.is(res.plus(f(getKeyAt(i))));
       }
       return res;
     }
@@ -190,11 +193,12 @@ public class WhereAmI extends GPS
     else
       return;
 
-    R2Double qqq  = (R2Double) predictor.minus(currentPosition);
+    R2Double qqq = new R2Double();
+    qqq.is(predictor.minus(currentPosition));
     R2Double sum = fv.sum(null, null);
-    sum = (R2Double) sum.div((double) fs.size());
-    R2Double time = new R2Double(Math.abs(qqq.get(0) / sum.get(0)), Math.abs(qqq.get(1) / sum.get(1)));
-    Log.i(TAG, String.format("do meje %d bos prisel cez ", i) + (time.get(0) + time.get(1)) / 1000 + " sekund");
+    sum.is(sum.div((double) fs.size()));
+    R2Double time = new R2Double(Math.abs(qqq.x1() / sum.x1()), Math.abs(qqq.x2() / sum.x2()));
+    Log.i(TAG, String.format("do meje %d bos prisel cez ", i) + (time.x1() + time.x2()) / 1000 + " sekund");
   }
 
   @Override
@@ -255,7 +259,7 @@ class MyFunction extends Function<Long, R2Double>
   {
     if (size() > 1)
       for (int i = 0; i < size() - 1; i++)
-        new Line(get(getKeys().get(i)), get(getKeys().get(i + 1))).draw(c, paint, color, area);
+        new Line(get(getKeyAt(i)), get(getKeyAt(i + 1))).draw(c, paint, color, area);
   }
 }
 
