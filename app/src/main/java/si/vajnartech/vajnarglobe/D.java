@@ -2,7 +2,6 @@ package si.vajnartech.vajnarglobe;
 
 import si.vajnartech.vajnarglobe.math.R2Double;
 
-@SuppressWarnings("SuspiciousNameCombination")
 class D extends R2Double
 {
   private double q_x, q_y;
@@ -16,8 +15,9 @@ class D extends R2Double
 
   void up(R2Double v)
   {
-    q_x = v.get(0);
-    q_y = v.get(1);
-    is(new R2Double(v.get(0) - q_x, v.get(1) - q_y));
+    R2Double res = new R2Double(v.x1() - q_x, v.x2() - q_y);
+    q_x = v.x1();
+    q_y = v.x2();
+    is(res);
   }
 }
