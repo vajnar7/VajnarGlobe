@@ -17,12 +17,15 @@ import android.widget.Toast;
 
 import si.vajnartech.vajnarglobe.math.R2Double;
 
+import static si.vajnartech.vajnarglobe.C.DEF_LATITUDE;
+import static si.vajnartech.vajnarglobe.C.DEF_LONGITUDE;
 import static si.vajnartech.vajnarglobe.C.Parameters.minDist;
 import static si.vajnartech.vajnarglobe.C.Parameters.minTime;
 import static si.vajnartech.vajnarglobe.C.TAG;
 
 public abstract class GPS extends View implements LocationListener
 {
+  public static final boolean GPS_SIMULATE = true;
   protected MainActivity ctx;
   protected Location location;
 
@@ -30,6 +33,7 @@ public abstract class GPS extends View implements LocationListener
   {
     super(ctx);
     this.ctx = ctx;
+    location = new Location("");
     enableGPSService();
   }
 
@@ -66,15 +70,25 @@ public abstract class GPS extends View implements LocationListener
            }).create()).show();
       return;
     }
-//
-//    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDist, this);
-//    Toast.makeText(ctx, "GPS granted", Toast.LENGTH_SHORT).show();
+
+    if (GPS_SIMULATE) {
+      Location loc = new Location("");
+      loc.setLatitude(DEF_LATITUDE);
+      loc.setLongitude(DEF_LONGITUDE);
+      C.createArea();
+      onLocationChanged(loc);
+    }
+    else {
+      locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDist, this);
+      Toast.makeText(ctx, "GPS granted", Toast.LENGTH_SHORT).show();
+    }
   }
 
   @Override
-  public void onLocationChanged(Location location)
+  public void onLocationChanged(Location loc)
   {
-    this.location = new Location(location);
+    location.setLongitude(loc.getLongitude());
+    location.setLatitude(loc.getLatitude());
     notifyMe(new R2Double(location.getLongitude(), location.getLatitude()));
     notifyMe(location);
   }

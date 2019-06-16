@@ -20,8 +20,8 @@ import java.net.URL;
 public class Login extends AsyncTask<String, Void, Integer>
 {
   // ce dostopamo od zunaj
-//  private static final String SERVER_ADDRESS = "http://89.142.196.96:8008/";
-  private static final String SERVER_ADDRESS = "http://192.168.1.7:8008/";
+  private static final String SERVER_ADDRESS = "http://89.142.196.96:8008/";
+//  private static final String SERVER_ADDRESS = "http://192.168.1.3:8008/";
   static final         String AREAS          = SERVER_ADDRESS + "rest/geopoint/%s";
   static final         String GET_ALL        = SERVER_ADDRESS + "rest/area/";
   private static final String WATCHDOG_USR   = "vajnar";
@@ -85,14 +85,14 @@ public class Login extends AsyncTask<String, Void, Integer>
         BufferedInputStream is = new BufferedInputStream(conn.getInputStream());
         BufferedReader      br = new BufferedReader(new InputStreamReader(is));
         setToken(gson.fromJson(br, RegistrationToken.class).token);
-        Log.w("REST", "Login token: " + token);
+        Log.i("REST", "Login token: " + token);
         br.close();
         is.close();
       } else
-        Log.w("REST", "Login response " + conn.getResponseCode() + conn.getResponseMessage());
+        Log.i("REST", "Login response " + conn.getResponseCode() + conn.getResponseMessage());
       return conn.getResponseCode();
     } catch (SocketTimeoutException e) {
-      Log.w("REST Login", "Timeout connecting to settings server");
+      Log.i("REST Login", "Timeout connecting to settings server");
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -113,6 +113,7 @@ public class Login extends AsyncTask<String, Void, Integer>
   }
 }
 
+@SuppressWarnings("WeakerAccess")
 class RegistrationToken
 {
   public String token;

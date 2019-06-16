@@ -13,8 +13,7 @@ class ObtainAreas(APIView):
         res = []
         for a in Area.objects.all():
             res.append({'name': a.name, 'points':
-                ([{'timestamp': p.timestamp, 'lon': p.lon, 'lat': p.lat}
-                  for p in GeoPoint.objects.filter(area=a)])})
+                ([{'timestamp': p.timestamp, 'lon': p.lon, 'lat': p.lat} for p in GeoPoint.objects.filter(area=a)])})
         return Response(dict(areas=res))
 
     def post(self, request, f=None):
@@ -36,9 +35,7 @@ class UpdateGeoPoint(APIView):
 
     @staticmethod
     def _clear_all(area):
-        qs = GeoPoint.objects.filter(area=area)
-        for p in qs:
-            p.delete()
+        GeoPoint.objects.filter(area=area).delete()
 
     def get(self, request, f=None, area_name=None):
         area = self._get_area(area_name)
@@ -48,7 +45,8 @@ class UpdateGeoPoint(APIView):
         timestamp = request.data.get("timestamp", 0)
         lon = request.data.get("lon", 0)
         lat = request.data.get("lat", 0)
+        print(lon, lat)
         area = self._get_area(area_name)
-
+        # self._clear_all(area)
         GeoPoint.objects.create(area=area, timestamp=timestamp, lon=lon, lat=lat)
         return Response(dict(err_code="OK"))

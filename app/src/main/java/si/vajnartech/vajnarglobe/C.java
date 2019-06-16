@@ -2,6 +2,7 @@ package si.vajnartech.vajnarglobe;
 
 import android.location.Location;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -12,28 +13,28 @@ class C
 {
   static R2Double O;
 
-  static final         String                TAG           = "IZAA";
-  private static final double                DEF_LONGITUDE = 13.826209;  //x
-  private static final double                DEF_LATITUDE  = 46.487243; //y
+  static final String TAG           = "IZAA";
+  static final double DEF_LONGITUDE = 13.826209;  //x
+  static final double DEF_LATITUDE  = 46.487243;  //y
 
   // scale i power of 10
-  static               int                   scale         = 6;
+  static int                    scale   = 6;
   // offsets
-  static               Integer               xOffset       = null;
-  static               Integer               yOffset       = null;
+  static Integer                xOffset = null;
+  static Integer                yOffset = null;
   // DB of areas
-  static        HashMap<String, Area> areas         = new HashMap<>();
+  static HashMap<String, Area>  areas   = new HashMap<>();
   // timestamper
-  static AtomicInteger          stamp         = new AtomicInteger(1);
+  static AtomicInteger          stamp   = new AtomicInteger(1);
   // screen dimensions
-  static android.graphics.Point size          = new android.graphics.Point();
+  static android.graphics.Point size    = new android.graphics.Point();
 
   static void startTestGPSService(final MainActivity act)
   {
     // test parameters
-    final int      min  = 5;
-    final int      max  = 13;
-    WhereAmI       gps  = null;
+    final int min = 5;
+    final int max = 13;
+    WhereAmI  gps = null;
     if (act.getCurrentFragment() instanceof F_Track) {
       F_Track f = (F_Track) act.getCurrentFragment();
       if (f != null)
@@ -45,10 +46,10 @@ class C
     {
       @Override public void run()
       {
-        Random r = new Random();
-        double longitude = DEF_LONGITUDE;
-        double latitude = DEF_LATITUDE;
-        Location loc = new Location("");
+        Random   r         = new Random();
+        double   longitude = DEF_LONGITUDE;
+        double   latitude  = DEF_LATITUDE;
+        Location loc       = new Location("");
 
         while (true) {
           int    t    = Parameters.minTime;
@@ -73,7 +74,6 @@ class C
     }).start();
   }
 
-  // parameters
   static class Parameters
   {
     // approximation
@@ -83,5 +83,16 @@ class C
     static final int           minTime = 5000;    // ms
     static final float         minDist = 0f; // m
     static final int           ZZ      = 2;    // ~ points back from current, cant be les than 2
+  }
+
+  // for simulation
+  static ArrayList<GeoPoint> fakeArea = new ArrayList<>();
+  static int c = 0;
+  static void createArea()
+  {
+    fakeArea.add(new GeoPoint(DEF_LONGITUDE, DEF_LATITUDE));
+    fakeArea.add(new GeoPoint(DEF_LONGITUDE + 0.3, DEF_LATITUDE + 0.1));
+    fakeArea.add(new GeoPoint(DEF_LONGITUDE + 0.3 + 0.1, DEF_LATITUDE + 0.1 - 0.5));
+    fakeArea.add(new GeoPoint(DEF_LONGITUDE + 0.3 + 0.1 - 0.4, DEF_LATITUDE + 0.1 - 0.5 + 0.1));
   }
 }

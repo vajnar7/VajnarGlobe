@@ -98,9 +98,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     case R.id.id_capture:
       setFragment("capture", F_Capture.class, new Bundle());
       break;
-    case R.id.id_track:
-      setFragment("track", F_Track.class, new Bundle());
-      break;
+//    case R.id.id_track:
+//      setFragment("track", F_Track.class, new Bundle());
+//      break;
     }
 
     DrawerLayout drawer = findViewById(R.id.drawer_layout);
