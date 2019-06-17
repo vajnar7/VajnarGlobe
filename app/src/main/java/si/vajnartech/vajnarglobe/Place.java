@@ -45,11 +45,10 @@ public class Place extends Area
   }
 
   @Override
-  protected Area mark(GeoPoint a)
+  protected void mark(GeoPoint a)
   {
     geoPoints.add(a);
     new SendLocation(getName(), a.timestamp, a.lon, a.lat);
-    return this;
   }
 
   @Override
@@ -75,7 +74,6 @@ public class Place extends Area
       double k = Math.sqrt(l.f.a * l.f.a + l.f.b * l.f.b);
       d /= k;
     }
-    Log.i("IZAA", "d(f(x), x0)=" + d);
     return d;
   }
 
@@ -84,19 +82,6 @@ public class Place extends Area
   {
     for (Line l : this) {
       l.draw(canvas, paint, color, this);
-    }
-  }
-
-  @Override
-  public void save()
-  {
-    for (GeoPoint p : geoPoints) {
-      new SendLocation(getName(), p.timestamp, p.lon, p.lat);
-      try {
-        Thread.sleep(1000);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
     }
   }
 }
