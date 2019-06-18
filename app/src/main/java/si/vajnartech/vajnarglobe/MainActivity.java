@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -53,6 +54,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     NavigationView navigationView = findViewById(R.id.nav_view);
     navigationView.setNavigationItemSelectedListener(this);
+    new GetAreas(this, new Runnable() {
+      @Override public void run()
+      {
+        Log.i("IZAA", "Areas imported: " + C.areas.size());
+      }
+    });
   }
 
   @Override

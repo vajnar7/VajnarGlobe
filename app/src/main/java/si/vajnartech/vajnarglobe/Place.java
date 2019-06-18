@@ -2,7 +2,6 @@ package si.vajnartech.vajnarglobe;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -12,7 +11,6 @@ import static si.vajnartech.vajnarglobe.C.scale;
 import static si.vajnartech.vajnarglobe.C.xOffset;
 import static si.vajnartech.vajnarglobe.C.yOffset;
 
-@SuppressWarnings("SuspiciousNameCombination")
 public class Place extends Area
 {
   Place(String name, ArrayList<GeoPoint> points)

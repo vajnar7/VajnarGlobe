@@ -3,9 +3,11 @@ package si.vajnartech.vajnarglobe;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import static si.vajnartech.vajnarglobe.Login.GET_ALL;
 
-public class GetAreas extends REST<AreaQ>
+public class GetAreas extends REST<AreaObj>
 {
   private Runnable r = null;
   private Runnable onFail;
@@ -28,26 +30,73 @@ public class GetAreas extends REST<AreaQ>
   }
 
   @Override
-  public AreaQ backgroundFunc()
+  public AreaObj backgroundFunc()
   {
     return callServer(null, REST.OUTPUT_TYPE_JSON);
   }
 
   @Override
-  protected void onPostExecute(AreaQ j)
+  protected void onPostExecute(AreaObj j)
   {
     super.onPostExecute(j);
     if (j != null) {
       C.areas.clear();
-      for (AreaP a : j.areas) {
-        C.areas.put(a.name, new Place(a.name, (ArrayList<GeoPoint>) a.points).constructArea());
+      for (AreaObj.Area a : j.response) {
+        ArrayList<GeoPoint> points = new ArrayList<>();
+        for (AreaObj.Point p : a.points)
+          points.add(new GeoPoint(p.lon, p.lat));
+        C.areas.put(a.name, new Place(a.name, points));
       }
       if (r != null )
         r.run();
     }
     else
-    {
       onFail.run();
+  }
+}
+
+@SuppressWarnings({"NullableProblems", "WeakerAccess"})
+class AreaObj
+{
+  public List<Area> response;
+
+  @Override
+  public String toString()
+  {
+    return "AreaObj{" +
+           "response=" + response +
+           '}';
+  }
+
+  class Area
+  {
+    public String name;
+    public List<Point> points;
+
+    @Override
+    public String toString()
+    {
+      return "Point{" +
+             "name=" + name +
+             ", points=" + points +
+             '}';
+    }
+  }
+
+  class Point
+  {
+    public long   timestamp;
+    public double lon;
+    public double lat;
+
+    @Override
+    public String toString()
+    {
+      return "Point{" +
+             "timestamp=" + timestamp +
+             ", lon=" + lon +
+             ", lat=" + lat +
+             '}';
     }
   }
 }

@@ -14,7 +14,7 @@ class ObtainAreas(APIView):
         for a in Area.objects.all():
             res.append({'name': a.name, 'points':
                 ([{'timestamp': p.timestamp, 'lon': p.lon, 'lat': p.lat} for p in GeoPoint.objects.filter(area=a)])})
-        return Response(dict(areas=res))
+        return Response(dict(response=res))
 
     def post(self, request, f=None):
         return self.go()

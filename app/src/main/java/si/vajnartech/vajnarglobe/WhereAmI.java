@@ -128,20 +128,20 @@ public class WhereAmI extends GPS
   @Override
   protected void notifyMe(Location loc)
   {
-    Location currentLocation = new Location(loc);
-    xOffset = new Normal(currentLocation.getLongitude(), 3).value();
-    yOffset = new Normal(currentLocation.getLatitude(), 2).value();
-    if (!ready) {
-      new GetAreas(act, new Runnable()
-      {
-        @Override
-        public void run()
-        {
-          invalidate();
-        }
-      });
-      ready = true;
-    }
+//    Location currentLocation = new Location(loc);
+//    xOffset = new Normal(currentLocation.getLongitude(), 3).value();
+//    yOffset = new Normal(currentLocation.getLatitude(), 2).value();
+//    if (!ready) {
+//      new GetAreas(act, new Runnable()
+//      {
+//        @Override
+//        public void run()
+//        {
+//          invalidate();
+//        }
+//      });
+//      ready = true;
+//    }
   }
 
   @Override
