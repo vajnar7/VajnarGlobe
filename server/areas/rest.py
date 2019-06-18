@@ -35,7 +35,7 @@ class UpdateGeoPoint(APIView):
 
     @staticmethod
     def _clear_all(area):
-        GeoPoint.objects.filter(area=area).delete()
+        GeoPoint.objects.all().delete()
 
     def get(self, request, f=None, area_name=None):
         area = self._get_area(area_name)

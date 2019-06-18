@@ -20,8 +20,8 @@ import java.net.URL;
 public class Login extends AsyncTask<String, Void, Integer>
 {
   // ce dostopamo od zunaj
-  private static final String SERVER_ADDRESS = "http://89.142.196.96:8008/";
-//  private static final String SERVER_ADDRESS = "http://192.168.1.3:8008/";
+//  private static final String SERVER_ADDRESS = "http://89.142.196.96:8008/";
+  private static final String SERVER_ADDRESS = "http://192.168.1.3:8008/";
   static final         String AREAS          = SERVER_ADDRESS + "rest/geopoint/%s";
   static final         String GET_ALL        = SERVER_ADDRESS + "rest/area/";
   private static final String WATCHDOG_USR   = "vajnar";

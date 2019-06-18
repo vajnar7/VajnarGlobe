@@ -1,14 +1,17 @@
 package si.vajnartech.vajnarglobe;
 
-public class GeoPoint
+import si.vajnartech.vajnarglobe.math.R2Double;
+
+public class GeoPoint extends R2Double
 {
-  int    timestamp;
+  long    timestamp;
   double lon;
   double lat;
 
   GeoPoint(double lon, double lat)
   {
-    this.timestamp = C.stamp.getAndIncrement();
+    super(lon, lat);
+    this.timestamp = System.currentTimeMillis();
     this.lon = lon;
     this.lat = lat;
   }

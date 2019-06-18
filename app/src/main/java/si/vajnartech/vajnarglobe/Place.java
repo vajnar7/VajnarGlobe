@@ -35,12 +35,14 @@ public class Place extends Area
     x2 *= Math.pow(10, scale);
     x2 -= yOffset;
     if (norm) {
-      x1 -= min.get(0);
-      x2 -= min.get(1);
+      x1 -= minPoint.get(0);
+      x2 -= minPoint.get(1);
     }
-    x1 += C.O.get(0);
-    x2 += C.O.get(1);
-    x2 = C.size.y - x2;
+    // TODO 2
+//    x1 += C.O.get(0);
+//    x2 += C.O.get(1);
+//    x2 = C.size.y - x2;
+
     return new R2Double(x1, x2);
   }
 
@@ -80,8 +82,7 @@ public class Place extends Area
   @Override
   public void draw(Canvas canvas, Paint paint, int color)
   {
-    for (Line l : this) {
+    for (Line l : this)
       l.draw(canvas, paint, color, this);
-    }
   }
 }

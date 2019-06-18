@@ -125,10 +125,10 @@ class Line
 
   void draw(Canvas c, Paint p, int color, Area a)
   {
-    // render
     p.setColor(color);
-    R2Double o1  = a.transform(new R2Double(p1.get(0), p1.get(1)), false);
-    R2Double o2  = a.transform(new R2Double(p2.get(0), p2.get(1)), false);
+    R2Double o1  = a.transform(new R2Double(p1.get(0), p1.get(1)), true);
+    R2Double o2  = a.transform(new R2Double(p2.get(0), p2.get(1)), true);
+
     double   x11 = o1.get(0);
     double   x12 = o1.get(1);
     double   x21 = o2.get(0);

@@ -24,8 +24,6 @@ class C
   static Integer                yOffset = null;
   // DB of areas
   static HashMap<String, Area>  areas   = new HashMap<>();
-  // timestamper
-  static AtomicInteger          stamp   = new AtomicInteger(1);
   // screen dimensions
   static android.graphics.Point size    = new android.graphics.Point();
 
@@ -87,12 +85,13 @@ class C
 
   // for simulation
   static ArrayList<GeoPoint> fakeArea = new ArrayList<>();
-  static int c = 0;
+  static int                 c        = 0;
+
   static void createArea()
   {
     fakeArea.add(new GeoPoint(DEF_LONGITUDE, DEF_LATITUDE));
-    fakeArea.add(new GeoPoint(DEF_LONGITUDE + 0.3, DEF_LATITUDE + 0.1));
-    fakeArea.add(new GeoPoint(DEF_LONGITUDE + 0.3 + 0.1, DEF_LATITUDE + 0.1 - 0.5));
-    fakeArea.add(new GeoPoint(DEF_LONGITUDE + 0.3 + 0.1 - 0.4, DEF_LATITUDE + 0.1 - 0.5 + 0.1));
+    fakeArea.add(new GeoPoint(DEF_LONGITUDE + 0.0001, DEF_LATITUDE));
+    fakeArea.add(new GeoPoint(DEF_LONGITUDE + 0.0001, DEF_LATITUDE + 0.0001));
+    fakeArea.add(new GeoPoint(DEF_LONGITUDE, DEF_LATITUDE + 0.0001));
   }
 }

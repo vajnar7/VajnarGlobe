@@ -12,19 +12,14 @@ import si.vajnartech.vajnarglobe.math.R2Double;
 abstract class Area extends ArrayList<Line>
 {
   private String areaName;
-  R2Double min;
   ArrayList<GeoPoint> geoPoints = new ArrayList<>();
-  private ArrayList<R2Double> points = new ArrayList<>();
+  R2Double minPoint;
 
   Area(String name, ArrayList<GeoPoint> p)
   {
     areaName = name;
     geoPoints.addAll(p);
     _sortPoints(geoPoints);
-    for (GeoPoint point : geoPoints)
-      points.add(new R2Double(point.lon, point.lat));
-    min = min(points);
-    min = transform(min, false);
   }
 
   Area(String name)
@@ -32,11 +27,12 @@ abstract class Area extends ArrayList<Line>
     areaName = name;
   }
 
-  Area constructArea()
+  protected Area constructArea()
   {
-    for (int i = 0; i < points.size() - 1; i++)
-      add(new Line(points.get(i), points.get(i + 1)));
-    add(new Line(points.get(points.size() - 1), points.get(0)));
+    for (int i = 0; i < geoPoints.size() - 1; i++)
+      add(new Line(geoPoints.get(i), geoPoints.get(i + 1)));
+    add(new Line(geoPoints.get(geoPoints.size() - 1), geoPoints.get(0)));
+    minPoint = transform(min(geoPoints), false);
     return this;
   }
 
@@ -47,7 +43,7 @@ abstract class Area extends ArrayList<Line>
       @Override
       public int compare(GeoPoint o1, GeoPoint o2)
       {
-        return o1.timestamp - o2.timestamp;
+        return Long.compare(o1.timestamp, o2.timestamp);
       }
     });
   }
@@ -57,14 +53,13 @@ abstract class Area extends ArrayList<Line>
     return areaName;
   }
 
-  @SuppressWarnings("UnusedReturnValue")
-  abstract protected Area mark(GeoPoint a);
+  abstract protected void mark(GeoPoint a);
 
   abstract protected ArrayList<R2Double> process(R2Double p);
 
   abstract public void draw(Canvas canvas, Paint paint, int color);
 
-  protected boolean isInside(R2Double p)
+  boolean isInside(R2Double p)
   {
     boolean oddNodes = false;
     int     j        = size() - 1;
@@ -99,12 +94,10 @@ abstract class Area extends ArrayList<Line>
     return new R2Double(qx / k, qy / k);
   }
 
-  protected abstract void save();
-
   @SuppressWarnings("SameParameterValue")
   abstract R2Double transform(R2Double p, boolean norm);
 
-  private R2Double min(ArrayList<R2Double> points)
+  protected R2Double min(ArrayList<GeoPoint> points)
   {
     double x1 = points.get(0).get(0);
     double x2 = points.get(0).get(1);

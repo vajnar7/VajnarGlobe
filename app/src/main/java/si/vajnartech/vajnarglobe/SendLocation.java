@@ -6,9 +6,9 @@ public class SendLocation extends REST<LocationObj>
 {
   private Double latitude;
   private Double longitude;
-  private Integer timestamp;
+  private Long timestamp;
 
-  SendLocation(String areaName, int timestamp, double longitude, double latitude)
+  SendLocation(String areaName, long timestamp, double longitude, double latitude)
   {
     super(String.format(AREAS, areaName));
     this.timestamp = timestamp;
@@ -32,11 +32,11 @@ public class SendLocation extends REST<LocationObj>
 @SuppressWarnings("WeakerAccess")
 class LocationData
 {
-  Integer timestamp;
+  Long timestamp;
   String lon;
   String lat;
 
-  LocationData(Integer timestamp, String longitude, String latitude)
+  LocationData(Long timestamp, String longitude, String latitude)
   {
     this.timestamp = timestamp;
     this.lon = longitude;

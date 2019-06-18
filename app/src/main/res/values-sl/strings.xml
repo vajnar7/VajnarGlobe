@@ -11,12 +11,12 @@
   <string name="send">SEND</string>
   <string name="capture">capture</string>
   <string name="track">track</string>
-  <string name="construct">Construct</string>
+  <string name="construct">Sestavi</string>
   <string name="longitude">Longitude</string>
   <string name="server_conn_error">Unable to contact server</string>
-  <string name="mark">Mark</string>
+  <string name="mark">Označi</string>
   <string name="lat">LAT</string>
   <string name="lon">LON</string>
-  <string name="new_area_name">New area name</string>
-  <string name="clear">Clear</string>
+  <string name="new_area_name">Ime novega območje</string>
+  <string name="clear">Pobriši</string>
 </resources>
