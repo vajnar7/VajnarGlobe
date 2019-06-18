@@ -19,4 +19,6 @@
   <string name="lon">LON</string>
   <string name="new_area_name">New area name</string>
   <string name="clear">Clear</string>
+  <string name="new_area">New Area</string>
+  <string name="error_wrong_name">Not valid name</string>
 </resources>

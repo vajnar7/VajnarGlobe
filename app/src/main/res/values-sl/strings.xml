@@ -19,4 +19,6 @@
   <string name="lon">LON</string>
   <string name="new_area_name">Ime novega območje</string>
   <string name="clear">Pobriši</string>
+  <string name="new_area">Novo območje</string>
+  <string name="error_wrong_name">Neveljavno ime</string>
 </resources>

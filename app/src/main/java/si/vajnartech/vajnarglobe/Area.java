@@ -11,7 +11,7 @@ import si.vajnartech.vajnarglobe.math.R2Double;
 
 abstract class Area extends ArrayList<Line>
 {
-  private String areaName;
+  protected String areaName;
   ArrayList<GeoPoint> geoPoints = new ArrayList<>();
   R2Double minPoint;
 

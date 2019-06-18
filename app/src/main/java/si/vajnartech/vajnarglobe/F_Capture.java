@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -70,8 +71,7 @@ public class F_Capture extends MyFragment implements View.OnClickListener
       }
     };
 
-    // Tu se vzame ime iz settings
-    act.currentArea = new CurrentArea("Test2");
+    act.currentArea = new CurrentArea(act.tx(R.string.new_area));
   }
 
   @SuppressLint("SetTextI18n")
@@ -86,6 +86,16 @@ public class F_Capture extends MyFragment implements View.OnClickListener
   {
     switch (v.getId()) {
     case R.id.send:
+      EditText et = layout.findViewById(R.id.ed_area_name);
+      if (et.getText().toString().equals(act.tx(R.string.new_area)) ||
+          C.areas.get(et.getText().toString()) != null) {
+        et.setError(act.tx(R.string.error_wrong_name));
+        return;
+      }
+      if (et.isEnabled()) {
+        act.currentArea.setName(et.getText().toString());
+        et.setEnabled(false);
+      }
       act.currentArea.mark(new GeoPoint(gps.location.getLongitude(), gps.location.getLatitude()));
       Toast.makeText(act, "Sent", Toast.LENGTH_SHORT).show();
       break;

@@ -17,7 +17,12 @@ class CurrentArea extends Place
     return a;
   }
 
-  public boolean isConstructed()
+  public void setName(String name)
+  {
+    areaName = name;
+  }
+
+  boolean isConstructed()
   {
     return isConstructed;
   }
