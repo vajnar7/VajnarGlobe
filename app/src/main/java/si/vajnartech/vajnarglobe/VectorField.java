@@ -24,7 +24,7 @@ public abstract class VectorField extends ArrayList<R2Double>
     R2Double a = new R2Double(0.0, 0.0);
     for (R2Double v: this)
       a.is(a.plus(v));
-    a.is(a.div((double) C.Parameters.n));
+    a.is(a.divS((double) C.Parameters.n));
     return (a);
   }
 

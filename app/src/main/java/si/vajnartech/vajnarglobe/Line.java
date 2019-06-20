@@ -123,7 +123,7 @@ class Line
     }
   }
 
-  void draw(Canvas c, Paint p, int color, Area a)
+  void draw(Canvas c, Paint p, int color, Transformator a)
   {
     p.setColor(color);
     R2Double o1  = a.transform(new R2Double(p1.get(0), p1.get(1)), true);

@@ -22,7 +22,7 @@ import static si.vajnartech.vajnarglobe.C.xOffset;
 import static si.vajnartech.vajnarglobe.C.yOffset;
 
 @SuppressLint("ViewConstructor")
-public class WhereAmI extends GPS
+public class WhereAmI extends GPS implements Transformator
 {
   MainActivity act;
 
@@ -46,7 +46,7 @@ public class WhereAmI extends GPS
       df.is(get(getKeyAt(j + 1)).minus(get(getKeyAt(j))));
       long dx = getKeys().get(j + 1) - getKeys().get(j);
       R2Double res = new R2Double();
-      res.is(df.div((double) dx));
+      res.is(df.divS((double) dx));
       return res;
     }
 
@@ -105,11 +105,12 @@ public class WhereAmI extends GPS
     A.start();
   }
 
-  @Override
-  protected void notifyMe(R2Double point)
-  {
-    H.add(point);
-  }
+//  @Override
+  // TODO what is this
+//  protected void notifyMe(R2Double point)
+//  {
+//    H.add(point);
+//  }
 
   private void _hector(R2Double point)
   {
@@ -145,6 +146,17 @@ public class WhereAmI extends GPS
   }
 
   @Override
+  public int normalize(double a1, int spoo)
+  {
+    return 0;
+  }
+
+  @Override public R2Double transform(R2Double p, boolean norm)
+  {
+    return null;
+  }
+
+  @Override
   protected void onDraw(Canvas canvas)
   {
     super.onDraw(canvas);
@@ -154,15 +166,20 @@ public class WhereAmI extends GPS
       _drawArea(a, canvas);
   }
 
+  @Override protected R2Double setOrigin()
+  {
+    return null;
+  }
+
   private void _drawArea(Area area, Canvas canvas)
   {
-    fs.draw(canvas, paint, Color.GRAY, area);
-    area.draw(canvas, paint, Color.BLACK);
+    fs.draw(canvas, paint, Color.GRAY, this);
+    area.draw(canvas, paint, Color.BLACK, this);
     if (aproxPosition != null)
-      new Point(aproxPosition).draw(canvas, paint, Color.GREEN, 4, area);
+      aproxPosition.draw(canvas, paint, Color.GREEN, 4, this);
     if (currentPosition == null)
       return;
-    new Point(currentPosition).draw(canvas, paint, Color.RED, 4, area);
+    currentPosition.draw(canvas, paint, Color.RED, 4, this);
     if (!area.isInside(currentPosition))
       return;
     ArrayList<R2Double> closestPoints = area.process(currentPosition);
@@ -170,12 +187,12 @@ public class WhereAmI extends GPS
     for (R2Double p : closestPoints) {
       i++;
       if (area.get(i).onMe(p))
-        new Point(p).draw(canvas, paint, Color.GREEN, 4, area);
+        p.draw(canvas, paint, Color.GREEN, 4, this);
 
       R2Double startPoint = fs.f("first");
       if (startPoint == null)
         continue;
-      new Point(startPoint).draw(canvas, paint, Color.BLUE, 4, area);
+      startPoint.draw(canvas, paint, Color.BLUE, 4, this);
       _predict(startPoint, canvas, area, i);
     }
   }
@@ -184,19 +201,19 @@ public class WhereAmI extends GPS
   private void _predict(R2Double startPoint, Canvas canvas, Area area, int i)
   {
     Line approx = new Line(startPoint, currentPosition);
-    new Point(fs.f(currentTime + 2000)).draw(canvas, paint, Color.MAGENTA, 4, area);
-    approx.draw(canvas, paint, Color.RED, area);
+    fs.f(currentTime + 2000).draw(canvas, paint, Color.MAGENTA, 4, this);
+    approx.draw(canvas, paint, Color.RED, this);
 
     R2Double predictor = approx.intersection(area.get(i));
     if (predictor != null && area.get(i).onMe(predictor))
-      new Point(predictor).draw(canvas, paint, Color.MAGENTA, 4, area);
+      predictor.draw(canvas, paint, Color.MAGENTA, 4, this);
     else
       return;
 
     R2Double qqq = new R2Double();
     qqq.is(predictor.minus(currentPosition));
     R2Double sum = fv.sum(null, null);
-    sum.is(sum.div((double) fs.size()));
+    sum.is(sum.divS((double) fs.size()));
     R2Double time = new R2Double(Math.abs(qqq.x1() / sum.x1()), Math.abs(qqq.x2() / sum.x2()));
     Log.i(TAG, String.format("do meje %d bos prisel cez ", i) + (time.x1() + time.x2()) / 1000 + " sekund");
   }
@@ -255,11 +272,11 @@ class MyFunction extends Function<Long, R2Double>
   }
 
   @SuppressWarnings("SameParameterValue")
-  void draw(Canvas c, Paint paint, int color, Area area)
+  void draw(Canvas c, Paint paint, int color, Transformator tr)
   {
     if (size() > 1)
       for (int i = 0; i < size() - 1; i++)
-        new Line(get(getKeyAt(i)), get(getKeyAt(i + 1))).draw(c, paint, color, area);
+        new Line(get(getKeyAt(i)), get(getKeyAt(i + 1))).draw(c, paint, color, tr);
   }
 }
 

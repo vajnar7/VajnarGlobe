@@ -11,11 +11,15 @@ abstract class Rn<V, O> extends ArrayList<V>
 
   abstract O mul(O val);
 
+  abstract O mulS(V val);
+
   abstract O plus(O val);
 
   abstract void is(O val);
 
-  abstract O div(V val);
+  abstract O divS(V val);
 
   abstract O minus(O val);
+
+  abstract O div(O val);
 }

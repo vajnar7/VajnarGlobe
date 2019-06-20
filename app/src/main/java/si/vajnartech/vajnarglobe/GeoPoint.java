@@ -2,6 +2,7 @@ package si.vajnartech.vajnarglobe;
 
 import si.vajnartech.vajnarglobe.math.R2Double;
 
+@SuppressWarnings("NullableProblems")
 public class GeoPoint extends R2Double
 {
   long    timestamp;
@@ -16,7 +17,6 @@ public class GeoPoint extends R2Double
     this.lat = lat;
   }
 
-  @SuppressWarnings("NullableProblems")
   @Override
   public String toString()
   {

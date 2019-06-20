@@ -24,27 +24,6 @@ public class Place extends Area
   }
 
   @Override
-  protected R2Double transform(R2Double p, boolean norm)
-  {
-    double x1 = p.get(0);
-    double x2 = p.get(1);
-    x1 *= Math.pow(10, scale);
-    x1 -= xOffset;
-    x2 *= Math.pow(10, scale);
-    x2 -= yOffset;
-    if (norm) {
-      x1 -= minPoint.get(0);
-      x2 -= minPoint.get(1);
-    }
-    // TODO 2
-//    x1 += C.O.get(0);
-//    x2 += C.O.get(1);
-//    x2 = C.size.y - x2;
-
-    return new R2Double(x1, x2);
-  }
-
-  @Override
   protected void mark(GeoPoint a)
   {
     geoPoints.add(a);
@@ -78,9 +57,9 @@ public class Place extends Area
   }
 
   @Override
-  public void draw(Canvas canvas, Paint paint, int color)
+  public void draw(Canvas canvas, Paint paint, int color, Transformator tr)
   {
     for (Line l : this)
-      l.draw(canvas, paint, color, this);
+      l.draw(canvas, paint, color, tr);
   }
 }

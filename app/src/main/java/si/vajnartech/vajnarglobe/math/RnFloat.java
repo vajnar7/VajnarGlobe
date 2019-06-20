@@ -21,6 +21,11 @@ class RnFloat extends Rn<Float, RnFloat>
     return res;
   }
 
+  @Override RnFloat mulS(Float val)
+  {
+    return null;
+  }
+
   @Override
   public RnFloat plus(RnFloat val)
   {
@@ -39,7 +44,7 @@ class RnFloat extends Rn<Float, RnFloat>
   }
 
   @Override
-  public RnFloat div(Float val)
+  public RnFloat divS(Float val)
   {
     RnFloat res = new RnFloat(n);
     for (int i = 0; i < n; i++)
@@ -54,5 +59,10 @@ class RnFloat extends Rn<Float, RnFloat>
     for (int i = 0; i < n; i++)
       res.add(val.get(i) - get(i));
     return res;
+  }
+
+  @Override RnFloat div(RnFloat val)
+  {
+    return null;
   }
 }

@@ -19,7 +19,8 @@ public class F_Track extends MyFragment implements View.OnClickListener, View.On
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
   {
-    init();
+    gps = new WhereAmI(act);
+    C.startTestGPSService(act);
     View res = inflater.inflate(R.layout.track_base, container, false);
 
     LinearLayout l1 = res.findViewById(R.id.kkk0_top);
@@ -28,13 +29,6 @@ public class F_Track extends MyFragment implements View.OnClickListener, View.On
     res.findViewById(R.id.b_settings).setOnClickListener(this);
     res.findViewById(R.id.b_exit).setOnClickListener(this);
     return res;
-  }
-
-  @Override
-  protected void init()
-  {
-    gps = new WhereAmI(act);
-    C.startTestGPSService(act);
   }
 
   @Override

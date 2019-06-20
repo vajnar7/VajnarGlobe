@@ -1,5 +1,10 @@
 package si.vajnartech.vajnarglobe.math;
 
+import android.graphics.Canvas;
+import android.graphics.Paint;
+
+import si.vajnartech.vajnarglobe.Transformator;
+
 public class R2Double extends RnDouble
 {
   public R2Double()
@@ -30,5 +35,14 @@ public class R2Double extends RnDouble
   public Double x2()
   {
     return get(1);
+  }
+
+  public void draw(Canvas canvas, Paint paint, int color, int r, Transformator tr)
+  {
+    R2Double p = tr.transform(this, false);
+    paint.setColor(color);
+    double x = p.x1();
+    double y = p.x2();
+    canvas.drawCircle((float)x, (float)y, r, paint);
   }
 }

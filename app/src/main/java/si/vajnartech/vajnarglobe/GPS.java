@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Canvas;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -15,7 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import si.vajnartech.vajnarglobe.math.R2Double;
+import si.vajnartech.vajnarglobe.math.RnDouble;
 
 import static si.vajnartech.vajnarglobe.C.DEF_LATITUDE;
 import static si.vajnartech.vajnarglobe.C.DEF_LONGITUDE;
@@ -28,6 +29,7 @@ public abstract class GPS extends View implements LocationListener
   public static final boolean GPS_SIMULATE = true;
   protected MainActivity ctx;
   protected Location location;
+  protected RnDouble origin = null;
 
   GPS(MainActivity ctx)
   {
@@ -76,7 +78,6 @@ public abstract class GPS extends View implements LocationListener
       loc.setLatitude(DEF_LATITUDE);
       loc.setLongitude(DEF_LONGITUDE);
       C.createArea();
-      onLocationChanged(loc);
     }
     else {
       locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDist, this);
@@ -89,7 +90,6 @@ public abstract class GPS extends View implements LocationListener
   {
     location.setLongitude(loc.getLongitude());
     location.setLatitude(loc.getLatitude());
-    notifyMe(new R2Double(location.getLongitude(), location.getLatitude()));
     notifyMe(location);
   }
 
@@ -105,7 +105,13 @@ public abstract class GPS extends View implements LocationListener
   public void onProviderDisabled(String s)
   {}
 
-  protected abstract void notifyMe(R2Double point);
+  @Override
+  protected void onDraw(Canvas canvas)
+  {
+    if (origin == null)
+      origin = setOrigin();
+  }
 
+  protected abstract RnDouble setOrigin();
   protected abstract void notifyMe(Location loc);
 }

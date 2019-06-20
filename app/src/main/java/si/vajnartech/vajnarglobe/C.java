@@ -81,11 +81,13 @@ class C
     static final int           minTime = 5000;    // ms
     static final float         minDist = 0f; // m
     static final int           ZZ      = 2;    // ~ points back from current, cant be les than 2
+    static double scaleX = 10000;
+    static double scaleY = 100000;
   }
 
   // for simulation
   static ArrayList<GeoPoint> fakeArea = new ArrayList<>();
-  static int                 c        = 0;
+  static int                 c        = -1;
 
   static void createArea()
   {

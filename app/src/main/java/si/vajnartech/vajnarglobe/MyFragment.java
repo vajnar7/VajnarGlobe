@@ -17,6 +17,4 @@ public abstract class MyFragment extends DialogFragment
     }
     return res;
   }
-
-  protected abstract void init();
 }

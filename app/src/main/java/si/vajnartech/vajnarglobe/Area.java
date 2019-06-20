@@ -9,9 +9,9 @@ import java.util.Comparator;
 
 import si.vajnartech.vajnarglobe.math.R2Double;
 
-abstract class Area extends ArrayList<Line>
+abstract public class Area extends ArrayList<Line>
 {
-  protected String areaName;
+  String areaName;
   ArrayList<GeoPoint> geoPoints = new ArrayList<>();
   R2Double minPoint;
 
@@ -32,7 +32,7 @@ abstract class Area extends ArrayList<Line>
     for (int i = 0; i < geoPoints.size() - 1; i++)
       add(new Line(geoPoints.get(i), geoPoints.get(i + 1)));
     add(new Line(geoPoints.get(geoPoints.size() - 1), geoPoints.get(0)));
-    minPoint = transform(min(geoPoints), false);
+    minPoint = min(geoPoints);
     return this;
   }
 
@@ -57,7 +57,7 @@ abstract class Area extends ArrayList<Line>
 
   abstract protected ArrayList<R2Double> process(R2Double p);
 
-  abstract public void draw(Canvas canvas, Paint paint, int color);
+  abstract public void draw(Canvas canvas, Paint paint, int color, Transformator tr);
 
   boolean isInside(R2Double p)
   {
@@ -93,9 +93,6 @@ abstract class Area extends ArrayList<Line>
     double qy = a * (-b * p.get(0) + a * p.get(1)) - b * c;
     return new R2Double(qx / k, qy / k);
   }
-
-  @SuppressWarnings("SameParameterValue")
-  abstract R2Double transform(R2Double p, boolean norm);
 
   protected R2Double min(ArrayList<GeoPoint> points)
   {
