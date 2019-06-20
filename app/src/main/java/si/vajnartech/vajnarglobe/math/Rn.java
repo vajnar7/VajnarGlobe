@@ -2,6 +2,7 @@ package si.vajnartech.vajnarglobe.math;
 
 import java.util.ArrayList;
 
+@SuppressWarnings("unused")
 abstract class Rn<V, O> extends ArrayList<V>
 {
   Rn(ArrayList<V> set)

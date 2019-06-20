@@ -7,10 +7,6 @@ import java.util.ArrayList;
 
 import si.vajnartech.vajnarglobe.math.R2Double;
 
-import static si.vajnartech.vajnarglobe.C.scale;
-import static si.vajnartech.vajnarglobe.C.xOffset;
-import static si.vajnartech.vajnarglobe.C.yOffset;
-
 public class Place extends Area
 {
   Place(String name, ArrayList<GeoPoint> points)

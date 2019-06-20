@@ -146,12 +146,7 @@ public class WhereAmI extends GPS implements Transformator
   }
 
   @Override
-  public int normalize(double a1, int spoo)
-  {
-    return 0;
-  }
-
-  @Override public R2Double transform(R2Double p, boolean norm)
+  public R2Double transform(R2Double p)
   {
     return null;
   }

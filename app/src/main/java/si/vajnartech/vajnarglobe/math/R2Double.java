@@ -39,7 +39,7 @@ public class R2Double extends RnDouble
 
   public void draw(Canvas canvas, Paint paint, int color, int r, Transformator tr)
   {
-    R2Double p = tr.transform(this, false);
+    R2Double p = tr.transform(this);
     paint.setColor(color);
     double x = p.x1();
     double y = p.x2();

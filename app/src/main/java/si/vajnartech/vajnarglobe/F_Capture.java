@@ -42,6 +42,8 @@ public class F_Capture extends MyFragment implements View.OnClickListener, Track
   public void onClick(View v)
   {
     switch (v.getId()) {
+    case R.id.b_clear:
+      break;
     case R.id.send:
       EditText et = layout.findViewById(R.id.ed_area_name);
       if (et.getText().toString().equals(act.tx(R.string.new_area)) ||

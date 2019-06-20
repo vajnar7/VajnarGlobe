@@ -5,12 +5,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.location.Location;
-import android.util.Log;
 
 import si.vajnartech.vajnarglobe.math.R2Double;
 import si.vajnartech.vajnarglobe.math.RnDouble;
-
-import static si.vajnartech.vajnarglobe.C.scale;
 
 interface TrackViewInterface
 {
@@ -24,7 +21,7 @@ public class TrackView extends GPS implements Transformator
   public GeoPoint currentPoint;
   private MainActivity act;
   private TrackViewInterface intf;
-  private R2Double firstPoint, prevPoint;
+  private R2Double firstPoint;
 
   TrackView(MainActivity ctx, TrackViewInterface intf)
   {
@@ -45,16 +42,7 @@ public class TrackView extends GPS implements Transformator
   }
 
   @Override
-  public int normalize(double a1, int spoo)
-  {
-    int q = scale - spoo;
-    int res = (int) (a1 * Math.pow(10, q));
-    res *= Math.pow(10, spoo);
-    return res;
-  }
-
-  @Override
-  public R2Double transform(R2Double p, boolean norm)
+  public R2Double transform(R2Double p)
   {
     RnDouble a = origin.mul(p);
     RnDouble c = a.div(firstPoint);
@@ -73,6 +61,9 @@ public class TrackView extends GPS implements Transformator
       currentPoint.draw(canvas, paint, Color.RED, 4, this);
     if (act.currentArea.isConstructed())
       act.currentArea.draw(canvas, paint, Color.BLACK, this);
+    else
+      for (GeoPoint p : act.currentArea.geoPoints)
+        p.draw(canvas, paint, Color.GREEN, 4, this);
   }
 
   @Override

@@ -126,8 +126,8 @@ class Line
   void draw(Canvas c, Paint p, int color, Transformator a)
   {
     p.setColor(color);
-    R2Double o1  = a.transform(new R2Double(p1.get(0), p1.get(1)), true);
-    R2Double o2  = a.transform(new R2Double(p2.get(0), p2.get(1)), true);
+    R2Double o1  = a.transform(p1);
+    R2Double o2  = a.transform(p2);
 
     double   x11 = o1.get(0);
     double   x12 = o1.get(1);
