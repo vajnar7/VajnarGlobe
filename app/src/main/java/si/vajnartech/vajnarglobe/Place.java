@@ -24,6 +24,12 @@ public class Place extends Area
   {
     geoPoints.add(a);
     new SendLocation(getName(), a.timestamp, a.lon, a.lat);
+    currentPoints.clear();
+  }
+
+  public void add(GeoPoint a)
+  {
+    currentPoints.add(a);
   }
 
   @Override

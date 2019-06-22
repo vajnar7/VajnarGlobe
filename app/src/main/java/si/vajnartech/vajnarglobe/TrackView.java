@@ -61,9 +61,12 @@ public class TrackView extends GPS implements Transformator
       currentPoint.draw(canvas, paint, Color.RED, 4, this);
     if (act.currentArea.isConstructed())
       act.currentArea.draw(canvas, paint, Color.BLACK, this);
-    else
+    else {
       for (GeoPoint p : act.currentArea.geoPoints)
+        p.draw(canvas, paint, Color.BLUE, 6, this);
+      for (GeoPoint p : act.currentArea.currentPoints)
         p.draw(canvas, paint, Color.GREEN, 4, this);
+    }
   }
 
   @Override

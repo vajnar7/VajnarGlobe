@@ -25,7 +25,9 @@ public class F_Capture extends MyFragment implements View.OnClickListener, Track
     LinearLayout res = new LinearLayout(act);
     res.setOrientation(LinearLayout.VERTICAL);
     layout = inflater.inflate(R.layout.capture_layout, container, false);
-    layout.findViewById(R.id.send).setOnClickListener(this);
+    layout.findViewById(R.id.mark).setOnClickListener(this);
+    layout.findViewById(R.id.b_clear).setOnClickListener(this);
+    layout.findViewById(R.id.b_push).setOnClickListener(this);
     layout.findViewById(R.id.construct).setOnClickListener(this);
     layout.findViewById(R.id.test1).setOnClickListener(this);
     layout.findViewById(R.id.test1).setVisibility(GPS.GPS_SIMULATE ? View.VISIBLE : View.GONE);
@@ -43,8 +45,17 @@ public class F_Capture extends MyFragment implements View.OnClickListener, Track
   {
     switch (v.getId()) {
     case R.id.b_clear:
+      new DeleteArea(act.currentArea.areaName);
+      act.currentArea.currentPoints.clear();
+      act.currentArea.geoPoints.clear();
+      myView.invalidate();
+      layout.findViewById(R.id.ed_area_name).setEnabled(true);
       break;
-    case R.id.send:
+    case R.id.mark:
+      act.currentArea.add(myView.currentPoint);
+      myView.invalidate();
+      break;
+    case R.id.b_push:
       EditText et = layout.findViewById(R.id.ed_area_name);
       if (et.getText().toString().equals(act.tx(R.string.new_area)) ||
           C.areas.get(et.getText().toString()) != null) {

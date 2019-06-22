@@ -26,7 +26,7 @@ import static si.vajnartech.vajnarglobe.C.TAG;
 
 public abstract class GPS extends View implements LocationListener
 {
-  public static final boolean GPS_SIMULATE = false;
+  public static final boolean GPS_SIMULATE = true;
   protected MainActivity ctx;
   protected Location location;
   protected RnDouble origin = null;

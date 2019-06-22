@@ -13,6 +13,7 @@ abstract public class Area extends ArrayList<Line>
 {
   String areaName;
   ArrayList<GeoPoint> geoPoints = new ArrayList<>();
+  ArrayList<GeoPoint> currentPoints = new ArrayList<>();
   R2Double minPoint;
 
   Area(String name, ArrayList<GeoPoint> p)

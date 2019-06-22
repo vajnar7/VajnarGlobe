@@ -78,11 +78,11 @@ class C
     static final int           n       = 1;    // get ~ points to determine current position
     // 35 is this value if min Time and minDist are zero.
     static final AtomicInteger lim     = new AtomicInteger(1);
-    static final int           minTime = 5000;    // ms
+    static final int           minTime = 500;    // ms
     static final float         minDist = 0f; // m
     static final int           ZZ      = 2;    // ~ points back from current, cant be les than 2
-    static double scaleX = 10000;
-    static double scaleY = 100000;
+    static double scaleX = 3000;
+    static double scaleY = 30000;
   }
 
   // for simulation

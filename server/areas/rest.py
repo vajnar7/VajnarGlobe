@@ -23,6 +23,23 @@ class ObtainAreas(APIView):
         return self.go()
 
 
+class DeleteArea(APIView):
+    permission_classes = (AllowAny,)
+
+    @staticmethod
+    def _get_area(name):
+        try:
+            return Area.objects.get(name=name)
+        except:
+            return None
+
+    def post(self, request, f=None, area_name=None):
+        area = self._get_area(area_name)
+        if area:
+            GeoPoint.objects.filter(area=area).delete()
+            Area.objects.filter(name=area_name).delete()
+
+
 class UpdateGeoPoint(APIView):
     permission_classes = (AllowAny,)
 
