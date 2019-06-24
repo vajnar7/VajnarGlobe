@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Map;
 
 import si.vajnartech.vajnarglobe.math.R2Double;
 
@@ -35,6 +36,11 @@ abstract public class Area extends ArrayList<Line>
     add(new Line(geoPoints.get(geoPoints.size() - 1), geoPoints.get(0)));
     minPoint = min(geoPoints);
     return this;
+  }
+
+  public R2Double getFirstPoint()
+  {
+    return geoPoints.get(0);
   }
 
   private void _sortPoints(ArrayList<GeoPoint> p)

@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     setContentView(R.layout.activity_main);
     Display display = getWindowManager().getDefaultDisplay();
     display.getSize(C.size);
-    C.O = new R2Double(0.0, 0.0);
     Toolbar toolbar = findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
@@ -105,9 +104,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     case R.id.id_capture:
       setFragment("capture", F_Capture.class, new Bundle());
       break;
-//    case R.id.id_track:
-//      setFragment("track", F_Track.class, new Bundle());
-//      break;
+    case R.id.id_track:
+      setFragment("track", F_Track.class, new Bundle());
+      break;
     }
 
     DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -154,67 +153,3 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
   }
 }
 
-/*
-package si.vajnar_tech.vajnarglobe;
-
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Display;
-import android.view.LayoutInflater;
-
-public class MainActivity extends AppCompatActivity
-{
-  CurrentArea currentArea     = null;
-  MyFragment  currentFragment = null;
-
-  @SuppressLint("InflateParams")
-  @Override
-  protected void onCreate(Bundle savedInstanceState)
-  {
-    super.onCreate(savedInstanceState);
-
-    LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    assert inflater != null;
-    setContentView(inflater.inflate(R.layout.content_main, null));
-    Display display = getWindowManager().getDefaultDisplay();
-    display.getSize(C.size);
-    C.O = new Vector(0, 0);
-    setFragment("main", FragmentMain.class, new Bundle());
-  }
-
-  public void setFragment(String tag, Class<? extends MyFragment> cls, Bundle params)
-  {
-    currentFragment = createFragment(tag, cls, params);
-    if (currentFragment == null) return;
-
-    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-    transaction.replace(R.id.container, currentFragment);
-    transaction.addToBackStack(null);
-    transaction.commit();
-  }
-
-  public MyFragment createFragment(String tag, Class<? extends MyFragment> cls, Bundle params)
-  {
-    MyFragment frag;
-    frag = (MyFragment) getSupportFragmentManager().findFragmentByTag(tag);
-    if (frag == null && cls != null)
-      try {
-        frag = MyFragment.instantiate(cls, this);
-        frag.setArguments(params);
-      } catch (Exception e) {
-        e.printStackTrace();
-        return null;
-      }
-    return frag;
-  }
-
-  public MyFragment getCurrentFragment()
-  {
-    return currentFragment;
-  }
-}
-
- */

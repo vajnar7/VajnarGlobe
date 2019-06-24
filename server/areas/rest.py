@@ -38,6 +38,7 @@ class DeleteArea(APIView):
         if area:
             GeoPoint.objects.filter(area=area).delete()
             Area.objects.filter(name=area_name).delete()
+        return Response(dict(err_code="OK"))
 
 
 class UpdateGeoPoint(APIView):

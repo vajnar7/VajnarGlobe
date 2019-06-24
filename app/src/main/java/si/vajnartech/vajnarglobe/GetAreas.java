@@ -45,7 +45,9 @@ public class GetAreas extends REST<AreaObj>
         ArrayList<GeoPoint> points = new ArrayList<>();
         for (AreaObj.Point p : a.points)
           points.add(new GeoPoint(p.lon, p.lat));
-        C.areas.put(a.name, new Place(a.name, points));
+        Area newArea = new Place(a.name, points);
+        C.areas.put(a.name, newArea);
+        newArea.constructArea();
       }
       if (r != null )
         r.run();

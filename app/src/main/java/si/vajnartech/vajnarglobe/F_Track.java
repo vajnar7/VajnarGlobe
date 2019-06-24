@@ -1,7 +1,9 @@
 package si.vajnartech.vajnarglobe;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -10,60 +12,41 @@ import android.widget.LinearLayout;
 
 import si.vajnartech.vajnarglobe.math.R2Double;
 
-public class F_Track extends MyFragment implements View.OnClickListener, View.OnTouchListener
+public class F_Track extends MyFragment implements View.OnClickListener, TrackViewInterface
 {
-  WhereAmI gps;
-  float dX, dY;
-  D dK = new D();
+  TrackView myView;
+  View layout;
 
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
   {
-    gps = new WhereAmI(act);
-    C.startTestGPSService(act);
-    View res = inflater.inflate(R.layout.track_base, container, false);
-
-    LinearLayout l1 = res.findViewById(R.id.kkk0_top);
-    gps.setOnTouchListener(this);
-    l1.addView(gps);
-    res.findViewById(R.id.b_settings).setOnClickListener(this);
-    res.findViewById(R.id.b_exit).setOnClickListener(this);
+    LinearLayout res = new LinearLayout(act);
+    res.setOrientation(LinearLayout.VERTICAL);
+    layout = inflater.inflate(R.layout.track_layout, container, false);
+    layout.findViewById(R.id.bt_test12).setOnClickListener(this);
+    layout.findViewById(R.id.bt_test12).setVisibility(GPS.GPS_SIMULATE ? View.VISIBLE : View.GONE);
+    myView = new TrackView(act, this);
+    myView.setOnTouchListener(myView);
+    res.addView(layout);
+    res.addView(myView);
     return res;
   }
 
   @Override
   public void onClick(View v)
   {
-    switch (v.getId()) {
-    case R.id.b_exit:
-      act.finish();
+    if (v.getId() == R.id.bt_test12) {
+      Location loc = new Location("");
+      C.c ++;
+      loc.setLongitude(C.fakeArea.get(C.c).lon);
+      loc.setLatitude(C.fakeArea.get(C.c).lat);
+      myView.onLocationChanged(loc);
     }
   }
 
   @Override
-  public boolean onTouch(View view, MotionEvent event)
+  public void printLocation(Location loc)
   {
-    double rx, ry;
-
-    switch (event.getAction()) {
-    case MotionEvent.ACTION_DOWN:
-      dX = view.getX() - event.getRawX();
-      dY = view.getY() - event.getRawY();
-      rx = event.getRawX();
-      ry = event.getRawY();
-      dK.up(new R2Double(rx, ry));
-      view.performClick();
-      break;
-    case MotionEvent.ACTION_UP:
-      rx = event.getRawX();
-      ry = event.getRawY();
-      dK.up(new R2Double(rx, ry));
-      dK.is(dK.mul(new R2Double(1.0, -1.0))); // negate y part of point
-      C.O.is(C.O.plus(dK));
-      view.invalidate();
-    default:
-      return false;
-    }
-    return true;
+    Log.i("IZAA", "EEEE moja budalo: " + loc);
   }
 }

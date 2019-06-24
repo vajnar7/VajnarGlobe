@@ -13,9 +13,11 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import si.vajnartech.vajnarglobe.math.R2Double;
 import si.vajnartech.vajnarglobe.math.RnDouble;
 
 import static si.vajnartech.vajnarglobe.C.DEF_LATITUDE;
@@ -24,12 +26,14 @@ import static si.vajnartech.vajnarglobe.C.Parameters.minDist;
 import static si.vajnartech.vajnarglobe.C.Parameters.minTime;
 import static si.vajnartech.vajnarglobe.C.TAG;
 
-public abstract class GPS extends View implements LocationListener
+public abstract class GPS extends View implements LocationListener, View.OnTouchListener
 {
   public static final boolean GPS_SIMULATE = true;
   protected MainActivity ctx;
   protected Location location;
   protected RnDouble origin = null;
+  float dX, dY;
+  D dK = new D();
 
   GPS(MainActivity ctx)
   {
@@ -110,6 +114,32 @@ public abstract class GPS extends View implements LocationListener
   {
     if (origin == null)
       origin = setOrigin();
+  }
+
+  @Override
+  public boolean onTouch(View view, MotionEvent event)
+  {
+    if (origin == null) return true;
+    double rx, ry;
+    switch (event.getAction()) {
+    case MotionEvent.ACTION_DOWN:
+      dX = view.getX() - event.getRawX();
+      dY = view.getY() - event.getRawY();
+      rx = event.getRawX();
+      ry = event.getRawY();
+      dK.up(new R2Double(rx, ry));
+      break;
+    case MotionEvent.ACTION_UP:
+      rx = event.getRawX();
+      ry = event.getRawY();
+      dK.up(new R2Double(rx, ry));
+      origin.is(origin.plus(dK));
+      view.invalidate();
+      break;
+    default:
+      return false;
+    }
+    return true;
   }
 
   protected abstract RnDouble setOrigin();

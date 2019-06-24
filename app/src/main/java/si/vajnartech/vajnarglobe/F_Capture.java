@@ -14,9 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 @SuppressLint("SetTextI18n")
-public class F_Capture extends MyFragment implements View.OnClickListener, TrackViewInterface
+public class F_Capture extends MyFragment implements View.OnClickListener, CaptureViewInterface
 {
-  TrackView myView;
+  CaptureView myView;
   View layout;
 
   @Override
@@ -32,7 +32,7 @@ public class F_Capture extends MyFragment implements View.OnClickListener, Track
     layout.findViewById(R.id.test1).setOnClickListener(this);
     layout.findViewById(R.id.test1).setVisibility(GPS.GPS_SIMULATE ? View.VISIBLE : View.GONE);
 
-    myView = new TrackView(act, this);
+    myView = new CaptureView(act, this);
     act.currentArea = new CurrentArea(act.tx(R.string.new_area));
 
     res.addView(layout);
