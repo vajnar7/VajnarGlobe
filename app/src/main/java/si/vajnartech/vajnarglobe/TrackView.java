@@ -97,7 +97,7 @@ public class TrackView extends GPS implements Transformator
     RnDouble dX = c.minus(origin);
     dX = dX.mul(scale);
     RnDouble b = origin.plus(dX);
-    return new R2Double(b.get(0), b.get(1));------> zakaj se skala spreminaj
+    return new R2Double(b.get(0), b.get(1));//------> zakaj se skala spreminaj
   }
 
   @Override
