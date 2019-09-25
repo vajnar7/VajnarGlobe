@@ -1,6 +1,6 @@
 package si.vajnartech.vajnarglobe;
 
-import static si.vajnartech.vajnarglobe.Login.DELETE_AREA;
+import static si.vajnartech.vajnarglobe.C.DELETE_AREA;
 
 public class DeleteArea extends REST<String>
 {

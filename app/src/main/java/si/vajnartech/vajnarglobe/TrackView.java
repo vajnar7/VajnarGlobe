@@ -121,7 +121,7 @@ public class TrackView extends GPS implements Transformator
     if (currentPoint == null)
       return;
     currentPoint.draw(canvas, paint, Color.RED, 4, this);
-    if (!area.isInside(currentPoint))
+    if (area.isInside(currentPoint))
       return;
     ArrayList<R2Double> closestPoints = area.process(currentPoint);
     int                 i             = -1;
@@ -158,7 +158,8 @@ public class TrackView extends GPS implements Transformator
     Log.i(TAG, String.format("do meje %d bos prisel cez ", i) + (time.x1() + time.x2()) / 1000 + " sekund");
   }
 
-  class MyDerivative extends Derivative<Long, R2Double>
+  @SuppressWarnings("ConstantConditions")
+  static class MyDerivative extends Derivative<Long, R2Double>
   {
     MyDerivative(Function<Long, R2Double> fun)
     {
@@ -219,8 +220,7 @@ public class TrackView extends GPS implements Transformator
 
     R2Double f(String s)
     {
-      switch (s) {
-      case "first":
+      if ("first".equals(s)) {
         if (size() > ZZ)
           return get(getKeys().get((size() - ZZ)));
         return null;
@@ -229,6 +229,7 @@ public class TrackView extends GPS implements Transformator
     }
 
     @Override
+    @SuppressWarnings("ConstantConditions")
     public R2Double put(Long key, R2Double value)
     {
       R2Double res = super.put(key, value);

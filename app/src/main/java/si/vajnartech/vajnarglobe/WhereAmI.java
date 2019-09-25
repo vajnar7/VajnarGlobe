@@ -18,8 +18,6 @@ import si.vajnartech.vajnarglobe.math.R2Function;
 import static si.vajnartech.vajnarglobe.C.Parameters.ZZ;
 import static si.vajnartech.vajnarglobe.C.TAG;
 import static si.vajnartech.vajnarglobe.C.scale;
-import static si.vajnartech.vajnarglobe.C.xOffset;
-import static si.vajnartech.vajnarglobe.C.yOffset;
 
 @SuppressLint("ViewConstructor")
 public class WhereAmI extends GPS implements Transformator
@@ -175,7 +173,7 @@ public class WhereAmI extends GPS implements Transformator
     if (currentPosition == null)
       return;
     currentPosition.draw(canvas, paint, Color.RED, 4, this);
-    if (!area.isInside(currentPosition))
+    if (area.isInside(currentPosition))
       return;
     ArrayList<R2Double> closestPoints = area.process(currentPosition);
     int i = -1;
@@ -240,8 +238,7 @@ class MyFunction extends Function<Long, R2Double>
   @SuppressWarnings("SameParameterValue")
   R2Double f(String s)
   {
-    switch (s) {
-    case "first":
+    if ("first".equals(s)) {
       if (size() > ZZ)
         return get(getKeys().get((size() - ZZ)));
       return null;

@@ -6,7 +6,6 @@ import android.graphics.Paint;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Map;
 
 import si.vajnartech.vajnarglobe.math.R2Double;
 
@@ -15,7 +14,7 @@ abstract public class Area extends ArrayList<Line>
   String areaName;
   ArrayList<GeoPoint> geoPoints = new ArrayList<>();
   ArrayList<GeoPoint> currentPoints = new ArrayList<>();
-  R2Double minPoint;
+  private R2Double minPoint;
 
   Area(String name, ArrayList<GeoPoint> p)
   {
@@ -31,6 +30,7 @@ abstract public class Area extends ArrayList<Line>
 
   protected Area constructArea()
   {
+    if (geoPoints.size() == 0) return null;
     for (int i = 0; i < geoPoints.size() - 1; i++)
       add(new Line(geoPoints.get(i), geoPoints.get(i + 1)));
     add(new Line(geoPoints.get(geoPoints.size() - 1), geoPoints.get(0)));
@@ -38,7 +38,7 @@ abstract public class Area extends ArrayList<Line>
     return this;
   }
 
-  public R2Double getFirstPoint()
+  R2Double getFirstPoint()
   {
     return geoPoints.get(0);
   }
@@ -82,7 +82,7 @@ abstract public class Area extends ArrayList<Line>
           oddNodes = !oddNodes;
       j = i;
     }
-    return oddNodes;
+    return !oddNodes;
   }
 
   R2Double getClosestPoint(Line l, R2Double p)
@@ -101,7 +101,7 @@ abstract public class Area extends ArrayList<Line>
     return new R2Double(qx / k, qy / k);
   }
 
-  protected R2Double min(ArrayList<GeoPoint> points)
+  private R2Double min(ArrayList<GeoPoint> points)
   {
     double x1 = points.get(0).get(0);
     double x2 = points.get(0).get(1);

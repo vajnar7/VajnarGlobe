@@ -1,6 +1,8 @@
 package si.vajnartech.vajnarglobe;
 
-import static si.vajnartech.vajnarglobe.Login.AREAS;
+import android.support.annotation.NonNull;
+
+import static si.vajnartech.vajnarglobe.C.AREAS;
 
 public class SendLocation extends REST<LocationObj>
 {
@@ -49,7 +51,7 @@ class LocationObj
 {
   String return_code;
 
-  @Override
+  @NonNull @Override
   public String toString()
   {
     return "LocationObj{" +

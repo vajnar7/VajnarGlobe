@@ -5,7 +5,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import static si.vajnartech.vajnarglobe.Login.GET_ALL;
+import static si.vajnartech.vajnarglobe.C.GET_ALL;
 
 public class GetAreas extends REST<AreaObj>
 {

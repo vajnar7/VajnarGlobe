@@ -13,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import static si.vajnartech.vajnarglobe.C.GPS_SIMULATE;
+
 @SuppressLint("SetTextI18n")
 public class F_Capture extends MyFragment implements View.OnClickListener, CaptureViewInterface
 {
@@ -30,7 +32,7 @@ public class F_Capture extends MyFragment implements View.OnClickListener, Captu
     layout.findViewById(R.id.b_push).setOnClickListener(this);
     layout.findViewById(R.id.construct).setOnClickListener(this);
     layout.findViewById(R.id.test1).setOnClickListener(this);
-    layout.findViewById(R.id.test1).setVisibility(GPS.GPS_SIMULATE ? View.VISIBLE : View.GONE);
+    layout.findViewById(R.id.test1).setVisibility(GPS_SIMULATE ? View.VISIBLE : View.GONE);
 
     myView = new CaptureView(act, this);
     act.currentArea = new CurrentArea(act.tx(R.string.new_area));

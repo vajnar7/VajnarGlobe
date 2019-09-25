@@ -5,12 +5,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-
-import si.vajnartech.vajnarglobe.math.R2Double;
+import static si.vajnartech.vajnarglobe.C.GPS_SIMULATE;
 
 public class F_Track extends MyFragment implements View.OnClickListener, TrackViewInterface
 {
@@ -24,7 +22,7 @@ public class F_Track extends MyFragment implements View.OnClickListener, TrackVi
     res.setOrientation(LinearLayout.VERTICAL);
     layout = inflater.inflate(R.layout.track_layout, container, false);
     layout.findViewById(R.id.bt_test12).setOnClickListener(this);
-    layout.findViewById(R.id.bt_test12).setVisibility(GPS.GPS_SIMULATE ? View.VISIBLE : View.GONE);
+    layout.findViewById(R.id.bt_test12).setVisibility(GPS_SIMULATE ? View.VISIBLE : View.GONE);
     myView = new TrackView(act, this);
     myView.setOnTouchListener(myView);
     res.addView(layout);
