@@ -22,13 +22,13 @@ import si.vajnartech.vajnarglobe.math.RnDouble;
 
 import static si.vajnartech.vajnarglobe.C.DEF_LATITUDE;
 import static si.vajnartech.vajnarglobe.C.DEF_LONGITUDE;
+import static si.vajnartech.vajnarglobe.C.GPS_SIMULATE;
 import static si.vajnartech.vajnarglobe.C.Parameters.minDist;
 import static si.vajnartech.vajnarglobe.C.Parameters.minTime;
-import static si.vajnartech.vajnarglobe.C.TAG;
+import static si.vajnartech.vajnarglobe.C.*;
 
 public abstract class GPS extends View implements LocationListener, View.OnTouchListener
 {
-  public static final boolean GPS_SIMULATE = true;
   protected MainActivity ctx;
   protected Location location;
   protected RnDouble origin = null;

@@ -1,16 +1,24 @@
 package si.vajnartech.vajnarglobe;
 
-import android.location.Location;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import si.vajnartech.vajnarglobe.math.R2Double;
 
 class C
 {
+  // ce dostopamo od zunaj
+  static final String SERVER_ADDRESS = "http://89.142.196.96:8008/";
+  // static final String SERVER_ADDRESS = "http://192.168.1.2:8008/";
+
+  static final String AREAS          = SERVER_ADDRESS + "rest/geopoint/%s";
+  static final String DELETE_AREA    = SERVER_ADDRESS + "rest/delete/%s";
+  static final String GET_ALL        = SERVER_ADDRESS + "rest/area/";
+  static final String WATCHDOG_USR   = "vajnar";
+  static final String WATCHDOG_PWD   = "AldebaraN7";
+
+  static final boolean GPS_SIMULATE = false;
+
   static final String TAG           = "IZAA";
   static final double DEF_LONGITUDE = 13.826209;  //x
   static final double DEF_LATITUDE  = 46.487243;  //y
@@ -79,8 +87,8 @@ class C
     static final int           minTime = 500;    // ms
     static final float         minDist = 0f; // m
     static final int           ZZ      = 2;    // ~ points back from current, cant be les than 2
-    static double scaleX = 3000;
-    static double scaleY = 30000;
+    static       double        scaleX  = 3000;
+    static       double        scaleY  = 30000;
   }
 
   // for simulation

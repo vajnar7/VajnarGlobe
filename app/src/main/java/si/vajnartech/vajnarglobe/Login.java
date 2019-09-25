@@ -16,18 +16,12 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+
+import static si.vajnartech.vajnarglobe.C.*;
 
 public class Login extends AsyncTask<String, Void, Integer>
 {
-  // ce dostopamo od zunaj
-  private static final String SERVER_ADDRESS = "http://89.142.196.96:8008/";
-  //  private static final String SERVER_ADDRESS = "http://192.168.1.3:8008/";
-  static final         String AREAS          = SERVER_ADDRESS + "rest/geopoint/%s";
-  static final         String DELETE_AREA    = SERVER_ADDRESS + "rest/delete/%s";
-  static final         String GET_ALL        = SERVER_ADDRESS + "rest/area/";
-  private static final String WATCHDOG_USR   = "vajnar";
-  private static final String WATCHDOG_PWD   = "AldebaraN7";
-
   private        REST<Integer> task;
   private static String        token = "";
   private        String        user, pwd;
@@ -74,7 +68,7 @@ public class Login extends AsyncTask<String, Void, Integer>
           .build().getEncodedQuery();
 
       OutputStream   os  = conn.getOutputStream();
-      BufferedWriter out = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+      BufferedWriter out = new BufferedWriter(new OutputStreamWriter(os, StandardCharsets.UTF_8));
       out.write(post);
       out.flush();
       out.close();
@@ -104,7 +98,7 @@ public class Login extends AsyncTask<String, Void, Integer>
   {
     try {
       if (responseCode != null && responseCode == HttpURLConnection.HTTP_OK && task != null) {
-        task.executeOnExecutor(THREAD_POOL_EXECUTOR, (String[]) new String[]{getToken()});
+        task.executeOnExecutor(THREAD_POOL_EXECUTOR, getToken());
       } else if (task != null) {
         task.fail(responseCode);
       }
