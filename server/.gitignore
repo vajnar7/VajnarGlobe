@@ -2,3 +2,6 @@ bacek.json
 vrt.json
 ./idea
 areas/migrations/
+areas/__pycache__/*
+GeoPlazmaServer/__pycache__/*
+areas/management/__pycache__/*
