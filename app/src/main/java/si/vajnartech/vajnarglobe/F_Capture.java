@@ -39,6 +39,7 @@ public class F_Capture extends MyFragment implements View.OnClickListener, Captu
 
     res.addView(layout);
     res.addView(myView);
+    if (GPS_SIMULATE) fakeLocation();
     return res;
   }
 
@@ -79,11 +80,8 @@ public class F_Capture extends MyFragment implements View.OnClickListener, Captu
       }
       break;
     case R.id.test1:
-      Location loc = new Location("");
-      C.c ++;
-      loc.setLongitude(C.fakeArea.get(C.c).lon);
-      loc.setLatitude(C.fakeArea.get(C.c).lat);
-      myView.onLocationChanged(loc);
+      fakeLocation();
+      break;
     }
   }
 
@@ -92,5 +90,15 @@ public class F_Capture extends MyFragment implements View.OnClickListener, Captu
   {
     ((TextView) layout.findViewById(R.id.longitude)).setText(Double.toString(loc.getLongitude()));
     ((TextView) layout.findViewById(R.id.latitude)).setText(Double.toString(loc.getLatitude()));
+  }
+
+  // for testing
+  private void fakeLocation()
+  {
+    Location loc = new Location("");
+    C.c ++;
+    loc.setLongitude(C.fakeArea.get(C.c).lon);
+    loc.setLatitude(C.fakeArea.get(C.c).lat);
+    myView.onLocationChanged(loc);
   }
 }

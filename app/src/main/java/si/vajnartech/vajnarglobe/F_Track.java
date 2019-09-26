@@ -3,7 +3,6 @@ package si.vajnartech.vajnarglobe;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +44,5 @@ public class F_Track extends MyFragment implements View.OnClickListener, TrackVi
   @Override
   public void printLocation(Location loc)
   {
-    Log.i("IZAA", "EEEE moja budalo: " + loc);
   }
 }

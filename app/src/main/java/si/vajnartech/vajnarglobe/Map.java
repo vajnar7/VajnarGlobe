@@ -50,8 +50,6 @@ public class Map extends GPS implements Transformator
   public R2Double transform(R2Double p)
   {
     RnDouble a     = origin.mul(p);
-    Log.i("IZAA", "a=" + a);
-    Log.i("IZAA", "first=" + firstPoint);
     RnDouble c     = a.div(firstPoint);
     R2Double scale = new R2Double(-C.Parameters.scaleX, C.Parameters.scaleY);
     RnDouble dX    = c.minus(origin);

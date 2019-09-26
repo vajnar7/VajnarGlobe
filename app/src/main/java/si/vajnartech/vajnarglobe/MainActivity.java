@@ -17,8 +17,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import si.vajnartech.vajnarglobe.math.R2Double;
-
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
   CurrentArea currentArea     = null;
@@ -56,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     new GetAreas(this, new Runnable() {
       @Override public void run()
       {
-        Log.i("IZAA", "Areas imported: " + C.areas.size());
+        Log.i(C.TAG, "Areas imported: " + C.areas.size());
       }
     });
   }

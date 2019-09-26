@@ -42,6 +42,7 @@ public class GetAreas extends REST<AreaObj>
     if (j != null) {
       C.areas.clear();
       for (AreaObj.Area a : j.response) {
+        if (a.points.size() < 3) continue;
         ArrayList<GeoPoint> points = new ArrayList<>();
         for (AreaObj.Point p : a.points)
           points.add(new GeoPoint(p.lon, p.lat));
@@ -85,7 +86,7 @@ class AreaObj
     }
   }
 
-  class Point
+  static class Point
   {
     public long   timestamp;
     public double lon;
