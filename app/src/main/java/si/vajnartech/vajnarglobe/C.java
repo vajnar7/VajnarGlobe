@@ -7,8 +7,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 class C
 {
   // ce dostopamo od zunaj
-  // static final String SERVER_ADDRESS = "http://89.142.196.96:8008/";
-  static final String SERVER_ADDRESS = "http://192.168.1.2:8008/";
+//  static final String SERVER_ADDRESS = "http://89.142.196.96:8007/";
+   static final String SERVER_ADDRESS = "http://192.168.1.2:8007/";
 
   static final String AREAS          = SERVER_ADDRESS + "rest/geopoint/%s";
   static final String DELETE_AREA    = SERVER_ADDRESS + "rest/delete/%s";
@@ -16,7 +16,7 @@ class C
   static final String WATCHDOG_USR   = "vajnar";
   static final String WATCHDOG_PWD   = "AldebaraN7";
 
-  static final boolean GPS_SIMULATE = true;
+  static final boolean GPS_SIMULATE = false;
 
   static final String TAG           = "IZAA";
   static final double DEF_LONGITUDE = 13.826209;  //x

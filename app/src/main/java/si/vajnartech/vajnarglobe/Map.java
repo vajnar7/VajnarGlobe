@@ -42,8 +42,10 @@ public class Map extends GPS implements Transformator
   protected void onDraw(Canvas canvas)
   {
     super.onDraw(canvas);
-    for (Area a : C.areas.values())
+    for (Area a : C.areas.values()) {
+      if (firstPoint == null) firstPoint = a.getFirstPoint();
       a.draw(canvas, paint, Color.BLACK, this);
+    }
   }
 
   @Override
