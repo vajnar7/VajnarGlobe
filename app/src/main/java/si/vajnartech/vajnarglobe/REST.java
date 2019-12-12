@@ -20,6 +20,7 @@ import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 
+@SuppressWarnings({"unchecked", "ConstantConditions"})
 public abstract class REST<T> extends AsyncTask<String, Void, T>
 {
   private static final String TAG = "IZAA-REST";
@@ -35,7 +36,7 @@ public abstract class REST<T> extends AsyncTask<String, Void, T>
 
   private Gson gson;
 
-  @SuppressWarnings("unchecked") REST(String url)
+  REST(String url)
   {
     super();
     resultClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
@@ -150,5 +151,5 @@ public abstract class REST<T> extends AsyncTask<String, Void, T>
   public abstract T backgroundFunc();
 
   // called by login if login itself fails
-  public void fail(Integer responseCode) {}
+  void fail(Integer responseCode) {}
 }

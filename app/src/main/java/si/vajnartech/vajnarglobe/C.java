@@ -16,7 +16,7 @@ class C
   static final String WATCHDOG_USR   = "vajnar";
   static final String WATCHDOG_PWD   = "AldebaraN7";
 
-  static final boolean GPS_SIMULATE = false;
+  static final boolean GPS_SIMULATE = true;
 
   static final String TAG           = "IZAA";
   static final double DEF_LONGITUDE = 13.826209;  //x
