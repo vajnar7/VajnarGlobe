@@ -53,10 +53,10 @@ public class Map extends GPS implements Transformator
   {
     RnDouble a     = origin.mul(p);
     RnDouble c     = a.div(firstPoint);
-    R2Double scale = new R2Double(-C.Parameters.scaleX, C.Parameters.scaleY);
+    R2Double scale = new R2Double(-C.Parameters.getScaleX(), C.Parameters.getScaleY());
     RnDouble dX    = c.minus(origin);
     dX = dX.mul(scale);
     RnDouble b = origin.plus(dX);
-    return new R2Double(b.get(0), b.get(1));//------> zakaj se skala spreminaj
+    return new R2Double(b.get(0), b.get(1));
   }
 }

@@ -86,8 +86,18 @@ class C
     static final int           minTime = 500;    // ms
     static final float         minDist = 0f; // m
     static final int           ZZ      = 2;    // ~ points back from current, cant be les than 2
-    static       double        scaleX  = 3000;
-    static       double        scaleY  = 30000;
+
+    private static final float R = 2.5f; // x, y os razmerje
+    private static double scale = 50000;
+    static double getScaleX()
+    {
+      return scale;
+    }
+
+    static double getScaleY()
+    {
+      return scale * R;
+    }
   }
 
   // for simulation
