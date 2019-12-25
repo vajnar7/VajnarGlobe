@@ -17,6 +17,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+// --crkne ko je aplikacija nafrisno dana v sistem GPS not granted
+// ++prevedi stringe
+// --navigation menu izbira item-a ne dela ko kliknem na recimo Zajemi ne gre v ta fragment
+// ++ce kliknem pobrisi na zaslonu se vedno ostaja area, zbrise  pa prav iz baze
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
   CurrentArea currentArea     = null;
@@ -55,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
       @Override public void run()
       {
         Log.i(C.TAG, "Areas imported: " + C.areas.size());
-        setFragment("main", F_main.class, new Bundle());
+        setFragment("capture", F_Capture.class, new Bundle()); // zaenkrat testiramo capture
       }
     });
   }

@@ -99,9 +99,9 @@ public class Login extends AsyncTask<String, Void, Integer>
     try {
       if (responseCode != null && responseCode == HttpURLConnection.HTTP_OK && task != null) {
         task.executeOnExecutor(THREAD_POOL_EXECUTOR, getToken());
-      } else if (task != null) {
-        task.fail(responseCode);
-      }
+      } else if (task != null && responseCode != null)
+        if (task.onFail != null)
+          task.onFail.execute(responseCode);
     } catch (Exception e) {
       e.printStackTrace();
     }

@@ -21,7 +21,7 @@ public class F_Track extends MyFragment implements View.OnClickListener, TrackVi
     res.setOrientation(LinearLayout.VERTICAL);
     layout = inflater.inflate(R.layout.track_layout, container, false);
     layout.findViewById(R.id.bt_test12).setOnClickListener(this);
-    layout.findViewById(R.id.bt_test12).setVisibility(GPS_SIMULATE ? View.VISIBLE : View.GONE);
+    layout.findViewById(R.id.bt_test12).setVisibility(GPS_SIMULATE ? View.VISIBLE : View.GONE); // vajnar. poglej tule
     myView = new TrackView(act, this);
     myView.setOnTouchListener(myView);
     res.addView(layout);

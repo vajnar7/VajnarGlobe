@@ -8,7 +8,7 @@ class C
 {
   // ce dostopamo od zunaj
 //  static final String SERVER_ADDRESS = "http://89.142.196.96:8007/";
-   static final String SERVER_ADDRESS = "http://192.168.1.2:8007/";
+   static final String SERVER_ADDRESS = "http://192.168.1.10:8007/";
 
   static final String AREAS          = SERVER_ADDRESS + "rest/geopoint/%s";
   static final String DELETE_AREA    = SERVER_ADDRESS + "rest/delete/%s";

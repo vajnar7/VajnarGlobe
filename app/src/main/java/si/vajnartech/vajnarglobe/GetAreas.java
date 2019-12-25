@@ -71,6 +71,7 @@ class AreaObj
            '}';
   }
 
+  @SuppressWarnings("InnerClassMayBeStatic")
   class Area
   {
     public String name;

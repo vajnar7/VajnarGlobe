@@ -8,9 +8,9 @@
   <string name="action_settings">Settings</string>
 
   <string name="latitude">Latitude</string>
-  <string name="send">SEND</string>
-  <string name="capture">capture</string>
-  <string name="track">track</string>
+  <string name="send">Pošlji</string>
+  <string name="capture">Zajemi</string>
+  <string name="track">Sledi</string>
   <string name="construct">Sestavi</string>
   <string name="longitude">Longitude</string>
   <string name="server_conn_error">Unable to contact server</string>
