@@ -84,7 +84,6 @@ public abstract class GPS extends View implements LocationListener, View.OnTouch
       Location loc = new Location("");
       loc.setLatitude(DEF_LATITUDE);
       loc.setLongitude(DEF_LONGITUDE);
-      C.createArea();
     }
     else {
       locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDist, this);

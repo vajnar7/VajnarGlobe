@@ -108,7 +108,7 @@ class C
     }
   }
 
-  // for simulation
+  // ne tega spreminjat to so absolutne vrednosti
   static ArrayList<GeoPoint> fakeArea = new ArrayList<>();
   static int                 c        = -1;
 

@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
   {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+    C.createArea();
     Display display = getWindowManager().getDefaultDisplay();
     display.getSize(C.size);
     Toolbar toolbar = findViewById(R.id.toolbar);
