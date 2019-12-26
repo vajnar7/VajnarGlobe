@@ -2,6 +2,7 @@ package si.vajnartech.vajnarglobe;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.util.Log;
 
 import si.vajnartech.vajnarglobe.math.Function;
 import si.vajnartech.vajnarglobe.math.R2Double;
@@ -134,6 +135,8 @@ class Line
     double   x21 = o2.get(0);
     double   x22 = o2.get(1);
     c.drawLine((float) x11, (float) x12, (float) x21, (float) x22, p);
+    Log.i("IZAA", "dX=" + (x11 - x21));
+    Log.i("IZAA", "dy=" + (x12 - x22));
   }
 
   @SuppressWarnings("NullableProblems")

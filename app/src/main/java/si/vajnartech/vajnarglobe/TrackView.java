@@ -97,7 +97,7 @@ public class TrackView extends GPS implements Transformator
     RnDouble dX = c.minus(origin);
     dX = dX.mul(scale);
     RnDouble b = origin.plus(dX);
-    return new R2Double(b.get(0), b.get(1));//------> zakaj se skala spreminaj
+    return new R2Double(b.get(0), b.get(1));
   }
 
   @Override
@@ -106,9 +106,8 @@ public class TrackView extends GPS implements Transformator
     super.onDraw(canvas);
     if (currentPoint != null) {
       currentPoint.draw(canvas, paint, Color.RED, 5, this);
-      for (Area a : C.areas.values()) {
-        a.draw(canvas, paint, Color.BLACK, this);
-      }
+      for (Area a : C.areas.values())
+        _drawArea(a, canvas);
     }
   }
 

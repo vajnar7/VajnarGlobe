@@ -37,7 +37,7 @@ public class F_Capture extends MyFragment implements View.OnClickListener, Captu
     myView = new CaptureView(act, this);
     act.currentArea = new CurrentArea(act.tx(R.string.new_area));
 
-    res.addView(layout);
+//    res.addView(layout);
     res.addView(myView);
     if (GPS_SIMULATE) fakeLocation();
     return res;

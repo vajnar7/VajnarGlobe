@@ -62,7 +62,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
       @Override public void run()
       {
         Log.i(C.TAG, "Areas imported: " + C.areas.size());
-        setFragment("capture", F_Capture.class, new Bundle()); // zaenkrat testiramo capture
+//        setFragment("track", F_Track.class, new Bundle());
+        setFragment("capture", F_Capture.class, new Bundle());
       }
     });
   }

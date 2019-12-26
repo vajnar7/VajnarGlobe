@@ -35,12 +35,15 @@ public abstract class GPS extends View implements LocationListener, View.OnTouch
   float dX, dY;
   D dK = new D();
 
+  protected int h, w;
+
   GPS(MainActivity ctx)
   {
     super(ctx);
     this.ctx = ctx;
     location = new Location("");
     enableGPSService();
+    getDimensions(this);
   }
 
   private void enableGPSService()
@@ -140,6 +143,20 @@ public abstract class GPS extends View implements LocationListener, View.OnTouch
       return false;
     }
     return true;
+  }
+
+  protected void getDimensions(final View v)
+  {
+    v.post(new Runnable()
+    {
+      @Override public void run()
+      {
+        h = v.getHeight();
+        w = v.getWidth();
+        Log.i("IZAA", "h=" + h);
+        Log.i("IZAA", "w=" + w);
+      }
+    });
   }
 
   protected abstract RnDouble setOrigin();

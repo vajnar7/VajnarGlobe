@@ -87,7 +87,7 @@ class C
     static final float         minDist = 0f; // m
     static final int           ZZ      = 2;    // ~ points back from current, cant be les than 2
 
-    private static final float R = 2.5f; // x, y os razmerje
+    private static float R = 1f; // x, y os razmerje
     private static double scale = 50000;
     static double getScaleX()
     {
@@ -97,6 +97,14 @@ class C
     static double getScaleY()
     {
       return scale * R;
+    }
+    static float getR()
+    {
+      return R;
+    }
+    static void setR(float val)
+    {
+      R = val;
     }
   }
 
