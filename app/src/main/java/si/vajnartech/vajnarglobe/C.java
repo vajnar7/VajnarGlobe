@@ -87,28 +87,18 @@ class C
     static final float         minDist = 0f; // m
     static final int           ZZ      = 2;    // ~ points back from current, cant be les than 2
 
-    private static float R = 1f; // x, y os razmerje
-    private static double scale = 50000;
-    static double getScaleX()
+    private static double scale = 1000000;
+    static double getScale()
     {
       return scale;
     }
 
-    static double getScaleY()
+    static void setScaleY(double val)
     {
-      return scale * R;
-    }
-    static float getR()
-    {
-      return R;
-    }
-    static void setR(float val)
-    {
-      R = val;
+      scale = val;
     }
   }
 
-  // ne tega spreminjat to so absolutne vrednosti
   static ArrayList<GeoPoint> fakeArea = new ArrayList<>();
   static int                 c        = -1;
 

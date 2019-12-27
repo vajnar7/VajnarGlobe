@@ -27,7 +27,7 @@ import static si.vajnartech.vajnarglobe.C.Parameters.minDist;
 import static si.vajnartech.vajnarglobe.C.Parameters.minTime;
 import static si.vajnartech.vajnarglobe.C.*;
 
-public abstract class GPS extends View implements LocationListener, View.OnTouchListener, Transformator
+public abstract class GPS extends View implements LocationListener, View.OnTouchListener
 {
   protected MainActivity ctx;
   protected Location location;
@@ -35,10 +35,9 @@ public abstract class GPS extends View implements LocationListener, View.OnTouch
 
   protected Paint paint = new Paint();
 
-  float dX, dY;
   D dK = new D();
 
-  protected R2Double firstPoint = null;
+  protected R2Double firstPoint;
 
   GPS(MainActivity ctx)
   {
@@ -121,54 +120,15 @@ public abstract class GPS extends View implements LocationListener, View.OnTouch
       origin = setOrigin();
   }
 
-  @Override
-  public R2Double transform(R2Double p)
-  {
-    RnDouble a     = origin.mul(p);
-    RnDouble c     = a.div(firstPoint);
-    R2Double scale = new R2Double(-C.Parameters.getScaleX(), C.Parameters.getScaleY());
-    RnDouble dX    = c.minus(origin);
-    dX = dX.mul(scale);
-    RnDouble b = origin.plus(dX);
-    return new R2Double(b.get(0), b.get(1));
-  }
-
   protected void getDimensions(final View v)
   {
     v.post(new Runnable()
     {
       @Override public void run()
       {
-        defineRatio();
+        invalidate();
       }
     });
-  }
-
-  public void defineRatio()
-  {
-    double dx = 0.0;
-    double dy = 0.0;
-    origin = setOrigin();
-    firstPoint = C.fakeArea.get(0);
-    for (int i = 0; i < 2; i++) {
-      R2Double o1 = transform(C.fakeArea.get(i));
-      R2Double o2 = transform(C.fakeArea.get(i + 1));
-
-      double x11 = o1.get(0);
-      double x12 = o1.get(1);
-      double x21 = o2.get(0);
-      double x22 = o2.get(1);
-      if ((x11 - x21) != 0.0)
-        dx = x11 - x21;
-      if ((x12 - x22) != 0.0)
-        dy = x12 - x22;
-    }
-    firstPoint = null;
-    origin = null;
-    Log.i("IZAA", "dX=" + dx);
-    Log.i("IZAA", "dY=" + dy);
-    C.Parameters.setR((float) Math.abs(dx / dy));
-    notifyMe(null);
   }
 
   protected abstract RnDouble setOrigin();

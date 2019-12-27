@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.location.Location;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -12,7 +11,7 @@ import si.vajnartech.vajnarglobe.math.R2Double;
 import si.vajnartech.vajnarglobe.math.RnDouble;
 
 @SuppressLint("ViewConstructor")
-public class Map extends GPS
+public class Map extends GPS implements Transformator
 {
   Map(MainActivity ctx)
   {
@@ -53,8 +52,6 @@ public class Map extends GPS
     double rx, ry;
     switch (event.getAction()) {
     case MotionEvent.ACTION_DOWN:
-      dX = view.getX() - event.getRawX();
-      dY = view.getY() - event.getRawY();
       rx = event.getRawX();
       ry = event.getRawY();
       dK.up(new R2Double(rx, ry));
@@ -70,5 +67,15 @@ public class Map extends GPS
       return false;
     }
     return true;
+  }
+
+  @Override
+  public R2Double transform(R2Double p)
+  {
+    RnDouble d = p.minus(firstPoint);
+    R2Double scale = new R2Double(-C.Parameters.getScale(), C.Parameters.getScale());
+    RnDouble tmp = d.mul(scale);
+    RnDouble b = origin.plus(tmp);
+    return new R2Double(b.get(0), b.get(1));
   }
 }
