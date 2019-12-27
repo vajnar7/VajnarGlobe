@@ -39,6 +39,12 @@ public class CaptureView extends Map
   }
 
   @Override
+  public boolean performClick()
+  {
+    return super.performClick();
+  }
+
+  @Override
   protected void onDraw(Canvas canvas)
   {
     super.onDraw(canvas);

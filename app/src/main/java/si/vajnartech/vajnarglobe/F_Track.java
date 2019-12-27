@@ -34,10 +34,10 @@ public class F_Track extends MyFragment implements View.OnClickListener, TrackVi
   {
     if (v.getId() == R.id.bt_test12) {
       Location loc = new Location("");
-      C.c ++;
-      loc.setLongitude(C.fakeArea.get(C.c).lon);
-      loc.setLatitude(C.fakeArea.get(C.c).lat);
+      loc.setLongitude(C.fakeArea.get(0).lon);
+      loc.setLatitude(C.fakeArea.get(0).lat);
       myView.onLocationChanged(loc);
+      C.startTestGPSService(act);
     }
   }
 

@@ -1,7 +1,10 @@
 package si.vajnartech.vajnarglobe;
 
+import android.location.Location;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 class C
@@ -22,60 +25,55 @@ class C
   static final double DEF_LONGITUDE = 13.826209;  //x
   static final double DEF_LATITUDE  = 46.487243;  //y
 
-  // scale i power of 10
-  static int                    scale   = 6;
-  // offsets
-  static Integer                xOffset = null;
-  static Integer                yOffset = null;
   // DB of areas
   static HashMap<String, Area>  areas   = new HashMap<>();
   // screen dimensions
   static android.graphics.Point size    = new android.graphics.Point();
 
-//  static void startTestGPSService(final MainActivity act)
-//  {
-//    // test parameters
-//    final int min = 5;
-//    final int max = 13;
-//    WhereAmI  gps = null;
-//    if (act.getCurrentFragment() instanceof F_Track) {
-//      F_Track f = (F_Track) act.getCurrentFragment();
-//      if (f != null)
-//        gps = f.gps;
-//    } else
-//      return;
-//    final WhereAmI finalGps = gps;
-//    new Thread(new Runnable()
-//    {
-//      @Override public void run()
-//      {
-//        Random   r         = new Random();
-//        double   longitude = DEF_LONGITUDE;
-//        double   latitude  = DEF_LATITUDE;
-//        Location loc       = new Location("");
-//
-//        while (true) {
-//          int    t    = Parameters.minTime;
-//          int    rx   = r.nextInt(max - min) + min;
-//          int    ry   = r.nextInt(max - min) + min;
-//          double offX = (double) rx / 1000000.0;
-//          double offY = -(double) ry / 1000000.0;
-//          assert finalGps != null;
-//          loc.setLatitude(latitude);
-//          loc.setLongitude(longitude);
-//          finalGps.onLocationChanged(loc);
-//          try {
-//            Thread.sleep(t);
-//          } catch (InterruptedException e) {
-//            e.printStackTrace();
-//            break;
-//          }
-//          longitude += offX;
-//          latitude += offY;
-//        }
-//      }
-//    }).start();
-//  }
+  static void startTestGPSService(final MainActivity act)
+  {
+    // test parameters
+    final int min = 5;
+    final int max = 13;
+    TrackView tv = null;
+    if (act.getCurrentFragment() instanceof F_Track) {
+      F_Track f = (F_Track) act.getCurrentFragment();
+      if (f != null)
+        tv = f.myView;
+    } else
+      return;
+    final TrackView finalTv = tv;
+    new Thread(new Runnable()
+    {
+      @Override public void run()
+      {
+        Random   r         = new Random();
+        double   longitude = DEF_LONGITUDE;
+        double   latitude  = DEF_LATITUDE;
+        Location loc       = new Location("");
+
+        while (true) {
+          int    t    = Parameters.minTime;
+          int    rx   = r.nextInt(max - min) + min;
+          int    ry   = r.nextInt(max - min) + min;
+          double offX = (double) rx / 1000000.0;
+          double offY = (double) ry / 1000000.0;
+          assert finalTv != null;
+          loc.setLatitude(latitude);
+          loc.setLongitude(longitude);
+          finalTv.onLocationChanged(loc);
+          try {
+            Thread.sleep(t);
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+            break;
+          }
+          longitude += offX;
+          latitude += offY;
+        }
+      }
+    }).start();
+  }
 
   static class Parameters
   {
@@ -83,17 +81,17 @@ class C
     static final int           n       = 1;    // get ~ points to determine current position
     // 35 is this value if min Time and minDist are zero.
     static final AtomicInteger lim     = new AtomicInteger(1);
-    static final int           minTime = 500;    // ms
+    static final int           minTime = 1000;    // ms
     static final float         minDist = 0f; // m
     static final int           ZZ      = 2;    // ~ points back from current, cant be les than 2
 
-    private static double scale = 1000000;
+    private static double scale = 5000000;
     static double getScale()
     {
       return scale;
     }
 
-    static void setScaleY(double val)
+    static void setScale(double val)
     {
       scale = val;
     }

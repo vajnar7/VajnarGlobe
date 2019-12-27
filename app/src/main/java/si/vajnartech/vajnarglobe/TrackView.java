@@ -17,6 +17,7 @@ import si.vajnartech.vajnarglobe.math.R2Function;
 
 import static si.vajnartech.vajnarglobe.C.Parameters.ZZ;
 import static si.vajnartech.vajnarglobe.C.TAG;
+import static si.vajnartech.vajnarglobe.C.areas;
 
 interface TrackViewInterface
 {
@@ -78,21 +79,28 @@ public class TrackView extends si.vajnartech.vajnarglobe.Map
     invalidate();
   }
 
+  // TODO
+  private Area setCurrentArea(R2Double p)
+  {
+    return areas.get("Novo območje1");
+  }
+
+  @Override
+  public boolean performClick()
+  {
+    return super.performClick();
+  }
+
   @Override
   protected void onDraw(Canvas canvas)
   {
     super.onDraw(canvas);
-//    if (currentPoint != null) {
-//      currentPoint.draw(canvas, paint, Color.RED, 5, this);
-//      for (Area a : C.areas.values())
-//        _drawArea(a, canvas);
-//    }
+    _draw(setCurrentArea(currentPoint), canvas);
   }
 
-  private void _drawArea(Area area, Canvas canvas)
+  private void _draw(Area area, Canvas canvas)
   {
     fs.draw(canvas, paint, Color.GRAY, this);
-    area.draw(canvas, paint, Color.BLACK, this);
     if (aproxPosition != null)
       aproxPosition.draw(canvas, paint, Color.GREEN, 4, this);
     if (currentPoint == null)
