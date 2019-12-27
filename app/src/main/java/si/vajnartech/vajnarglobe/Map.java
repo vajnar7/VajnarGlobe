@@ -3,19 +3,17 @@ package si.vajnartech.vajnarglobe;
 import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.location.Location;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 
 import si.vajnartech.vajnarglobe.math.R2Double;
 import si.vajnartech.vajnarglobe.math.RnDouble;
 
 @SuppressLint("ViewConstructor")
-public class Map extends GPS implements Transformator
+public class Map extends GPS
 {
-  private Paint paint = new Paint();
-  private R2Double firstPoint;
-
   Map(MainActivity ctx)
   {
     super(ctx);
@@ -49,14 +47,28 @@ public class Map extends GPS implements Transformator
   }
 
   @Override
-  public R2Double transform(R2Double p)
+  public boolean onTouch(View view, MotionEvent event)
   {
-    RnDouble a     = origin.mul(p);
-    RnDouble c     = a.div(firstPoint);
-    R2Double scale = new R2Double(-C.Parameters.getScaleX(), C.Parameters.getScaleY());
-    RnDouble dX    = c.minus(origin);
-    dX = dX.mul(scale);
-    RnDouble b = origin.plus(dX);
-    return new R2Double(b.get(0), b.get(1));
+    if (origin == null) return true;
+    double rx, ry;
+    switch (event.getAction()) {
+    case MotionEvent.ACTION_DOWN:
+      dX = view.getX() - event.getRawX();
+      dY = view.getY() - event.getRawY();
+      rx = event.getRawX();
+      ry = event.getRawY();
+      dK.up(new R2Double(rx, ry));
+      break;
+    case MotionEvent.ACTION_UP:
+      rx = event.getRawX();
+      ry = event.getRawY();
+      dK.up(new R2Double(rx, ry));
+      origin.is(origin.plus(dK));
+      view.invalidate();
+      break;
+    default:
+      return false;
+    }
+    return true;
   }
 }

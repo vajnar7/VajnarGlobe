@@ -7,13 +7,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -27,15 +27,18 @@ import static si.vajnartech.vajnarglobe.C.Parameters.minDist;
 import static si.vajnartech.vajnarglobe.C.Parameters.minTime;
 import static si.vajnartech.vajnarglobe.C.*;
 
-public abstract class GPS extends View implements LocationListener, View.OnTouchListener
+public abstract class GPS extends View implements LocationListener, View.OnTouchListener, Transformator
 {
   protected MainActivity ctx;
   protected Location location;
   protected RnDouble origin = null;
+
+  protected Paint paint = new Paint();
+
   float dX, dY;
   D dK = new D();
 
-  protected int h, w;
+  protected R2Double firstPoint = null;
 
   GPS(MainActivity ctx)
   {
@@ -119,29 +122,15 @@ public abstract class GPS extends View implements LocationListener, View.OnTouch
   }
 
   @Override
-  public boolean onTouch(View view, MotionEvent event)
+  public R2Double transform(R2Double p)
   {
-    if (origin == null) return true;
-    double rx, ry;
-    switch (event.getAction()) {
-    case MotionEvent.ACTION_DOWN:
-      dX = view.getX() - event.getRawX();
-      dY = view.getY() - event.getRawY();
-      rx = event.getRawX();
-      ry = event.getRawY();
-      dK.up(new R2Double(rx, ry));
-      break;
-    case MotionEvent.ACTION_UP:
-      rx = event.getRawX();
-      ry = event.getRawY();
-      dK.up(new R2Double(rx, ry));
-      origin.is(origin.plus(dK));
-      view.invalidate();
-      break;
-    default:
-      return false;
-    }
-    return true;
+    RnDouble a     = origin.mul(p);
+    RnDouble c     = a.div(firstPoint);
+    R2Double scale = new R2Double(-C.Parameters.getScaleX(), C.Parameters.getScaleY());
+    RnDouble dX    = c.minus(origin);
+    dX = dX.mul(scale);
+    RnDouble b = origin.plus(dX);
+    return new R2Double(b.get(0), b.get(1));
   }
 
   protected void getDimensions(final View v)
@@ -150,12 +139,36 @@ public abstract class GPS extends View implements LocationListener, View.OnTouch
     {
       @Override public void run()
       {
-        h = v.getHeight();
-        w = v.getWidth();
-        Log.i("IZAA", "h=" + h);
-        Log.i("IZAA", "w=" + w);
+        defineRatio();
       }
     });
+  }
+
+  public void defineRatio()
+  {
+    double dx = 0.0;
+    double dy = 0.0;
+    origin = setOrigin();
+    firstPoint = C.fakeArea.get(0);
+    for (int i = 0; i < 2; i++) {
+      R2Double o1 = transform(C.fakeArea.get(i));
+      R2Double o2 = transform(C.fakeArea.get(i + 1));
+
+      double x11 = o1.get(0);
+      double x12 = o1.get(1);
+      double x21 = o2.get(0);
+      double x22 = o2.get(1);
+      if ((x11 - x21) != 0.0)
+        dx = x11 - x21;
+      if ((x12 - x22) != 0.0)
+        dy = x12 - x22;
+    }
+    firstPoint = null;
+    origin = null;
+    Log.i("IZAA", "dX=" + dx);
+    Log.i("IZAA", "dY=" + dy);
+    C.Parameters.setR((float) Math.abs(dx / dy));
+    notifyMe(null);
   }
 
   protected abstract RnDouble setOrigin();
