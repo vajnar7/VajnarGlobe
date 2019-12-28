@@ -31,11 +31,8 @@ abstract public class Area extends ArrayList<Line>
   protected Area constructArea()
   {
     if (geoPoints.size() == 0) return null;
-    for (int i = 0; i < geoPoints.size() - 1; i++) {
-      Log.i("IZAA", "p1=" + geoPoints.get(i));
-      Log.i("IZAA", "p2=" + geoPoints.get(i+1));
+    for (int i = 0; i < geoPoints.size() - 1; i++)
       add(new Line(geoPoints.get(i), geoPoints.get(i + 1)));
-    }
     add(new Line(geoPoints.get(geoPoints.size() - 1), geoPoints.get(0)));
     return this;
   }
@@ -84,7 +81,7 @@ abstract public class Area extends ArrayList<Line>
           oddNodes = !oddNodes;
       j = i;
     }
-    return !oddNodes;
+    return oddNodes;
   }
 
   R2Double getClosestPoint(Line l, R2Double p)

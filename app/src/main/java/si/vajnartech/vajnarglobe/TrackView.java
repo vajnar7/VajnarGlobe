@@ -34,6 +34,8 @@ public class TrackView extends si.vajnartech.vajnarglobe.Map
   private R2Double           firstPoint;
   long currentTime;
 
+  Area currentArea;
+
   MyFunction   fs = new MyFunction();
   MyDerivative fv = new MyDerivative(fs);
   Aproximator  A  = new MyAproximator(1);
@@ -76,13 +78,18 @@ public class TrackView extends si.vajnartech.vajnarglobe.Map
       }
       intf.printLocation(loc);
     }
+    currentArea = _setCurrentArea(currentPoint);
     invalidate();
   }
 
-  // TODO
-  private Area setCurrentArea(R2Double p)
+  private Area _setCurrentArea(R2Double p)
   {
-    return areas.get("Novo območje1");
+    if (p == null)
+      return null;
+    for (Area a: areas.values())
+      if (a.isInside(p))
+        return a;
+    return null;
   }
 
   @Override
@@ -95,7 +102,8 @@ public class TrackView extends si.vajnartech.vajnarglobe.Map
   protected void onDraw(Canvas canvas)
   {
     super.onDraw(canvas);
-    _draw(setCurrentArea(currentPoint), canvas);
+    if (currentArea != null)
+      _draw(currentArea, canvas);
   }
 
   private void _draw(Area area, Canvas canvas)
@@ -106,7 +114,7 @@ public class TrackView extends si.vajnartech.vajnarglobe.Map
     if (currentPoint == null)
       return;
     currentPoint.draw(canvas, paint, Color.RED, 4, this);
-    if (area.isInside(currentPoint))
+    if (!area.isInside(currentPoint))
       return;
     ArrayList<R2Double> closestPoints = area.process(currentPoint);
     int                 i             = -1;

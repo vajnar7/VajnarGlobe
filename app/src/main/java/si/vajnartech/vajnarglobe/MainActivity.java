@@ -22,7 +22,8 @@ import android.view.MenuItem;
 // --navigation menu izbira item-a ne dela ko kliknem na recimo Zajemi ne gre v ta fragment
 // ++ce kliknem pobrisi na zaslonu se vedno ostaja area, zbrise  pa prav iz baze
 // ++scale se mora drsno spreminjati
-// --implementiraj setCurrentArea !!!!!
+// ++select aree
+// ++zoptimiziraj setCurrentArea
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
