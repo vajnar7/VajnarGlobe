@@ -10,8 +10,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 class C
 {
   // ce dostopamo od zunaj
-//  static final String SERVER_ADDRESS = "http://89.142.196.96:8007/";
-   static final String SERVER_ADDRESS = "http://192.168.1.10:8007/";
+  static final String SERVER_ADDRESS = "http://89.142.196.96:8007/";
+//   static final String SERVER_ADDRESS = "http://192.168.1.10:8007/";
 
   static final String AREAS          = SERVER_ADDRESS + "rest/geopoint/%s";
   static final String DELETE_AREA    = SERVER_ADDRESS + "rest/delete/%s";
@@ -30,7 +30,7 @@ class C
   // screen dimensions
   static android.graphics.Point size    = new android.graphics.Point();
 
-  static void startTestGPSService(final MainActivity act)
+  static void startTestGPSService(final MainActivity act, final double lon, final double lat)
   {
     // test parameters
     final int min = 5;
@@ -48,16 +48,16 @@ class C
       @Override public void run()
       {
         Random   r         = new Random();
-        double   longitude = DEF_LONGITUDE;
-        double   latitude  = DEF_LATITUDE;
+        double   longitude = lon;
+        double   latitude  = lat;
         Location loc       = new Location("");
 
         while (true) {
           int    t    = Parameters.minTime;
           int    rx   = r.nextInt(max - min) + min;
           int    ry   = r.nextInt(max - min) + min;
-          double offX = (double) rx / 1000000.0;
-          double offY = (double) ry / 1000000.0;
+          double offX = (double) rx / 2000000.0;
+          double offY = (double) ry / 2000000.0;
           assert finalTv != null;
           loc.setLatitude(latitude);
           loc.setLongitude(longitude);
@@ -81,11 +81,11 @@ class C
     static final int           n       = 1;    // get ~ points to determine current position
     // 35 is this value if min Time and minDist are zero.
     static final AtomicInteger lim     = new AtomicInteger(1);
-    static final int           minTime = 1000;    // ms
+    static final int           minTime = 2000;    // ms
     static final float         minDist = 0f; // m
     static final int           ZZ      = 2;    // ~ points back from current, cant be les than 2
 
-    private static double scale = 5000000;
+    private static double scale = 2000000;
     static double getScale()
     {
       return scale;

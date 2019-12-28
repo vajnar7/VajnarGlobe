@@ -24,6 +24,10 @@ import android.view.MenuItem;
 // ++scale se mora drsno spreminjati
 // ++select aree
 // ++zoptimiziraj setCurrentArea
+// --probaj na razlicnih tablicah/phonih
+// ++ne sporoca mi ce je server down ali ni connectiona, retries
+// --terminal/monitor window poglej moonstalker
+// --output do meje bos prisel sortiraj da dobimo najblizjega
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {

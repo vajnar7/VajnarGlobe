@@ -15,6 +15,7 @@ import si.vajnartech.vajnarglobe.math.Function;
 import si.vajnartech.vajnarglobe.math.R2Double;
 import si.vajnartech.vajnarglobe.math.R2Function;
 
+import static si.vajnartech.vajnarglobe.C.GPS_SIMULATE;
 import static si.vajnartech.vajnarglobe.C.Parameters.ZZ;
 import static si.vajnartech.vajnarglobe.C.TAG;
 import static si.vajnartech.vajnarglobe.C.areas;
@@ -46,23 +47,29 @@ public class TrackView extends si.vajnartech.vajnarglobe.Map
     this.intf = intf;
     act = ctx;
     A.start();
-    new VectorField()
+  }
+
+  VectorField H = new VectorField()
+  {
+    @Override
+    void done(R2Double v)
     {
-      @Override
-      void done(R2Double point)
+      _hector(v);
+    }
+  };
+
+  private void _hector(R2Double point)
+  {
+    currentTime = System.currentTimeMillis();
+    fs.put(currentTime, point);
+    currentPoint = point;
+    ctx.runOnUiThread(new Runnable()
+    {
+      @Override public void run()
       {
-        currentTime = System.currentTimeMillis();
-        fs.put(currentTime, point);
-        currentPoint = point;
-        act.runOnUiThread(new Runnable()
-        {
-          @Override public void run()
-          {
-            invalidate();
-          }
-        });
+        invalidate();
       }
-    };
+    });
   }
 
   @Override
@@ -70,7 +77,7 @@ public class TrackView extends si.vajnartech.vajnarglobe.Map
   {
     if (loc != null) {
       if (intf == null) return;
-      currentPoint = new GeoPoint(loc.getLongitude(), loc.getLatitude());
+      H.add(new GeoPoint(loc.getLongitude(), loc.getLatitude()));
       if (firstPoint == null) {
         Map.Entry<String, Area> entry = C.areas.entrySet().iterator().next();
         Area                    value = entry.getValue();
@@ -79,7 +86,6 @@ public class TrackView extends si.vajnartech.vajnarglobe.Map
       intf.printLocation(loc);
     }
     currentArea = _setCurrentArea(currentPoint);
-    invalidate();
   }
 
   private Area _setCurrentArea(R2Double p)
@@ -192,6 +198,7 @@ public class TrackView extends si.vajnartech.vajnarglobe.Map
     }
   }
 
+  @SuppressWarnings("SameParameterValue")
   static class MyFunction extends Function<Long, R2Double>
   {
     private R2Function<LinearFun> fun = null;
