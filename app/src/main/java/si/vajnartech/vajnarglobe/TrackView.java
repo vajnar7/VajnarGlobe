@@ -36,6 +36,7 @@ public class TrackView extends si.vajnartech.vajnarglobe.Map
   long currentTime;
 
   Area currentArea;
+  boolean isCalibrated = false;
 
   MyFunction   fs = new MyFunction();
   MyDerivative fv = new MyDerivative(fs);
@@ -77,7 +78,14 @@ public class TrackView extends si.vajnartech.vajnarglobe.Map
   {
     if (loc != null) {
       if (intf == null) return;
-      H.add(new GeoPoint(loc.getLongitude(), loc.getLatitude()));
+      GeoPoint geos = new GeoPoint(loc.getLongitude(), loc.getLatitude());
+      if (isCalibrated)
+        H.add(geos);
+      else {
+        currentPoint = geos;
+        Log.i("IZAA", "geos=" + currentPoint);
+        invalidate();
+      }
       if (firstPoint == null) {
         Map.Entry<String, Area> entry = C.areas.entrySet().iterator().next();
         Area                    value = entry.getValue();
@@ -108,7 +116,9 @@ public class TrackView extends si.vajnartech.vajnarglobe.Map
   protected void onDraw(Canvas canvas)
   {
     super.onDraw(canvas);
-    if (currentArea != null)
+    if (currentPoint == null) return;
+    currentPoint.draw(canvas, paint, Color.RED, 4, this);
+    if (currentArea != null && isCalibrated)
       _draw(currentArea, canvas);
   }
 
@@ -119,7 +129,6 @@ public class TrackView extends si.vajnartech.vajnarglobe.Map
       aproxPosition.draw(canvas, paint, Color.GREEN, 4, this);
     if (currentPoint == null)
       return;
-    currentPoint.draw(canvas, paint, Color.RED, 4, this);
     if (!area.isInside(currentPoint))
       return;
     ArrayList<R2Double> closestPoints = area.process(currentPoint);

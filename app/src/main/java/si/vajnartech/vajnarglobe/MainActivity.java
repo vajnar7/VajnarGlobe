@@ -28,6 +28,8 @@ import android.view.MenuItem;
 // ++ne sporoca mi ce je server down ali ni connectiona, retries
 // --terminal/monitor window poglej moonstalker
 // --output do meje bos prisel sortiraj da dobimo najblizjega
+// --menu za track view napolni F_track...
+// ++robni pogoj za sledenje s potrditvijo nastavis first point
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
@@ -51,8 +53,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
       @Override
       public void onClick(View view)
       {
-        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-            .setAction("Action", null).show();
+        if (C.GPS_SIMULATE)
+          _testTrack();
+        else if (currentFragment instanceof F_Track)
+          _confirmFirstPoint();
       }
     });
 
@@ -68,10 +72,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
       @Override public void run()
       {
         Log.i(C.TAG, "Areas imported: " + C.areas.size());
-        setFragment("track", F_Track.class, new Bundle());
-//        setFragment("capture", F_Capture.class, new Bundle());
+        setFragment("main", F_main.class, new Bundle());
       }
     });
+  }
+
+  private void _testTrack()
+  {
+    C.startTestGPSService(this, 13.82526551327198, 46.48596391150142);
+  }
+
+  private void _confirmFirstPoint()
+  {
   }
 
   @Override
@@ -133,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     if (currentFragment == null) return;
 
     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-    transaction.replace(R.id.drawer_layout, currentFragment);
+    transaction.replace(R.id.content, currentFragment);
     transaction.addToBackStack(null);
     transaction.commit();
   }
