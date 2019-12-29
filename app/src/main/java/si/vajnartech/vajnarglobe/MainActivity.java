@@ -3,7 +3,6 @@ package si.vajnartech.vajnarglobe;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Display;
@@ -19,7 +18,6 @@ import android.view.MenuItem;
 
 // --crkne ko je aplikacija nafrisno dana v sistem GPS not granted
 // ++prevedi stringe
-// --navigation menu izbira item-a ne dela ko kliknem na recimo Zajemi ne gre v ta fragment
 // ++ce kliknem pobrisi na zaslonu se vedno ostaja area, zbrise  pa prav iz baze
 // ++scale se mora drsno spreminjati
 // ++select aree
@@ -29,12 +27,14 @@ import android.view.MenuItem;
 // --terminal/monitor window poglej moonstalker
 // --output do meje bos prisel sortiraj da dobimo najblizjega
 // --menu za track view napolni F_track...
-// ++robni pogoj za sledenje s potrditvijo nastavis first point
+// --moznost reseta v TrackView sledenje...resetira fs
+// --nastavljanje actiona v FAB
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
   CurrentArea currentArea     = null;
   MyFragment  currentFragment = null;
+  FloatingActionButton fab;
 
   @Override
   protected void onCreate(Bundle savedInstanceState)
@@ -47,16 +47,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Toolbar toolbar = findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
-    FloatingActionButton fab = findViewById(R.id.fab);
+    fab = findViewById(R.id.fab);
+    fab.setImageDrawable(null);
     fab.setOnClickListener(new View.OnClickListener()
     {
       @Override
       public void onClick(View view)
       {
-        if (C.GPS_SIMULATE)
-          _testTrack();
-        else if (currentFragment instanceof F_Track)
-          _confirmFirstPoint();
+        if (currentFragment instanceof F_Track)
+          if (C.GPS_SIMULATE)
+            _testTrack((F_Track) getCurrentFragment());
+          else
+            _confirmFirstPoint((F_Track) getCurrentFragment());
       }
     });
 
@@ -77,13 +79,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     });
   }
 
-  private void _testTrack()
+  private void _testTrack(F_Track frag)
   {
-    C.startTestGPSService(this, 13.82526551327198, 46.48596391150142);
+    frag.calibrated(true);
+    C.startTestGPSService(this);
   }
 
-  private void _confirmFirstPoint()
+  private void _confirmFirstPoint(F_Track frag)
   {
+    frag.calibrated(true);
   }
 
   @Override
@@ -130,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
       setFragment("capture", F_Capture.class, new Bundle());
       break;
     case R.id.id_track:
+      fab.setImageResource(R.drawable.ic_menu_slideshow);
       setFragment("track", F_Track.class, new Bundle());
       break;
     }

@@ -30,7 +30,7 @@ class C
   // screen dimensions
   static android.graphics.Point size    = new android.graphics.Point();
 
-  static void startTestGPSService(final MainActivity act, final double lon, final double lat)
+  static void startTestGPSService(final MainActivity act)
   {
     // test parameters
     final int min = 5;
@@ -48,8 +48,8 @@ class C
       @Override public void run()
       {
         Random   r         = new Random();
-        double   longitude = lon;
-        double   latitude  = lat;
+        double   longitude = 13.82526551327198;
+        double   latitude  = 46.48596391150142;
         Location loc       = new Location("");
 
         while (true) {

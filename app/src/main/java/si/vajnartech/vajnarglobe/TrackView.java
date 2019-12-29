@@ -15,7 +15,6 @@ import si.vajnartech.vajnarglobe.math.Function;
 import si.vajnartech.vajnarglobe.math.R2Double;
 import si.vajnartech.vajnarglobe.math.R2Function;
 
-import static si.vajnartech.vajnarglobe.C.GPS_SIMULATE;
 import static si.vajnartech.vajnarglobe.C.Parameters.ZZ;
 import static si.vajnartech.vajnarglobe.C.TAG;
 import static si.vajnartech.vajnarglobe.C.areas;
@@ -83,7 +82,6 @@ public class TrackView extends si.vajnartech.vajnarglobe.Map
         H.add(geos);
       else {
         currentPoint = geos;
-        Log.i("IZAA", "geos=" + currentPoint);
         invalidate();
       }
       if (firstPoint == null) {
@@ -117,7 +115,7 @@ public class TrackView extends si.vajnartech.vajnarglobe.Map
   {
     super.onDraw(canvas);
     if (currentPoint == null) return;
-    currentPoint.draw(canvas, paint, Color.RED, 4, this);
+    currentPoint.draw(canvas, paint, Color.RED, 5, this);
     if (currentArea != null && isCalibrated)
       _draw(currentArea, canvas);
   }

@@ -26,6 +26,11 @@ public class F_Track extends MyFragment implements View.OnClickListener, TrackVi
     return res;
   }
 
+  void calibrated(boolean val)
+  {
+    myView.isCalibrated = val;
+  }
+
   @Override
   public void onClick(View v)
   {
