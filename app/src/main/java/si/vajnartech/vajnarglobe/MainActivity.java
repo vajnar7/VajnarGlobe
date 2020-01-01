@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     setSupportActionBar(toolbar);
 
     fab = findViewById(R.id.fab);
-    fab.setImageDrawable(null);
+    fab.setImageResource(R.drawable.play_arrow);
     fab.setOnClickListener(new View.OnClickListener()
     {
       @Override
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
       {
         if (currentFragment instanceof F_Track)
           if (C.GPS_SIMULATE)
-            _testTrack((F_Track) getCurrentFragment());
+            _testTrack();
           else
             _confirmFirstPoint((F_Track) getCurrentFragment());
       }
@@ -74,20 +74,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
       @Override public void run()
       {
         Log.i(C.TAG, "Areas imported: " + C.areas.size());
-        setFragment("main", F_main.class, new Bundle());
+        setFragment("track", F_Track.class, new Bundle());
       }
     });
   }
 
-  private void _testTrack(F_Track frag)
+  private void _testTrack()
   {
-    frag.calibrated(true);
-    C.startTestGPSService(this);
+    setStatus();
+    if (!C.isTesterRunning) {
+      C.isTesterRunning = true;
+      C.startTestGPSService(this);
+    }
   }
 
   private void _confirmFirstPoint(F_Track frag)
   {
-    frag.calibrated(true);
+    setStatus();
   }
 
   @Override
@@ -134,7 +137,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
       setFragment("capture", F_Capture.class, new Bundle());
       break;
     case R.id.id_track:
-      fab.setImageResource(R.drawable.ic_menu_slideshow);
       setFragment("track", F_Track.class, new Bundle());
       break;
     }
@@ -180,6 +182,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     if (formatArgs.length > 0)
       return getString(stringId, formatArgs);
     return getString(stringId);
+  }
+
+  void setStatus()
+  {
+    if (currentFragment instanceof F_Track) {
+      F_Track frag = (F_Track) currentFragment;
+      frag.calibrate(!frag.isCalibrated());
+      if (frag.isCalibrated())
+        frag.startAproximator();
+      else
+        frag.reset();
+      fab.setImageResource(frag.isCalibrated() ? R.drawable.ic_pause : R.drawable.play_arrow);
+      }
   }
 }
 

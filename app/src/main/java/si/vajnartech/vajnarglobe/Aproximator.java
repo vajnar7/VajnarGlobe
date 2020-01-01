@@ -2,7 +2,8 @@ package si.vajnartech.vajnarglobe;
 
 public abstract class Aproximator extends Thread
 {
-  private int to;
+  private int     to;
+  private boolean running = false;
   Aproximator(int timeout)
   {
     to = timeout;
@@ -10,7 +11,7 @@ public abstract class Aproximator extends Thread
 
   @Override public void run()
   {
-    while (true) {
+    while (running) {
       go();
       try {
         Thread.sleep(1000 * to);
@@ -19,6 +20,11 @@ public abstract class Aproximator extends Thread
         break;
       }
     }
+  }
+
+  void end()
+  {
+    running = false;
   }
 
   abstract void go();

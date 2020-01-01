@@ -26,9 +26,24 @@ public class F_Track extends MyFragment implements View.OnClickListener, TrackVi
     return res;
   }
 
-  void calibrated(boolean val)
+  void calibrate(boolean val)
   {
     myView.isCalibrated = val;
+  }
+
+  boolean isCalibrated()
+  {
+    return myView.isCalibrated;
+  }
+
+  void reset()
+  {
+    myView.A.end();
+  }
+
+  void startAproximator()
+  {
+    myView.start();
   }
 
   @Override

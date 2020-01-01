@@ -39,14 +39,13 @@ public class TrackView extends si.vajnartech.vajnarglobe.Map
 
   MyFunction   fs = new MyFunction();
   MyDerivative fv = new MyDerivative(fs);
-  Aproximator  A  = new MyAproximator(1);
+  Aproximator  A;
 
   TrackView(MainActivity ctx, TrackViewInterface intf)
   {
     super(ctx);
     this.intf = intf;
     act = ctx;
-    A.start();
   }
 
   VectorField H = new VectorField()
@@ -281,6 +280,12 @@ public class TrackView extends si.vajnartech.vajnarglobe.Map
         });
       }
     }
+  }
+
+  void start()
+  {
+    A = new MyAproximator(1);
+    A.start();
   }
 }
 

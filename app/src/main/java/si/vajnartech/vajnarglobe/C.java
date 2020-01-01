@@ -1,6 +1,7 @@
 package si.vajnartech.vajnarglobe;
 
 import android.location.Location;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +31,7 @@ class C
   // screen dimensions
   static android.graphics.Point size    = new android.graphics.Point();
 
+  static boolean isTesterRunning = false;
   static void startTestGPSService(final MainActivity act)
   {
     // test parameters
@@ -52,7 +54,7 @@ class C
         double   latitude  = 46.48596391150142;
         Location loc       = new Location("");
 
-        while (true) {
+        while (isTesterRunning) {
           int    t    = Parameters.minTime;
           int    rx   = r.nextInt(max - min) + min;
           int    ry   = r.nextInt(max - min) + min;
@@ -83,7 +85,7 @@ class C
     static final AtomicInteger lim     = new AtomicInteger(1);
     static final int           minTime = 2000;    // ms
     static final float         minDist = 0f; // m
-    static final int           ZZ      = 2;    // ~ points back from current, cant be les than 2
+    static final int           ZZ      = 3;    // ~ points back from current, cant be les than 2
 
     private static double scale = 2000000;
     static double getScale()
