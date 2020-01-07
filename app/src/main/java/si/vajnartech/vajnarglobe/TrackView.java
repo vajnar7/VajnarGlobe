@@ -22,6 +22,8 @@ import static si.vajnartech.vajnarglobe.C.areas;
 interface TrackViewInterface
 {
   void printLocation(Location loc);
+  void setAreaName(String name);
+  void printMessage(String msg);
 }
 
 @SuppressLint("ViewConstructor")
@@ -37,8 +39,8 @@ public class TrackView extends si.vajnartech.vajnarglobe.Map
   Area currentArea;
   boolean isCalibrated = false;
 
-  MyFunction   fs = new MyFunction();
-  MyDerivative fv = new MyDerivative(fs);
+  MyFunction   fs;
+  MyDerivative fv;
   Aproximator  A;
 
   TrackView(MainActivity ctx, TrackViewInterface intf)
@@ -98,8 +100,10 @@ public class TrackView extends si.vajnartech.vajnarglobe.Map
     if (p == null)
       return null;
     for (Area a: areas.values())
-      if (a.isInside(p))
+      if (a.isInside(p)) {
+        intf.setAreaName(a.areaName);
         return a;
+      }
     return null;
   }
 
@@ -284,6 +288,8 @@ public class TrackView extends si.vajnartech.vajnarglobe.Map
 
   void start()
   {
+    fs = new MyFunction();
+    fv = new MyDerivative(fs);
     A = new MyAproximator(1);
     A.start();
   }

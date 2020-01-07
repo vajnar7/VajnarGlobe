@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-public class F_main extends MyFragment
+public abstract class F_main extends MyFragment
 {
   View layout;
   Map myView;

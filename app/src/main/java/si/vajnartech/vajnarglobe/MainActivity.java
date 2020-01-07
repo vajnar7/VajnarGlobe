@@ -27,7 +27,6 @@ import android.view.MenuItem;
 // --terminal/monitor window poglej moonstalker
 // --output do meje bos prisel sortiraj da dobimo najblizjega
 // --menu za track view napolni F_track...
-// --moznost reseta v TrackView sledenje...resetira fs
 // --nastavljanje actiona v FAB
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
@@ -41,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
   {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    C.createArea();
+    if (C.GPS_SIMULATE) C.createArea();
     Display display = getWindowManager().getDefaultDisplay();
     display.getSize(C.size);
     Toolbar toolbar = findViewById(R.id.toolbar);
@@ -58,7 +57,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
           if (C.GPS_SIMULATE)
             _testTrack();
           else
-            _confirmFirstPoint((F_Track) getCurrentFragment());
+            _confirmFirstPoint();
+        else if (currentFragment instanceof F_Capture)
+          ((F_Capture) currentFragment).push();
       }
     });
 
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
       @Override public void run()
       {
         Log.i(C.TAG, "Areas imported: " + C.areas.size());
-        setFragment("track", F_Track.class, new Bundle());
+        setFragment("capture", F_Capture.class, new Bundle());
       }
     });
   }
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
   }
 
-  private void _confirmFirstPoint(F_Track frag)
+  private void _confirmFirstPoint()
   {
     setStatus();
   }

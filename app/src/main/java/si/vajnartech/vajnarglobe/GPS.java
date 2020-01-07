@@ -82,6 +82,8 @@ public abstract class GPS extends View implements LocationListener, View.OnTouch
       return;
     }
 
+    if (GPS_NOT_ACTIVE) return;
+
     if (GPS_SIMULATE) {
       Location loc = new Location("");
       loc.setLatitude(DEF_LATITUDE);

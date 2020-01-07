@@ -9,17 +9,20 @@
 
   <string name="latitude">Latitude</string>
   <string name="send">SEND</string>
-  <string name="capture">Capture</string>
+  <string name="capture">My areas</string>
   <string name="track">track</string>
-  <string name="construct">Construct</string>
+  <string name="construct">C</string>
   <string name="longitude">Longitude</string>
   <string name="server_conn_error">Unable to contact server</string>
-  <string name="mark">Mark</string>
+  <string name="mark">M</string>
   <string name="lat">LAT</string>
   <string name="lon">LON</string>
   <string name="new_area_name">New area name</string>
-  <string name="clear">Clear</string>
+  <string name="clear">X</string>
   <string name="new_area">New Area</string>
   <string name="error_wrong_name">Not valid name</string>
   <string name="add">Add</string>
+  <string name="mode_tracking">tracking</string>
+  <string name="mode_capture">my areas</string>
+  <string name="test">T</string>
 </resources>

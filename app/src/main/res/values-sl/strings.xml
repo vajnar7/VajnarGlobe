@@ -9,17 +9,20 @@
 
   <string name="latitude">Latitude</string>
   <string name="send">Pošlji</string>
-  <string name="capture">Zajemi</string>
+  <string name="capture">Moja področja</string>
   <string name="track">Sledi</string>
-  <string name="construct">Sestavi</string>
   <string name="longitude">Longitude</string>
+  <string name="construct">C</string>
   <string name="server_conn_error">Unable to contact server</string>
-  <string name="mark">Označi</string>
+  <string name="mark">M</string>
   <string name="lat">LAT</string>
   <string name="lon">LON</string>
   <string name="new_area_name">Ime novega območje</string>
-  <string name="clear">Pobriši</string>
+  <string name="clear">X</string>
   <string name="new_area">Novo območje</string>
   <string name="error_wrong_name">Neveljavno ime</string>
   <string name="add">Dodaj</string>
+  <string name="mode_tracking">sledenje</string>
+  <string name="mode_capture">urejanje področij</string>
+  <string name="test">T</string>
 </resources>

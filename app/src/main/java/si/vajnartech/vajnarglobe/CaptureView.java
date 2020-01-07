@@ -9,6 +9,7 @@ import android.location.Location;
 interface CaptureViewInterface
 {
   void printLocation(Location loc);
+  void printMessage(String msg);
 }
 
 @SuppressLint("ViewConstructor")

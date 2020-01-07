@@ -20,11 +20,12 @@ class C
   static final String WATCHDOG_USR   = "vajnar";
   static final String WATCHDOG_PWD   = "AldebaraN7";
 
-  static final boolean GPS_SIMULATE = true;
+  static final boolean GPS_SIMULATE = false;
+  static final boolean GPS_NOT_ACTIVE = true;
 
   static final String TAG           = "IZAA";
-  static final double DEF_LONGITUDE = 13.826209;  //x
-  static final double DEF_LATITUDE  = 46.487243;  //y
+  static double DEF_LONGITUDE = 13.826209;  //x
+  static double DEF_LATITUDE  = 46.487243;  //y
 
   // DB of areas
   static HashMap<String, Area>  areas   = new HashMap<>();
@@ -83,11 +84,11 @@ class C
     static final int           n       = 1;    // get ~ points to determine current position
     // 35 is this value if min Time and minDist are zero.
     static final AtomicInteger lim     = new AtomicInteger(1);
-    static final int           minTime = 2000;    // ms
+    static final int           minTime = 1000;    // ms
     static final float         minDist = 0f; // m
     static final int           ZZ      = 3;    // ~ points back from current, cant be les than 2
 
-    private static double scale = 2000000;
+    private static double scale = 1500000;
     static double getScale()
     {
       return scale;
