@@ -3,6 +3,7 @@ package si.vajnartech.vajnarglobe;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -42,11 +43,21 @@ public abstract class REST<T> extends AsyncTask<String, Void, T>
   private Gson gson;
   OnFail onFail;
 
-  REST(String url)
+  REST(String url, final MainActivity act)
   {
     this(url, new OnFail() {
       @Override public void execute(int errCode)
       {
+        String msg = String.valueOf(errCode);
+        if (errCode == -1)
+          msg = "Cannot contact server";
+        final String finalMsg = msg;
+        act.runOnUiThread(new Runnable() {
+          @Override public void run()
+          {
+            Toast.makeText(act, finalMsg, Toast.LENGTH_LONG).show();
+          }
+        });
         Log.i(TAG, "Something went wrong: " + errCode);
       }
     });

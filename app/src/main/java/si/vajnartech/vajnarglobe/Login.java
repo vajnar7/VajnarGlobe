@@ -89,6 +89,9 @@ public class Login extends AsyncTask<String, Void, Integer>
     } catch (SocketTimeoutException e) {
       Log.i("REST Login", "Timeout connecting to settings server");
     } catch (IOException e) {
+      Log.i("REST Login", "Timeout connecting to settings server");
+      if (task.onFail != null)
+        task.onFail.execute(-1);
       e.printStackTrace();
     }
     return null;

@@ -59,7 +59,7 @@ abstract public class Area extends ArrayList<Line>
     return areaName;
   }
 
-  abstract protected void mark(GeoPoint a);
+  abstract protected void mark(GeoPoint a, MainActivity activity);
 
   abstract protected ArrayList<R2Double> process(R2Double p);
 

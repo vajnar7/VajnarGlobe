@@ -55,7 +55,7 @@ public class F_Capture extends MyFragment implements View.OnClickListener, Captu
       act.currentArea.setName(et.getText().toString());
       et.setEnabled(false);
     }
-    act.currentArea.mark(myView.currentPoint);
+    act.currentArea.mark(myView.currentPoint, act);
     Toast.makeText(act, "Sent", Toast.LENGTH_SHORT).show();
     myView.invalidate();
   }
@@ -66,7 +66,7 @@ public class F_Capture extends MyFragment implements View.OnClickListener, Captu
   {
     switch (v.getId()) {
     case R.id.b_clear:
-      new DeleteArea(act.currentArea.areaName);
+      new DeleteArea(act.currentArea.areaName, act);
       act.currentArea.currentPoints.clear();
       act.currentArea.geoPoints.clear();
       myView.invalidate();
