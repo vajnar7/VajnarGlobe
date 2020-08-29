@@ -11,6 +11,7 @@ import android.graphics.Paint;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
@@ -55,7 +56,10 @@ public abstract class GPS extends View implements LocationListener, View.OnTouch
         Manifest.permission.ACCESS_COARSE_LOCATION
     };
     final int INITIAL_REQUEST = 1337;
-    ctx.requestPermissions(INITIAL_PERMS, INITIAL_REQUEST);
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        ctx.requestPermissions(INITIAL_PERMS, INITIAL_REQUEST);
+
     LocationManager locationManager = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
     if (locationManager == null) {
       Log.i(TAG, "Cannot get the LocationManager");
