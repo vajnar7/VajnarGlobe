@@ -21,10 +21,10 @@ public class Place extends Area
   }
 
   @Override
-  protected void mark(GeoPoint a)
+  protected void mark(GeoPoint a, MainActivity act)
   {
     geoPoints.add(a);
-    new SendLocation(getName(), a.timestamp, a.lon, a.lat);
+    new SendLocation(getName(), a.timestamp, a.lon, a.lat, act);
     currentPoints.clear();
   }
 

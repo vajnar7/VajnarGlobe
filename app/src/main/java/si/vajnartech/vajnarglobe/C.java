@@ -1,14 +1,18 @@
 package si.vajnartech.vajnarglobe;
 
+import android.location.Location;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 class C
 {
   // ce dostopamo od zunaj
-//  static final String SERVER_ADDRESS = "http://89.142.196.96:8007/";
-   static final String SERVER_ADDRESS = "http://192.168.1.2:8007/";
+  static final String SERVER_ADDRESS = "http://89.142.196.96:8007/";
+//   static final String SERVER_ADDRESS = "http://192.168.1.10:8007/";
 
   static final String AREAS          = SERVER_ADDRESS + "rest/geopoint/%s";
   static final String DELETE_AREA    = SERVER_ADDRESS + "rest/delete/%s";
@@ -16,66 +20,63 @@ class C
   static final String WATCHDOG_USR   = "vajnar";
   static final String WATCHDOG_PWD   = "AldebaraN7";
 
-  static final boolean GPS_SIMULATE = true;
+  static final boolean GPS_SIMULATE = false;
+  static final boolean GPS_NOT_ACTIVE = true;
 
   static final String TAG           = "IZAA";
-  static final double DEF_LONGITUDE = 13.826209;  //x
-  static final double DEF_LATITUDE  = 46.487243;  //y
+  static double DEF_LONGITUDE = 13.826209;  //x
+  static double DEF_LATITUDE  = 46.487243;  //y
 
-  // scale i power of 10
-  static int                    scale   = 6;
-  // offsets
-  static Integer                xOffset = null;
-  static Integer                yOffset = null;
   // DB of areas
   static HashMap<String, Area>  areas   = new HashMap<>();
   // screen dimensions
   static android.graphics.Point size    = new android.graphics.Point();
 
-//  static void startTestGPSService(final MainActivity act)
-//  {
-//    // test parameters
-//    final int min = 5;
-//    final int max = 13;
-//    WhereAmI  gps = null;
-//    if (act.getCurrentFragment() instanceof F_Track) {
-//      F_Track f = (F_Track) act.getCurrentFragment();
-//      if (f != null)
-//        gps = f.gps;
-//    } else
-//      return;
-//    final WhereAmI finalGps = gps;
-//    new Thread(new Runnable()
-//    {
-//      @Override public void run()
-//      {
-//        Random   r         = new Random();
-//        double   longitude = DEF_LONGITUDE;
-//        double   latitude  = DEF_LATITUDE;
-//        Location loc       = new Location("");
-//
-//        while (true) {
-//          int    t    = Parameters.minTime;
-//          int    rx   = r.nextInt(max - min) + min;
-//          int    ry   = r.nextInt(max - min) + min;
-//          double offX = (double) rx / 1000000.0;
-//          double offY = -(double) ry / 1000000.0;
-//          assert finalGps != null;
-//          loc.setLatitude(latitude);
-//          loc.setLongitude(longitude);
-//          finalGps.onLocationChanged(loc);
-//          try {
-//            Thread.sleep(t);
-//          } catch (InterruptedException e) {
-//            e.printStackTrace();
-//            break;
-//          }
-//          longitude += offX;
-//          latitude += offY;
-//        }
-//      }
-//    }).start();
-//  }
+  static boolean isTesterRunning = false;
+  static void startTestGPSService(final MainActivity act)
+  {
+    // test parameters
+    final int min = 5;
+    final int max = 13;
+    TrackView tv = null;
+    if (act.getCurrentFragment() instanceof F_Track) {
+      F_Track f = (F_Track) act.getCurrentFragment();
+      if (f != null)
+        tv = f.myView;
+    } else
+      return;
+    final TrackView finalTv = tv;
+    new Thread(new Runnable()
+    {
+      @Override public void run()
+      {
+        Random   r         = new Random();
+        double   longitude = 13.82526551327198;
+        double   latitude  = 46.48596391150142;
+        Location loc       = new Location("");
+
+        while (isTesterRunning) {
+          int    t    = Parameters.minTime;
+          int    rx   = r.nextInt(max - min) + min;
+          int    ry   = r.nextInt(max - min) + min;
+          double offX = (double) rx / 2000000.0;
+          double offY = (double) ry / 2000000.0;
+          assert finalTv != null;
+          loc.setLatitude(latitude);
+          loc.setLongitude(longitude);
+          finalTv.onLocationChanged(loc);
+          try {
+            Thread.sleep(t);
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+            break;
+          }
+          longitude += offX;
+          latitude += offY;
+        }
+      }
+    }).start();
+  }
 
   static class Parameters
   {
@@ -83,14 +84,22 @@ class C
     static final int           n       = 1;    // get ~ points to determine current position
     // 35 is this value if min Time and minDist are zero.
     static final AtomicInteger lim     = new AtomicInteger(1);
-    static final int           minTime = 500;    // ms
+    static final int           minTime = 1000;    // ms
     static final float         minDist = 0f; // m
-    static final int           ZZ      = 2;    // ~ points back from current, cant be les than 2
-    static       double        scaleX  = 3000;
-    static       double        scaleY  = 30000;
+    static final int           ZZ      = 3;    // ~ points back from current, cant be les than 2
+
+    private static double scale = 1500000;
+    static double getScale()
+    {
+      return scale;
+    }
+
+    static void setScale(double val)
+    {
+      scale = val;
+    }
   }
 
-  // for simulation
   static ArrayList<GeoPoint> fakeArea = new ArrayList<>();
   static int                 c        = -1;
 

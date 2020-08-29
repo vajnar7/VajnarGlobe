@@ -7,13 +7,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -32,8 +32,12 @@ public abstract class GPS extends View implements LocationListener, View.OnTouch
   protected MainActivity ctx;
   protected Location location;
   protected RnDouble origin = null;
-  float dX, dY;
+
+  protected Paint paint = new Paint();
+
   D dK = new D();
+
+  protected R2Double firstPoint;
 
   GPS(MainActivity ctx)
   {
@@ -41,6 +45,7 @@ public abstract class GPS extends View implements LocationListener, View.OnTouch
     this.ctx = ctx;
     location = new Location("");
     enableGPSService();
+    getDimensions(this);
   }
 
   private void enableGPSService()
@@ -77,11 +82,12 @@ public abstract class GPS extends View implements LocationListener, View.OnTouch
       return;
     }
 
+    if (GPS_NOT_ACTIVE) return;
+
     if (GPS_SIMULATE) {
       Location loc = new Location("");
       loc.setLatitude(DEF_LATITUDE);
       loc.setLongitude(DEF_LONGITUDE);
-      C.createArea();
     }
     else {
       locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDist, this);
@@ -116,30 +122,15 @@ public abstract class GPS extends View implements LocationListener, View.OnTouch
       origin = setOrigin();
   }
 
-  @Override
-  public boolean onTouch(View view, MotionEvent event)
+  protected void getDimensions(final View v)
   {
-    if (origin == null) return true;
-    double rx, ry;
-    switch (event.getAction()) {
-    case MotionEvent.ACTION_DOWN:
-      dX = view.getX() - event.getRawX();
-      dY = view.getY() - event.getRawY();
-      rx = event.getRawX();
-      ry = event.getRawY();
-      dK.up(new R2Double(rx, ry));
-      break;
-    case MotionEvent.ACTION_UP:
-      rx = event.getRawX();
-      ry = event.getRawY();
-      dK.up(new R2Double(rx, ry));
-      origin.is(origin.plus(dK));
-      view.invalidate();
-      break;
-    default:
-      return false;
-    }
-    return true;
+    v.post(new Runnable()
+    {
+      @Override public void run()
+      {
+        invalidate();
+      }
+    });
   }
 
   protected abstract RnDouble setOrigin();

@@ -3,6 +3,7 @@ package si.vajnartech.vajnarglobe;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -20,7 +21,12 @@ import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 
-@SuppressWarnings({"unchecked", "ConstantConditions"})
+interface OnFail
+{
+  void execute(int errCode);
+}
+
+@SuppressWarnings({"unchecked", "ConstantConditions", "SameParameterValue", "WeakerAccess"})
 public abstract class REST<T> extends AsyncTask<String, Void, T>
 {
   private static final String TAG = "IZAA-REST";
@@ -35,14 +41,36 @@ public abstract class REST<T> extends AsyncTask<String, Void, T>
   private final Class<T> resultClass;
 
   private Gson gson;
+  OnFail onFail;
 
-  REST(String url)
+  REST(String url, final MainActivity act)
+  {
+    this(url, new OnFail() {
+      @Override public void execute(int errCode)
+      {
+        String msg = String.valueOf(errCode);
+        if (errCode == -1)
+          msg = "Cannot contact server";
+        final String finalMsg = msg;
+        act.runOnUiThread(new Runnable() {
+          @Override public void run()
+          {
+            Toast.makeText(act, finalMsg, Toast.LENGTH_LONG).show();
+          }
+        });
+        Log.i(TAG, "Something went wrong: " + errCode);
+      }
+    });
+  }
+
+  REST(String url, OnFail onFail)
   {
     super();
     resultClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     this.url = url;
     Log.i(TAG, "URL=" + url);
     this.gson = new Gson();
+    this.onFail = onFail;
     new Login((REST<Integer>) this).executeOnExecutor(Login.THREAD_POOL_EXECUTOR);
   }
 
@@ -66,9 +94,9 @@ public abstract class REST<T> extends AsyncTask<String, Void, T>
     int    len;
 
     try {
-      File fname = new File(Environment.getExternalStorageDirectory().getPath() + "/text.json");
-      fname.createNewFile();
-      FileOutputStream test = new FileOutputStream(fname);
+      File file = new File(Environment.getExternalStorageDirectory().getPath() + "/text.json");
+      file.createNewFile();
+      FileOutputStream test = new FileOutputStream(file);
 
       while ((len = in.read(buffer)) != -1) {
         out.write(buffer, 0, len);
@@ -149,7 +177,4 @@ public abstract class REST<T> extends AsyncTask<String, Void, T>
   }
 
   public abstract T backgroundFunc();
-
-  // called by login if login itself fails
-  void fail(Integer responseCode) {}
 }

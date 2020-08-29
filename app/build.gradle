@@ -5,6 +5,7 @@ android {
     defaultConfig {
         applicationId "si.vajnartech.vajnarglobe"
         minSdkVersion 19
+        //noinspection OldTargetApi
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"

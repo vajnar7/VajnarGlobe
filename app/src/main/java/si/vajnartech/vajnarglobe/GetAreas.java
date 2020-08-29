@@ -14,7 +14,7 @@ public class GetAreas extends REST<AreaObj>
 
   private GetAreas(final MainActivity act)
   {
-    super(GET_ALL);
+    super(GET_ALL, act);
     onFail = new Runnable() {
       @Override public void run()
       {
@@ -71,6 +71,7 @@ class AreaObj
            '}';
   }
 
+  @SuppressWarnings("InnerClassMayBeStatic")
   class Area
   {
     public String name;

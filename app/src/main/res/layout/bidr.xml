@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+  android:orientation="vertical"
+  android:layout_width="match_parent" android:layout_height="match_parent">
+
+  <TextView android:id="@+id/longitude" android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:text="@string/lon" />
+  <TextView android:id="@+id/latitude" android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:text="@string/lat" />
+  <EditText android:id="@+id/ed_area_name" android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:ems="10" android:importantForAutofill="no" android:inputType="textPersonName" android:text="@string/new_area"
+    tools:ignore="LabelFor" />
+  <TextView android:id="@+id/msg_window" android:layout_width="match_parent" android:layout_height="60dp"
+    android:background="@color/colorMessages" android:textAlignment="center" android:textSize="36sp" />
+  <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="horizontal">
+    <Button android:id="@+id/b_mark" android:layout_width="wrap_content" android:layout_height="wrap_content"
+      android:layout_weight="1" android:backgroundTint="@color/colorBtn3" android:text="@string/mark"
+      tools:ignore="ButtonStyle" />
+    <Button android:id="@+id/b_construct" android:layout_width="wrap_content" android:layout_height="wrap_content"
+      android:layout_weight="1" android:backgroundTint="@color/colorBtn1" android:text="@string/construct"
+      tools:ignore="ButtonStyle" />
+    <Button android:id="@+id/b_test" android:layout_width="wrap_content" android:layout_height="wrap_content"
+      android:layout_weight="1" android:text="@string/test" tools:ignore="ButtonStyle" />
+    <Button android:id="@+id/b_clear" android:layout_width="wrap_content" android:layout_height="wrap_content"
+      android:layout_weight="1" android:backgroundTint="@color/colorRead" android:text="@string/clear" />
+  </LinearLayout>
+</LinearLayout>

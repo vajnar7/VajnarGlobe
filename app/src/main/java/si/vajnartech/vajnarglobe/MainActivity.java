@@ -3,7 +3,6 @@ package si.vajnartech.vajnarglobe;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Display;
@@ -17,29 +16,50 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+// --crkne ko je aplikacija nafrisno dana v sistem GPS not granted
+// ++prevedi stringe
+// ++ce kliknem pobrisi na zaslonu se vedno ostaja area, zbrise  pa prav iz baze
+// ++scale se mora drsno spreminjati
+// ++select aree
+// ++zoptimiziraj setCurrentArea
+// --probaj na razlicnih tablicah/phonih
+// ++ne sporoca mi ce je server down ali ni connectiona, retries
+// --terminal/monitor window poglej moonstalker
+// --output do meje bos prisel sortiraj da dobimo najblizjega
+// --menu za track view napolni F_track...
+// --nastavljanje actiona v FAB
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
   CurrentArea currentArea     = null;
   MyFragment  currentFragment = null;
+  FloatingActionButton fab;
 
   @Override
   protected void onCreate(Bundle savedInstanceState)
   {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+    if (C.GPS_SIMULATE) C.createArea();
     Display display = getWindowManager().getDefaultDisplay();
     display.getSize(C.size);
     Toolbar toolbar = findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
-    FloatingActionButton fab = findViewById(R.id.fab);
+    fab = findViewById(R.id.fab);
+    fab.setImageResource(R.drawable.play_arrow);
     fab.setOnClickListener(new View.OnClickListener()
     {
       @Override
       public void onClick(View view)
       {
-        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-            .setAction("Action", null).show();
+        if (currentFragment instanceof F_Track)
+          if (C.GPS_SIMULATE)
+            _testTrack();
+          else
+            _confirmFirstPoint();
+        else if (currentFragment instanceof F_Capture)
+          ((F_Capture) currentFragment).push();
       }
     });
 
@@ -55,9 +75,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
       @Override public void run()
       {
         Log.i(C.TAG, "Areas imported: " + C.areas.size());
-        setFragment("main", F_main.class, new Bundle());
+        setFragment("capture", F_Capture.class, new Bundle());
       }
     });
+  }
+
+  private void _testTrack()
+  {
+    setStatus();
+    if (!C.isTesterRunning) {
+      C.isTesterRunning = true;
+      C.startTestGPSService(this);
+    }
+  }
+
+  private void _confirmFirstPoint()
+  {
+    setStatus();
   }
 
   @Override
@@ -119,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     if (currentFragment == null) return;
 
     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-    transaction.replace(R.id.drawer_layout, currentFragment);
+    transaction.replace(R.id.content, currentFragment);
     transaction.addToBackStack(null);
     transaction.commit();
   }
@@ -149,6 +183,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     if (formatArgs.length > 0)
       return getString(stringId, formatArgs);
     return getString(stringId);
+  }
+
+  void setStatus()
+  {
+    if (currentFragment instanceof F_Track) {
+      F_Track frag = (F_Track) currentFragment;
+      frag.calibrate(!frag.isCalibrated());
+      if (frag.isCalibrated())
+        frag.startAproximator();
+      else
+        frag.reset();
+      fab.setImageResource(frag.isCalibrated() ? R.drawable.ic_pause : R.drawable.play_arrow);
+      }
   }
 }
 

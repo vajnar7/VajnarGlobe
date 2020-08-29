@@ -9,6 +9,7 @@ import android.location.Location;
 interface CaptureViewInterface
 {
   void printLocation(Location loc);
+  void printMessage(String msg);
 }
 
 @SuppressLint("ViewConstructor")
@@ -29,11 +30,19 @@ public class CaptureView extends Map
   @Override
   protected void notifyMe(Location loc)
   {
-    if (intf == null) return;
-    currentPoint = new GeoPoint(loc.getLongitude(), loc.getLatitude());
-    super.notifyMe(loc);
-    intf.printLocation(loc);
+    if (loc != null) {
+      if (intf == null) return;
+      currentPoint = new GeoPoint(loc.getLongitude(), loc.getLatitude());
+      super.notifyMe(loc);
+      intf.printLocation(loc);
+    }
     invalidate();
+  }
+
+  @Override
+  public boolean performClick()
+  {
+    return super.performClick();
   }
 
   @Override

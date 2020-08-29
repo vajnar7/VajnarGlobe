@@ -2,6 +2,7 @@ package si.vajnartech.vajnarglobe;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,7 +15,6 @@ abstract public class Area extends ArrayList<Line>
   String areaName;
   ArrayList<GeoPoint> geoPoints = new ArrayList<>();
   ArrayList<GeoPoint> currentPoints = new ArrayList<>();
-  private R2Double minPoint;
 
   Area(String name, ArrayList<GeoPoint> p)
   {
@@ -34,7 +34,6 @@ abstract public class Area extends ArrayList<Line>
     for (int i = 0; i < geoPoints.size() - 1; i++)
       add(new Line(geoPoints.get(i), geoPoints.get(i + 1)));
     add(new Line(geoPoints.get(geoPoints.size() - 1), geoPoints.get(0)));
-    minPoint = min(geoPoints);
     return this;
   }
 
@@ -60,7 +59,7 @@ abstract public class Area extends ArrayList<Line>
     return areaName;
   }
 
-  abstract protected void mark(GeoPoint a);
+  abstract protected void mark(GeoPoint a, MainActivity activity);
 
   abstract protected ArrayList<R2Double> process(R2Double p);
 
@@ -82,7 +81,7 @@ abstract public class Area extends ArrayList<Line>
           oddNodes = !oddNodes;
       j = i;
     }
-    return !oddNodes;
+    return oddNodes;
   }
 
   R2Double getClosestPoint(Line l, R2Double p)

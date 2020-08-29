@@ -3,4 +3,10 @@
   <color name="colorPrimary">#008577</color>
   <color name="colorPrimaryDark">#00574B</color>
   <color name="colorAccent">#D81B60</color>
+  <color name="colorMessages">#8BC34A</color>
+  <color name="colorBtn1">#FFC107</color>
+  <color name="colorBtn2">#2196F3</color>
+  <color name="colorBtn3">#F1BFBB</color>
+  <color name="colorBtn4">#834FDF</color>
+  <color name="colorRead">#F44336</color>
 </resources>

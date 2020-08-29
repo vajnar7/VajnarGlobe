@@ -14,114 +14,123 @@ import si.vajnartech.vajnarglobe.math.Derivative;
 import si.vajnartech.vajnarglobe.math.Function;
 import si.vajnartech.vajnarglobe.math.R2Double;
 import si.vajnartech.vajnarglobe.math.R2Function;
-import si.vajnartech.vajnarglobe.math.RnDouble;
 
 import static si.vajnartech.vajnarglobe.C.Parameters.ZZ;
 import static si.vajnartech.vajnarglobe.C.TAG;
+import static si.vajnartech.vajnarglobe.C.areas;
 
 interface TrackViewInterface
 {
   void printLocation(Location loc);
+  void setAreaName(String name);
+  void printMessage(String msg);
 }
 
 @SuppressLint("ViewConstructor")
-public class TrackView extends GPS implements Transformator
+public class TrackView extends si.vajnartech.vajnarglobe.Map
 {
   MainActivity act;
-  private Paint paint = new Paint();
-  R2Double aproxPosition = null;
+  R2Double     aproxPosition = null;
   private TrackViewInterface intf;
-  public R2Double currentPoint;
-  private R2Double firstPoint;
+  public  R2Double           currentPoint;
+  private R2Double           firstPoint;
   long currentTime;
 
-  MyFunction fs = new MyFunction();
-  MyDerivative fv = new MyDerivative(fs);
-  Aproximator A = new MyAproximator(1);
+  Area currentArea;
+  boolean isCalibrated = false;
+
+  MyFunction   fs;
+  MyDerivative fv;
+  Aproximator  A;
 
   TrackView(MainActivity ctx, TrackViewInterface intf)
   {
     super(ctx);
     this.intf = intf;
     act = ctx;
-    A.start();
-    new VectorField()
-    {
-      @Override
-      void done(R2Double point)
-      {
-        currentTime = System.currentTimeMillis();
-        fs.put(currentTime, point);
-        currentPoint = point;
-        act.runOnUiThread(new Runnable()
-        {
-          @Override public void run()
-          {
-            invalidate();
-          }
-        });
-      }
-    };
   }
 
-  @Override
-  protected RnDouble setOrigin()
+  VectorField H = new VectorField()
   {
-    double x1 = getWidth();
-    double x2 = getHeight();
-    R2Double o = new R2Double(x1, x2);
-    RnDouble a = o.divS(2.0);
-    return new R2Double(a.get(0), a.get(1));
+    @Override
+    void done(R2Double v)
+    {
+      _hector(v);
+    }
+  };
+
+  private void _hector(R2Double point)
+  {
+    currentTime = System.currentTimeMillis();
+    fs.put(currentTime, point);
+    currentPoint = point;
+    ctx.runOnUiThread(new Runnable()
+    {
+      @Override public void run()
+      {
+        invalidate();
+      }
+    });
   }
 
   @Override
   protected void notifyMe(Location loc)
   {
-    if (intf == null) return;
-    currentPoint = new GeoPoint(loc.getLongitude(), loc.getLatitude());
-    if (firstPoint == null) {
-      Map.Entry<String, Area> entry = C.areas.entrySet().iterator().next();
-      Area value = entry.getValue();
-      firstPoint = value.getFirstPoint();
+    if (loc != null) {
+      if (intf == null) return;
+      GeoPoint geos = new GeoPoint(loc.getLongitude(), loc.getLatitude());
+      if (isCalibrated)
+        H.add(geos);
+      else {
+        currentPoint = geos;
+        invalidate();
+      }
+      if (firstPoint == null) {
+        Map.Entry<String, Area> entry = C.areas.entrySet().iterator().next();
+        Area                    value = entry.getValue();
+        firstPoint = value.getFirstPoint();
+      }
+      intf.printLocation(loc);
     }
-    intf.printLocation(loc);
-    invalidate();
+    currentArea = _setCurrentArea(currentPoint);
+  }
+
+  private Area _setCurrentArea(R2Double p)
+  {
+    if (p == null)
+      return null;
+    for (Area a: areas.values())
+      if (a.isInside(p)) {
+        intf.setAreaName(a.areaName);
+        return a;
+      }
+    return null;
   }
 
   @Override
-  public R2Double transform(R2Double p)
+  public boolean performClick()
   {
-    RnDouble a = origin.mul(p);
-    RnDouble c = a.div(firstPoint);
-    R2Double scale = new R2Double(-C.Parameters.scaleX, C.Parameters.scaleY);
-    RnDouble dX = c.minus(origin);
-    dX = dX.mul(scale);
-    RnDouble b = origin.plus(dX);
-    return new R2Double(b.get(0), b.get(1));//------> zakaj se skala spreminaj
+    return super.performClick();
   }
 
   @Override
   protected void onDraw(Canvas canvas)
   {
     super.onDraw(canvas);
-    if (currentPoint != null) {
-      currentPoint.draw(canvas, paint, Color.RED, 5, this);
-      for (Area a : C.areas.values()) {
-        a.draw(canvas, paint, Color.BLACK, this);
-      }
-    }
+    if (currentPoint == null) return;
+    currentPoint.draw(canvas, paint, Color.RED, 5, this);
+    if (currentArea != null && isCalibrated)
+      _draw(currentArea, canvas);
   }
 
-  private void _drawArea(Area area, Canvas canvas)
+  private void _draw(Area area, Canvas canvas)
   {
     fs.draw(canvas, paint, Color.GRAY, this);
-    area.draw(canvas, paint, Color.BLACK, this);
     if (aproxPosition != null)
       aproxPosition.draw(canvas, paint, Color.GREEN, 4, this);
     if (currentPoint == null)
       return;
-    currentPoint.draw(canvas, paint, Color.RED, 4, this);
-    if (area.isInside(currentPoint))
+    if (!area.isInside(currentPoint))
       return;
     ArrayList<R2Double> closestPoints = area.process(currentPoint);
     int                 i             = -1;
@@ -174,7 +183,7 @@ public class TrackView extends GPS implements Transformator
       int j = getKeys().indexOf(x);
       if (j == size() - 1) return null;
       df.is(get(getKeyAt(j + 1)).minus(get(getKeyAt(j))));
-      long dx = getKeys().get(j + 1) - getKeys().get(j);
+      long     dx  = getKeys().get(j + 1) - getKeys().get(j);
       R2Double res = new R2Double();
       res.is(df.divS((double) dx));
       return res;
@@ -185,8 +194,7 @@ public class TrackView extends GPS implements Transformator
     {
       int i0 = getKeys().indexOf(x0);
       int i1 = getKeys().indexOf(x1);
-      if (x0 == null)
-      {
+      if (x0 == null) {
         i0 = 0;
         i1 = size() - 1;
       }
@@ -200,7 +208,8 @@ public class TrackView extends GPS implements Transformator
     }
   }
 
-  class MyFunction extends Function<Long, R2Double>
+  @SuppressWarnings("SameParameterValue")
+  static class MyFunction extends Function<Long, R2Double>
   {
     private R2Function<LinearFun> fun = null;
 
@@ -234,8 +243,8 @@ public class TrackView extends GPS implements Transformator
     {
       R2Double res = super.put(key, value);
       if (size() > 2) {
-        long  k0  = getKeys().get(0);
-        long  kn  = getKeys().get(size() - 1);
+        long     k0  = getKeys().get(0);
+        long     kn  = getKeys().get(size() - 1);
         R2Double p11 = new R2Double((double) k0, get(k0).get(0));
         R2Double p12 = new R2Double((double) kn, get(kn).get(0));
         R2Double p21 = new R2Double((double) k0, get(k0).get(1));
@@ -275,6 +284,14 @@ public class TrackView extends GPS implements Transformator
         });
       }
     }
+  }
+
+  void start()
+  {
+    fs = new MyFunction();
+    fv = new MyDerivative(fs);
+    A = new MyAproximator(1);
+    A.start();
   }
 }
 

@@ -5,9 +5,9 @@ import static si.vajnartech.vajnarglobe.C.DELETE_AREA;
 public class DeleteArea extends REST<String>
 {
   private String areaName;
-  DeleteArea(String areaName)
+  DeleteArea(String areaName, MainActivity act)
   {
-    super(String.format(DELETE_AREA, areaName));
+    super(String.format(DELETE_AREA, areaName), act);
     this.areaName = areaName;
   }
 

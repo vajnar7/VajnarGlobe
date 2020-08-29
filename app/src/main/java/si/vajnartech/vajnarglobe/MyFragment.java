@@ -5,6 +5,7 @@ import android.support.v4.app.DialogFragment;
 public abstract class MyFragment extends DialogFragment
 {
   MainActivity act;
+  TerminalWindow terminal = null;
 
   public static <T extends MyFragment> T instantiate(Class<T> cls, MainActivity act)
   {
@@ -17,4 +18,6 @@ public abstract class MyFragment extends DialogFragment
     }
     return res;
   }
+
+  abstract protected void init();
 }

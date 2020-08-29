@@ -3,9 +3,9 @@ package si.vajnartech.vajnarglobe;
 import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.location.Location;
-import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 
 import si.vajnartech.vajnarglobe.math.R2Double;
 import si.vajnartech.vajnarglobe.math.RnDouble;
@@ -13,9 +13,6 @@ import si.vajnartech.vajnarglobe.math.RnDouble;
 @SuppressLint("ViewConstructor")
 public class Map extends GPS implements Transformator
 {
-  private Paint paint = new Paint();
-  private R2Double firstPoint;
-
   Map(MainActivity ctx)
   {
     super(ctx);
@@ -49,14 +46,36 @@ public class Map extends GPS implements Transformator
   }
 
   @Override
+  public boolean onTouch(View view, MotionEvent event)
+  {
+    if (origin == null) return true;
+    double rx, ry;
+    switch (event.getAction()) {
+    case MotionEvent.ACTION_DOWN:
+      rx = event.getRawX();
+      ry = event.getRawY();
+      dK.up(new R2Double(rx, ry));
+      break;
+    case MotionEvent.ACTION_UP:
+      rx = event.getRawX();
+      ry = event.getRawY();
+      dK.up(new R2Double(rx, ry));
+      origin.is(origin.plus(dK));
+      view.invalidate();
+      break;
+    default:
+      return false;
+    }
+    return true;
+  }
+
+  @Override
   public R2Double transform(R2Double p)
   {
-    RnDouble a     = origin.mul(p);
-    RnDouble c     = a.div(firstPoint);
-    R2Double scale = new R2Double(-C.Parameters.scaleX, C.Parameters.scaleY);
-    RnDouble dX    = c.minus(origin);
-    dX = dX.mul(scale);
-    RnDouble b = origin.plus(dX);
-    return new R2Double(b.get(0), b.get(1));//------> zakaj se skala spreminaj
+    RnDouble d = p.minus(firstPoint);
+    R2Double scale = new R2Double(-C.Parameters.getScale(), C.Parameters.getScale());
+    RnDouble tmp = d.mul(scale);
+    RnDouble b = origin.plus(tmp);
+    return new R2Double(b.get(0), b.get(1));
   }
 }
