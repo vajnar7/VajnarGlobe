@@ -46,7 +46,8 @@ public abstract class GPS extends View implements LocationListener, View.OnTouch
     super(ctx);
     this.ctx = ctx;
     location = new Location("");
-    enableGPSService();
+    if (!GPS_SIMULATE)
+      enableGPSService();
     getDimensions(this);
   }
 
@@ -57,9 +58,8 @@ public abstract class GPS extends View implements LocationListener, View.OnTouch
         Manifest.permission.ACCESS_COARSE_LOCATION
     };
     final int INITIAL_REQUEST = 1337;
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-        ctx.requestPermissions(INITIAL_PERMS, INITIAL_REQUEST);
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+      ctx.requestPermissions(INITIAL_PERMS, INITIAL_REQUEST);
 
     LocationManager locationManager = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
     if (locationManager == null) {
@@ -86,8 +86,6 @@ public abstract class GPS extends View implements LocationListener, View.OnTouch
            }).create()).show();
       return;
     }
-
-    if (GPS_NOT_ACTIVE) return;
 
     if (GPS_SIMULATE) {
       Location loc = new Location("");

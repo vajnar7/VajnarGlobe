@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "si.vajnartech.vajnarglobe"
-        minSdkVersion 19
+        minSdkVersion 23
         //noinspection OldTargetApi
         targetSdkVersion 28
         versionCode 1
