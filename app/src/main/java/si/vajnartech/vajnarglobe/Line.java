@@ -2,10 +2,10 @@ package si.vajnartech.vajnarglobe;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.util.Log;
 
-import si.vajnartech.vajnarglobe.math.Function;
-import si.vajnartech.vajnarglobe.math.R2Double;
+import si.vajnartech.calculus.Function;
+import si.vajnartech.calculus.R2Double;
+import si.vajnartech.calculus.Transformator;
 
 class Line
 {

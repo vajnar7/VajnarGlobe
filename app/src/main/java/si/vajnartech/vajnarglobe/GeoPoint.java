@@ -1,6 +1,6 @@
 package si.vajnartech.vajnarglobe;
 
-import si.vajnartech.vajnarglobe.math.R2Double;
+import si.vajnartech.calculus.R2Double;
 
 @SuppressWarnings("NullableProblems")
 public class GeoPoint extends R2Double

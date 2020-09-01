@@ -18,8 +18,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import si.vajnartech.vajnarglobe.math.R2Double;
-import si.vajnartech.vajnarglobe.math.RnDouble;
+import si.vajnartech.calculus.D;
+import si.vajnartech.calculus.R2Double;
+import si.vajnartech.calculus.RnDouble;
 
 import static si.vajnartech.vajnarglobe.C.DEF_LATITUDE;
 import static si.vajnartech.vajnarglobe.C.DEF_LONGITUDE;

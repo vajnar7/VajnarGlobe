@@ -10,10 +10,11 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Map;
 
-import si.vajnartech.vajnarglobe.math.Derivative;
-import si.vajnartech.vajnarglobe.math.Function;
-import si.vajnartech.vajnarglobe.math.R2Double;
-import si.vajnartech.vajnarglobe.math.R2Function;
+import si.vajnartech.calculus.Derivative;
+import si.vajnartech.calculus.Function;
+import si.vajnartech.calculus.R2Double;
+import si.vajnartech.calculus.R2Function;
+import si.vajnartech.calculus.Transformator;
 
 import static si.vajnartech.vajnarglobe.C.Parameters.ZZ;
 import static si.vajnartech.vajnarglobe.C.TAG;

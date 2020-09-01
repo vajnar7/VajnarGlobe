@@ -7,8 +7,9 @@ import android.location.Location;
 import android.view.MotionEvent;
 import android.view.View;
 
-import si.vajnartech.vajnarglobe.math.R2Double;
-import si.vajnartech.vajnarglobe.math.RnDouble;
+import si.vajnartech.calculus.R2Double;
+import si.vajnartech.calculus.RnDouble;
+import si.vajnartech.calculus.Transformator;
 
 @SuppressLint("ViewConstructor")
 public class Map extends GPS implements Transformator
@@ -23,8 +24,8 @@ public class Map extends GPS implements Transformator
   {
     double   x1 = getWidth();
     double   x2 = getHeight();
-    R2Double o  = new R2Double(x1, x2);
-    RnDouble a  = o.divS(2.0);
+    R2Double o = new R2Double(x1, x2);
+    RnDouble a = o.divS(2.0);
     return new R2Double(a.get(0), a.get(1));
   }
 

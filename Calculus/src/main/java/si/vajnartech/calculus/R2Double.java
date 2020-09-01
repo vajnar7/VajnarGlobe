@@ -1,9 +1,7 @@
-package si.vajnartech.vajnarglobe.math;
+package si.vajnartech.calculus;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-
-import si.vajnartech.vajnarglobe.Transformator;
 
 public class R2Double extends RnDouble
 {

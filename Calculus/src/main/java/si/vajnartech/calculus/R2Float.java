@@ -1,4 +1,4 @@
-package si.vajnartech.vajnarglobe.math;
+package si.vajnartech.calculus;
 
 public class R2Float extends RnFloat
 {

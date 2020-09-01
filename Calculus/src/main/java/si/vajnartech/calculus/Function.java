@@ -1,4 +1,4 @@
-package si.vajnartech.vajnarglobe.math;
+package si.vajnartech.calculus;
 
 import java.util.ArrayList;
 import java.util.HashMap;

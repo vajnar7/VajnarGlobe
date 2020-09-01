@@ -2,7 +2,7 @@ package si.vajnartech.vajnarglobe;
 
 import java.util.ArrayList;
 
-import si.vajnartech.vajnarglobe.math.R2Double;
+import si.vajnartech.calculus.R2Double;
 
 public abstract class VectorField extends ArrayList<R2Double>
 {

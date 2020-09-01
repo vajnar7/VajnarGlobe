@@ -2,13 +2,13 @@ package si.vajnartech.vajnarglobe;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import si.vajnartech.vajnarglobe.math.R2Double;
+import si.vajnartech.calculus.R2Double;
+import si.vajnartech.calculus.Transformator;
 
 abstract public class Area extends ArrayList<Line>
 {
