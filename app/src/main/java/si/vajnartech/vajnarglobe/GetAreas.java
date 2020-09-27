@@ -1,7 +1,5 @@
 package si.vajnartech.vajnarglobe;
 
-import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,24 +7,17 @@ import static si.vajnartech.vajnarglobe.C.GET_ALL;
 
 public class GetAreas extends REST<AreaObj>
 {
-  private Runnable r = null;
-  private Runnable onFail;
+  private Runnable run = null;
 
   private GetAreas(final MainActivity act)
   {
     super(GET_ALL, act);
-    onFail = new Runnable() {
-      @Override public void run()
-      {
-        Toast.makeText(act, act.tx(R.string.server_conn_error), Toast.LENGTH_LONG).show();
-      }
-    };
   }
 
   GetAreas(MainActivity act, Runnable run)
   {
     this(act);
-    r = run;
+    this.run = run;
   }
 
   @Override
@@ -50,11 +41,9 @@ public class GetAreas extends REST<AreaObj>
         C.areas.put(a.name, newArea);
         newArea.constructArea();
       }
-      if (r != null )
-        r.run();
+      if (run != null)
+        run.run();
     }
-    else
-      onFail.run();
   }
 }
 
@@ -74,7 +63,7 @@ class AreaObj
   @SuppressWarnings("InnerClassMayBeStatic")
   class Area
   {
-    public String name;
+    public String      name;
     public List<Point> points;
 
     @Override

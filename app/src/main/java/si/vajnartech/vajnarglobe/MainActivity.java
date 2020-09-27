@@ -28,6 +28,8 @@ import android.view.MenuItem;
 // --output do meje bos prisel sortiraj da dobimo najblizjega
 // --menu za track view napolni F_track...
 // --nastavljanje actiona v FAB
+// ++med kontaktiranjem na server progres dialog/bar
+// --ce se ne more kontaktirati server retry
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
