@@ -7,6 +7,7 @@ import android.location.Location;
 import android.view.MotionEvent;
 import android.view.View;
 
+import si.vajnartech.calculus.D;
 import si.vajnartech.calculus.R2Double;
 import si.vajnartech.calculus.RnDouble;
 import si.vajnartech.calculus.Transformator;
@@ -14,6 +15,8 @@ import si.vajnartech.calculus.Transformator;
 @SuppressLint("ViewConstructor")
 public class Map extends GPS implements Transformator
 {
+  private final D dK = new D();
+
   Map(MainActivity ctx)
   {
     super(ctx);
