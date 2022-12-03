@@ -4,12 +4,12 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 
 import si.vajnartech.calculus.R2Double;
 import si.vajnartech.calculus.Transformator;
 
+@SuppressWarnings("unused")
 abstract public class Area extends ArrayList<Line>
 {
   String areaName;
@@ -44,14 +44,7 @@ abstract public class Area extends ArrayList<Line>
 
   private void _sortPoints(ArrayList<GeoPoint> p)
   {
-    Collections.sort(p, new Comparator<GeoPoint>()
-    {
-      @Override
-      public int compare(GeoPoint o1, GeoPoint o2)
-      {
-        return Long.compare(o1.timestamp, o2.timestamp);
-      }
-    });
+    p.sort(Comparator.comparingLong(o -> o.timestamp));
   }
 
   public String getName()

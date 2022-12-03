@@ -18,14 +18,20 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-import static si.vajnartech.vajnarglobe.C.*;
+import static si.vajnartech.vajnarglobe.C.SERVER_ADDRESS;
+import static si.vajnartech.vajnarglobe.C.WATCHDOG_PWD;
+import static si.vajnartech.vajnarglobe.C.WATCHDOG_USR;
 
 public class Login extends AsyncTask<String, Void, Integer>
 {
-  private        REST<Integer> task;
-  private static String        token = "";
-  private        String        user, pwd;
-  private Gson gson;
+  private final REST<Integer> task;
+
+  private static String token = "";
+
+  private final String user;
+  private final String pwd;
+
+  private final Gson gson;
 
   Login(REST<Integer> task)
   {
@@ -88,10 +94,10 @@ public class Login extends AsyncTask<String, Void, Integer>
       return conn.getResponseCode();
     } catch (SocketTimeoutException e) {
       Log.i("REST Login", "Timeout connecting to settings server");
+      task.onFail();
     } catch (IOException e) {
       Log.i("REST Login", "Timeout connecting to settings server");
-      if (task.onFail != null)
-        task.onFail.execute(-1);
+      task.onFail();
       e.printStackTrace();
     }
     return null;
@@ -103,8 +109,7 @@ public class Login extends AsyncTask<String, Void, Integer>
       if (responseCode != null && responseCode == HttpURLConnection.HTTP_OK && task != null) {
         task.executeOnExecutor(THREAD_POOL_EXECUTOR, getToken());
       } else if (task != null && responseCode != null)
-        if (task.onFail != null)
-          task.onFail.execute(responseCode);
+        task.onFail();
     } catch (Exception e) {
       e.printStackTrace();
     }

@@ -5,7 +5,7 @@ import android.widget.TextView;
 
 final class TerminalWindow
 {
-  private TextView     tv;
+  private final TextView tv;
 
   TerminalWindow(View w)
   {

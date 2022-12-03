@@ -1,30 +1,20 @@
 package si.vajnartech.vajnarglobe;
 
-public abstract class Aproximator extends Thread
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+public abstract class Aproximator
 {
-  private int     to;
-  private boolean running = false;
+  ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
   Aproximator(int timeout)
   {
-    to = timeout;
-  }
-
-  @Override public void run()
-  {
-    while (running) {
-      go();
-      try {
-        Thread.sleep(1000 * to);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-        break;
-      }
-    }
+    executor.scheduleAtFixedRate(this::go, 0, timeout, TimeUnit.MILLISECONDS);
   }
 
   void end()
   {
-    running = false;
+    executor.shutdownNow();
   }
 
   abstract void go();

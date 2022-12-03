@@ -24,7 +24,7 @@ public class Place extends Area
   protected void mark(GeoPoint a, MainActivity act)
   {
     geoPoints.add(a);
-    new SendLocation(getName(), a.timestamp, a.lon, a.lat, act);
+    new SendLocation(getName(), a.timestamp, a.lon, a.lat);
     currentPoints.clear();
   }
 

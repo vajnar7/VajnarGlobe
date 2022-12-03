@@ -24,6 +24,7 @@ public abstract class GPS extends View implements LocationListener, View.OnTouch
 {
   protected Location location;
   protected RnDouble origin = null;
+  protected MainActivity activity;
 
   protected Paint paint = new Paint();
 
@@ -33,6 +34,7 @@ public abstract class GPS extends View implements LocationListener, View.OnTouch
   {
     super(ctx);
 
+    activity = ctx;
     location = new Location("");
     initGPSService(ctx);
     getDimensions(this);

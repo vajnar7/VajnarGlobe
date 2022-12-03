@@ -4,10 +4,11 @@ import static si.vajnartech.vajnarglobe.C.DELETE_AREA;
 
 public class DeleteArea extends REST<String>
 {
-  private String areaName;
-  DeleteArea(String areaName, MainActivity act)
+  private final String areaName;
+
+  DeleteArea(String areaName)
   {
-    super(String.format(DELETE_AREA, areaName), act);
+    super(DELETE_AREA);
     this.areaName = areaName;
   }
 
@@ -15,5 +16,10 @@ public class DeleteArea extends REST<String>
   public String backgroundFunc()
   {
     return callServer(areaName, OUTPUT_TYPE_JSON);
+  }
+
+  @Override public void onFail()
+  {
+
   }
 }

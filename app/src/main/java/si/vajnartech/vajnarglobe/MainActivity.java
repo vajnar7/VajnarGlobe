@@ -1,20 +1,22 @@
 package si.vajnartech.vajnarglobe;
 
+import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Display;
-import android.view.View;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentTransaction;
 
 // --crkne ko je aplikacija nafrisno dana v sistem GPS not granted
 // ++prevedi stringe
@@ -33,7 +35,6 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
-  CurrentArea currentArea     = null;
   MyFragment  currentFragment = null;
   FloatingActionButton fab;
 
@@ -41,8 +42,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
   protected void onCreate(Bundle savedInstanceState)
   {
     super.onCreate(savedInstanceState);
+
+//    currentArea = new CurrentArea(tx(R.string.new_area));
     setContentView(R.layout.activity_main);
-    if (C.GPS_SIMULATE) C.createArea();
     Display display = getWindowManager().getDefaultDisplay();
     display.getSize(C.size);
     Toolbar toolbar = findViewById(R.id.toolbar);
@@ -50,19 +52,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     fab = findViewById(R.id.fab);
     fab.setImageResource(R.drawable.play_arrow);
-    fab.setOnClickListener(new View.OnClickListener()
-    {
-      @Override
-      public void onClick(View view)
-      {
-        if (currentFragment instanceof F_Track)
-          if (C.GPS_SIMULATE)
-            _testTrack();
-          else
-            _confirmFirstPoint();
-        else if (currentFragment instanceof F_Capture)
-          ((F_Capture) currentFragment).push();
-      }
+    fab.setOnClickListener(view -> {
+      if (currentFragment instanceof F_Track)
+          confirmFirstPoint();
+      else if (currentFragment instanceof F_Capture)
+        ((F_Capture) currentFragment).push();
     });
 
     DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -73,25 +67,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     NavigationView navigationView = findViewById(R.id.nav_view);
     navigationView.setNavigationItemSelectedListener(this);
-    new GetAreas(this, new Runnable() {
-      @Override public void run()
-      {
-        Log.i(C.TAG, "Areas imported: " + C.areas.size());
-        setFragment("capture", F_Capture.class, new Bundle());
-      }
+    new GetAreas(() -> {
+    Log.i(C.TAG, "Areas imported: " + C.areas.size());
+    setFragment("capture", F_Capture.class, new Bundle());
     });
   }
 
-  private void _testTrack()
-  {
-    setStatus();
-    if (!C.isTesterRunning) {
-      C.isTesterRunning = true;
-      C.startTestGPSService(this);
-    }
-  }
-
-  private void _confirmFirstPoint()
+  private void confirmFirstPoint()
   {
     setStatus();
   }
@@ -110,7 +92,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
   @Override
   public boolean onCreateOptionsMenu(Menu menu)
   {
-    // Inflate the menu; this adds items to the action bar if it is present.
     getMenuInflater().inflate(R.menu.main, menu);
     return true;
   }
@@ -118,15 +99,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
   @Override
   public boolean onOptionsItemSelected(MenuItem item)
   {
-    // Handle action bar item clicks here. The action bar will
-    // automatically handle clicks on the Home/Up button, so long
-    // as you specify a parent activity in AndroidManifest.xml.
-    int id = item.getItemId();
-
-    //noinspection SimplifiableIfStatement
-    if (id == R.id.action_settings) {
+    if (item.getItemId() == R.id.action_settings)
       return true;
-    }
 
     return super.onOptionsItemSelected(item);
   }
@@ -134,15 +108,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
   @Override
   public boolean onNavigationItemSelected(@NonNull MenuItem item)
   {
-    switch(item.getItemId())
-    {
-    case R.id.id_capture:
+    if (item.getItemId() == R.id.id_capture)
       setFragment("capture", F_Capture.class, new Bundle());
-      break;
-    case R.id.id_track:
+    else if (item.getItemId() == R.id.id_track)
       setFragment("track", F_Track.class, new Bundle());
-      break;
-    }
 
     DrawerLayout drawer = findViewById(R.id.drawer_layout);
     drawer.closeDrawer(GravityCompat.START);

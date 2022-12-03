@@ -9,21 +9,20 @@ import android.location.Location;
 interface CaptureViewInterface
 {
   void printLocation(Location loc);
-  void printMessage(String msg);
+  CurrentArea getCurrentArea();
 }
 
 @SuppressLint("ViewConstructor")
-public class CaptureView extends Map
+public class CaptureView extends GeoMap
 {
-  private Paint paint = new Paint();
-  public GeoPoint currentPoint;
-  private MainActivity act;
-  private CaptureViewInterface intf;
+  private final Paint paint = new Paint();
+
+  GeoPoint currentPoint;
+  private final CaptureViewInterface intf;
 
   CaptureView(MainActivity ctx, CaptureViewInterface intf)
   {
     super(ctx);
-    act = ctx;
     this.intf = intf;
   }
 
@@ -51,12 +50,12 @@ public class CaptureView extends Map
     super.onDraw(canvas);
     if (currentPoint != null)
       currentPoint.draw(canvas, paint, Color.RED, 4, this);
-    if (act.currentArea.isConstructed())
-      act.currentArea.draw(canvas, paint, Color.BLACK, this);
+    if (intf.getCurrentArea().isConstructed())
+      intf.getCurrentArea().draw(canvas, paint, Color.BLACK, this);
     else {
-      for (GeoPoint p : act.currentArea.geoPoints)
+      for (GeoPoint p : intf.getCurrentArea().geoPoints)
         p.draw(canvas, paint, Color.BLUE, 6, this);
-      for (GeoPoint p : act.currentArea.currentPoints)
+      for (GeoPoint p : intf.getCurrentArea().currentPoints)
         p.draw(canvas, paint, Color.GREEN, 4, this);
     }
   }

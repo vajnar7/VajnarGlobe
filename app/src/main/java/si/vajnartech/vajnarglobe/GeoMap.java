@@ -13,11 +13,11 @@ import si.vajnartech.calculus.RnDouble;
 import si.vajnartech.calculus.Transformator;
 
 @SuppressLint("ViewConstructor")
-public class Map extends GPS implements Transformator
+class GeoMap extends GPS implements Transformator
 {
   private final D dK = new D();
 
-  Map(MainActivity ctx)
+  GeoMap(MainActivity ctx)
   {
     super(ctx);
   }
@@ -27,8 +27,8 @@ public class Map extends GPS implements Transformator
   {
     double   x1 = getWidth();
     double   x2 = getHeight();
-    R2Double o = new R2Double(x1, x2);
-    RnDouble a = o.divS(2.0);
+    R2Double o  = new R2Double(x1, x2);
+    RnDouble a  = o.divS(2.0);
     return new R2Double(a.get(0), a.get(1));
   }
 

@@ -7,16 +7,11 @@ import static si.vajnartech.vajnarglobe.C.GET_ALL;
 
 public class GetAreas extends REST<AreaObj>
 {
-  private Runnable run = null;
+  private final Runnable run;
 
-  private GetAreas(final MainActivity act)
+  GetAreas(Runnable run)
   {
-    super(GET_ALL, act);
-  }
-
-  GetAreas(MainActivity act, Runnable run)
-  {
-    this(act);
+    super(GET_ALL);
     this.run = run;
   }
 
@@ -24,6 +19,12 @@ public class GetAreas extends REST<AreaObj>
   public AreaObj backgroundFunc()
   {
     return callServer(null, REST.OUTPUT_TYPE_JSON);
+  }
+
+  @Override
+  public void onFail()
+  {
+
   }
 
   @Override

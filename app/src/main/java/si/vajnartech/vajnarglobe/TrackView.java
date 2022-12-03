@@ -16,7 +16,7 @@ import si.vajnartech.calculus.R2Double;
 import si.vajnartech.calculus.R2Function;
 import si.vajnartech.calculus.Transformator;
 
-import static si.vajnartech.vajnarglobe.C.Parameters.ZZ;
+import static si.vajnartech.vajnarglobe.C.Parameters.numPoints;
 import static si.vajnartech.vajnarglobe.C.TAG;
 import static si.vajnartech.vajnarglobe.C.areas;
 
@@ -24,31 +24,30 @@ interface TrackViewInterface
 {
   void printLocation(Location loc);
   void setAreaName(String name);
-  void printMessage(String msg);
 }
 
 @SuppressLint("ViewConstructor")
-public class TrackView extends si.vajnartech.vajnarglobe.Map
+public class TrackView extends GeoMap
 {
-  MainActivity act;
-  R2Double     aproxPosition = null;
-  private TrackViewInterface intf;
-  public  R2Double           currentPoint;
-  private R2Double           firstPoint;
+  private final TrackViewInterface intf;
+
+  private R2Double     aproxPosition = null;
+
+  private R2Double currentPoint;
+  private R2Double firstPoint;
   long currentTime;
 
-  Area currentArea;
+  private  Area currentArea;
   boolean isCalibrated = false;
 
   MyFunction   fs;
   MyDerivative fv;
-  Aproximator  A;
+  Aproximator  aproximator;
 
   TrackView(MainActivity ctx, TrackViewInterface intf)
   {
     super(ctx);
     this.intf = intf;
-    act = ctx;
   }
 
   VectorField H = new VectorField()
@@ -65,13 +64,7 @@ public class TrackView extends si.vajnartech.vajnarglobe.Map
     currentTime = System.currentTimeMillis();
     fs.put(currentTime, point);
     currentPoint = point;
-    ctx.runOnUiThread(new Runnable()
-    {
-      @Override public void run()
-      {
-        invalidate();
-      }
-    });
+    activity.runOnUiThread(this::invalidate);
   }
 
   @Override
@@ -231,8 +224,8 @@ public class TrackView extends si.vajnartech.vajnarglobe.Map
     R2Double f(String s)
     {
       if ("first".equals(s)) {
-        if (size() > ZZ)
-          return get(getKeys().get((size() - ZZ)));
+        if (size() > numPoints)
+          return get(getKeys().get((size() - numPoints)));
         return null;
       }
       return null;
@@ -276,13 +269,7 @@ public class TrackView extends si.vajnartech.vajnarglobe.Map
       if (fs != null) {
         aproxPosition = fs.f(System.currentTimeMillis());
         if (aproxPosition == null) return;
-        ctx.runOnUiThread(new Runnable()
-        {
-          @Override public void run()
-          {
-            invalidate();
-          }
-        });
+        activity.runOnUiThread(TrackView.this::invalidate);
       }
     }
   }
@@ -291,8 +278,7 @@ public class TrackView extends si.vajnartech.vajnarglobe.Map
   {
     fs = new MyFunction();
     fv = new MyDerivative(fs);
-    A = new MyAproximator(1);
-    A.start();
+    aproximator = new MyAproximator(1000);
   }
 }
 

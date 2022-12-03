@@ -1,18 +1,18 @@
 package si.vajnartech.vajnarglobe;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import static si.vajnartech.vajnarglobe.C.AREAS;
 
 public class SendLocation extends REST<LocationObj>
 {
-  private Double latitude;
-  private Double longitude;
-  private Long timestamp;
+  private final Double latitude;
+  private final Double longitude;
+  private final Long   timestamp;
 
-  SendLocation(String areaName, long timestamp, double longitude, double latitude, MainActivity act)
+  SendLocation(String areaName, long timestamp, double longitude, double latitude)
   {
-    super(String.format(AREAS, areaName), act);
+    super(String.format(AREAS, areaName));
     this.timestamp = timestamp;
     this.longitude = longitude;
     this.latitude = latitude;
@@ -21,7 +21,14 @@ public class SendLocation extends REST<LocationObj>
   @Override
   public LocationObj backgroundFunc()
   {
-    return callServer(new LocationData(timestamp, String.valueOf(longitude), String.valueOf(latitude)), OUTPUT_TYPE_JSON);
+    return callServer(new LocationData(timestamp, String.valueOf(longitude), String.valueOf(latitude)),
+                      OUTPUT_TYPE_JSON);
+  }
+
+  @Override
+  public void onFail()
+  {
+
   }
 
   @Override
@@ -34,7 +41,7 @@ public class SendLocation extends REST<LocationObj>
 @SuppressWarnings("WeakerAccess")
 class LocationData
 {
-  Long timestamp;
+  Long   timestamp;
   String lon;
   String lat;
 

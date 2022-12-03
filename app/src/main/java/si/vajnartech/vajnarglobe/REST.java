@@ -3,7 +3,6 @@ package si.vajnartech.vajnarglobe;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -21,56 +20,31 @@ import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 
-interface OnFail
-{
-  void execute(int errCode);
-}
-
-@SuppressWarnings({"unchecked", "ConstantConditions", "SameParameterValue", "WeakerAccess"})
+@SuppressWarnings({"unchecked", "ConstantConditions", "ResultOfMethodCallIgnored", "SameParameterValue"})
 public abstract class REST<T> extends AsyncTask<String, Void, T>
 {
-  private static final String TAG = "IZAA-REST";
+  private static final String TAG = "REST";
 
   static final         int OUTPUT_TYPE_JSON   = 0;
   private static final int OUTPUT_TYPE_STRING = 1;
   private static final int OUTPUT_TYPE_STREAM = 2;
 
-  private String url;
+  private final String url;
+
   private String token = "";
 
   private final Class<T> resultClass;
 
-  private Gson gson;
-  OnFail onFail;
+  private final Gson gson;
 
-  REST(String url, final MainActivity act)
-  {
-    this(url, new OnFail() {
-      @Override public void execute(int errCode)
-      {
-        String msg = String.valueOf(errCode);
-        if (errCode == -1)
-          msg = "Cannot contact server";
-        final String finalMsg = msg;
-        act.runOnUiThread(new Runnable() {
-          @Override public void run()
-          {
-            Toast.makeText(act, finalMsg, Toast.LENGTH_LONG).show();
-          }
-        });
-        Log.i(TAG, "Something went wrong: " + errCode);
-      }
-    });
-  }
-
-  REST(String url, OnFail onFail)
+  REST(String url)
   {
     super();
+
     resultClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     this.url = url;
     Log.i(TAG, "URL=" + url);
     this.gson = new Gson();
-    this.onFail = onFail;
     new Login((REST<Integer>) this).executeOnExecutor(Login.THREAD_POOL_EXECUTOR);
   }
 
@@ -87,7 +61,6 @@ public abstract class REST<T> extends AsyncTask<String, Void, T>
     return null;
   }
 
-  @SuppressWarnings("ResultOfMethodCallIgnored")
   private void writeToInputStream(InputStream in, OutputStream out)
   {
     byte[] buffer = new byte[4096];
@@ -111,7 +84,8 @@ public abstract class REST<T> extends AsyncTask<String, Void, T>
   T callServer(Object params, int objectType)
   {
     try {
-      URL               url  = new URL(this.url);
+      URL url = new URL(this.url);
+
       HttpURLConnection conn = (HttpURLConnection) url.openConnection();
       conn.setRequestMethod("POST");
       int readTimeout = 0;
@@ -163,18 +137,23 @@ public abstract class REST<T> extends AsyncTask<String, Void, T>
         Log.w(TAG, "Function response: " + url + " " +
                    responseCode + " " +
                    conn.getResponseMessage() + " " +
-                   resj.toString());
+                   resj);
       }
       return result;
     } catch (SocketTimeoutException e) {
       Log.w(TAG, "Timeout connecting to " + url);
+      onFail();
     } catch (ConnectException e) {
       Log.w(TAG, e.getMessage());
+      onFail();
     } catch (IOException e) {
+      onFail();
       e.printStackTrace();
     }
     return null;
   }
 
   public abstract T backgroundFunc();
+
+  public abstract void onFail();
 }
