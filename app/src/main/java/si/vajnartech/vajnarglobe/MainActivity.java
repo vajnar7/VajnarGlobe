@@ -1,6 +1,5 @@
 package si.vajnartech.vajnarglobe;
 
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -43,7 +42,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
   {
     super.onCreate(savedInstanceState);
 
-//    currentArea = new CurrentArea(tx(R.string.new_area));
     setContentView(R.layout.activity_main);
     Display display = getWindowManager().getDefaultDisplay();
     display.getSize(C.size);
@@ -67,10 +65,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     NavigationView navigationView = findViewById(R.id.nav_view);
     navigationView.setNavigationItemSelectedListener(this);
+
     new GetAreas(() -> {
-    Log.i(C.TAG, "Areas imported: " + C.areas.size());
-    setFragment("capture", F_Capture.class, new Bundle());
-    });
+      Log.i(C.TAG, "Areas imported: " + C.areas.size());
+      setFragment("capture", F_Capture.class, new Bundle());
+    }, this);
   }
 
   private void confirmFirstPoint()
@@ -142,11 +141,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return null;
       }
     return frag;
-  }
-
-  public MyFragment getCurrentFragment()
-  {
-    return currentFragment;
   }
 
   public String tx(int stringId, Object... formatArgs)

@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.lang.ref.WeakReference;
 import java.lang.reflect.ParameterizedType;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
@@ -29,6 +30,8 @@ public abstract class REST<T> extends AsyncTask<String, Void, T>
   private static final int OUTPUT_TYPE_STRING = 1;
   private static final int OUTPUT_TYPE_STREAM = 2;
 
+  protected final WeakReference<MainActivity> act;
+
   private final String url;
 
   private String token = "";
@@ -37,10 +40,10 @@ public abstract class REST<T> extends AsyncTask<String, Void, T>
 
   private final Gson gson;
 
-  REST(String url)
+  REST(String url, MainActivity act)
   {
     super();
-
+    this.act = new WeakReference<>(act);
     resultClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     this.url = url;
     Log.i(TAG, "URL=" + url);

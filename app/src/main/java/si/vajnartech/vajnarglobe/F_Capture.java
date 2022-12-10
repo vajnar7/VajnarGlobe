@@ -57,7 +57,7 @@ public class F_Capture extends MyFragment implements View.OnClickListener
   public void onClick(@NonNull View v)
   {
     if (v.getId() ==  R.id.b_clear) {
-      new DeleteArea(currentArea.areaName);
+      new DeleteArea(currentArea.areaName, act);
       currentArea.currentPoints.clear();
       currentArea.geoPoints.clear();
       myView.invalidate();

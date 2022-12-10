@@ -13,7 +13,7 @@
   <string name="track">Sledi</string>
   <string name="longitude">Longitude</string>
   <string name="construct">C</string>
-  <string name="server_conn_error">Unable to contact server</string>
+  <string name="server_conn_error">Napaka pri dostopu na strežnik</string>
   <string name="mark">M</string>
   <string name="lat">LAT</string>
   <string name="lon">LON</string>

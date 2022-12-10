@@ -1,5 +1,7 @@
 package si.vajnartech.vajnarglobe;
 
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,9 +11,9 @@ public class GetAreas extends REST<AreaObj>
 {
   private final Runnable run;
 
-  GetAreas(Runnable run)
+  GetAreas(Runnable run, MainActivity act)
   {
-    super(GET_ALL);
+    super(GET_ALL, act);
     this.run = run;
   }
 
@@ -24,7 +26,7 @@ public class GetAreas extends REST<AreaObj>
   @Override
   public void onFail()
   {
-
+    act.get().runOnUiThread(() -> Toast.makeText(act.get(), R.string.server_conn_error, Toast.LENGTH_LONG).show());
   }
 
   @Override

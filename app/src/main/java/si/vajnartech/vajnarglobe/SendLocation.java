@@ -10,9 +10,9 @@ public class SendLocation extends REST<LocationObj>
   private final Double longitude;
   private final Long   timestamp;
 
-  SendLocation(String areaName, long timestamp, double longitude, double latitude)
+  SendLocation(String areaName, long timestamp, double longitude, double latitude, MainActivity act)
   {
-    super(String.format(AREAS, areaName));
+    super(String.format(AREAS, areaName), act);
     this.timestamp = timestamp;
     this.longitude = longitude;
     this.latitude = latitude;
