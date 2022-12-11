@@ -13,7 +13,7 @@ import si.vajnartech.calculus.RnDouble;
 import si.vajnartech.calculus.Transformator;
 
 @SuppressLint("ViewConstructor")
-class GeoMap extends GPS implements Transformator
+class GeoMap extends GPSSimulator implements Transformator
 {
   private final D dK = new D();
 

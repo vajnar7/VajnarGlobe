@@ -40,7 +40,7 @@ public abstract class GPS extends View implements LocationListener, View.OnTouch
     getDimensions(this);
   }
 
-  private void initGPSService(MainActivity ctx)
+  protected void initGPSService(MainActivity ctx)
   {
     final String[] INITIAL_PERMS = {
         Manifest.permission.ACCESS_FINE_LOCATION,
