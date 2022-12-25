@@ -12,7 +12,7 @@
     android:text="@string/new_area" tools:ignore="LabelFor" />
   <TextView android:id="@+id/msg_window" android:layout_width="match_parent" android:layout_height="60dp"
     android:background="@color/colorMessages" android:textAlignment="center" android:textSize="36sp" />
-  <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
+  <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
     android:orientation="horizontal">
     <Button android:id="@+id/b_mark" android:layout_width="wrap_content" android:layout_height="wrap_content"
       android:layout_weight="1" android:backgroundTint="@color/colorBtn3" android:text="@string/mark"
@@ -20,8 +20,19 @@
     <Button android:id="@+id/b_construct" android:layout_width="wrap_content" android:layout_height="wrap_content"
       android:layout_weight="1" android:backgroundTint="@color/colorBtn1" android:text="@string/construct"
       tools:ignore="ButtonStyle" />
-    <Button android:id="@+id/b_clear" android:layout_width="wrap_content" android:layout_height="wrap_content"
-      android:layout_weight="1" android:backgroundTint="@color/colorRead" android:text="@string/clear"
-      android:textColor="#000000" style="?android:attr/buttonBarButtonStyle" />
+    <Button android:id="@+id/b_clear" style="?android:attr/buttonBarButtonStyle" android:layout_width="wrap_content"
+      android:layout_height="wrap_content" android:layout_weight="1" android:backgroundTint="@color/colorRead"
+      android:text="@string/clear" android:textColor="#000000" />
+  </LinearLayout>
+  <LinearLayout android:id="@+id/test_buttons" android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="horizontal" android:visibility="gone">
+    <Button android:id="@+id/test_left" android:layout_width="wrap_content" android:layout_height="wrap_content"
+      android:layout_weight="1" android:text="Left" />
+    <Button android:id="@+id/test_up" android:layout_width="wrap_content" android:layout_height="wrap_content"
+      android:layout_weight="1" android:text="Up" />
+    <Button android:id="@+id/test_down" android:layout_width="wrap_content" android:layout_height="wrap_content"
+      android:layout_weight="1" android:text="Down" />
+    <Button android:id="@+id/test_right" android:layout_width="wrap_content" android:layout_height="wrap_content"
+      android:layout_weight="1" android:text="Right" />
   </LinearLayout>
 </LinearLayout>

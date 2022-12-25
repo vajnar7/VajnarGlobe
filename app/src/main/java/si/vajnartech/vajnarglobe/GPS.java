@@ -22,7 +22,7 @@ import static si.vajnartech.vajnarglobe.C.Parameters.minTime;
 
 public abstract class GPS extends View implements LocationListener, View.OnTouchListener
 {
-  protected Location location;
+  protected volatile Location location;
   protected RnDouble origin = null;
   protected MainActivity activity;
 

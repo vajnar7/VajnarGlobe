@@ -30,7 +30,11 @@ abstract public class Area extends ArrayList<Line>
 
   protected Area constructArea()
   {
-    if (geoPoints.size() == 0) return null;
+    if (geoPoints.size() == 0) {
+      if (currentPoints.size() < 3) return null;
+      geoPoints.addAll(currentPoints);
+      _sortPoints(geoPoints);
+    }
     for (int i = 0; i < geoPoints.size() - 1; i++)
       add(new Line(geoPoints.get(i), geoPoints.get(i + 1)));
     add(new Line(geoPoints.get(geoPoints.size() - 1), geoPoints.get(0)));

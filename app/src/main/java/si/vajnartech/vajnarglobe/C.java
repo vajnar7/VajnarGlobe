@@ -11,6 +11,7 @@ class C
 //  static final String SERVER_ADDRESS = "http://89.142.196.96:8007/";
   static final String SERVER_ADDRESS = "http://192.168.1.101:8007/";
 
+  static final boolean DEBUG_MODE = true;
 
   static final String AREAS          = SERVER_ADDRESS + "rest/geopoint/%s";
   static final String DELETE_AREA    = SERVER_ADDRESS + "rest/delete/%s";

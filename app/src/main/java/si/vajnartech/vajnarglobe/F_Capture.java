@@ -70,6 +70,14 @@ public class F_Capture extends MyFragment implements View.OnClickListener
         currentArea.constructArea();
         myView.invalidate();
       }
+    } else if (v.getId() == R.id.test_left) {
+      myView.mvLeft();
+    } else if (v.getId() == R.id.test_right) {
+      myView.mvRight();
+    } else if (v.getId() == R.id.test_up) {
+      myView.mvUp();
+    } else if (v.getId() == R.id.test_down) {
+      myView.mvDown();
     }
   }
 
@@ -86,6 +94,14 @@ public class F_Capture extends MyFragment implements View.OnClickListener
   {
     layout.findViewById(R.id.b_mark).setOnClickListener(this);
     layout.findViewById(R.id.b_construct).setOnClickListener(this);
+
+    if (C.DEBUG_MODE) {
+      layout.findViewById(R.id.test_buttons).setVisibility(View.VISIBLE);
+      layout.findViewById(R.id.test_left).setOnClickListener(this);
+      layout.findViewById(R.id.test_right).setOnClickListener(this);
+      layout.findViewById(R.id.test_up).setOnClickListener(this);
+      layout.findViewById(R.id.test_down).setOnClickListener(this);
+    }
   }
 
   private void _defaultLocation()

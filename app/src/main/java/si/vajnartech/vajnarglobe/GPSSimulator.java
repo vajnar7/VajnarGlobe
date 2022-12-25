@@ -1,7 +1,6 @@
 package si.vajnartech.vajnarglobe;
 
 import android.location.Location;
-import android.util.Log;
 
 abstract class GPSSimulator extends GPS
 {
@@ -15,11 +14,41 @@ abstract class GPSSimulator extends GPS
   {
     location.setLatitude(C.DEF_LATITUDE);
     location.setLongitude(C.DEF_LONGITUDE);
-    new MoveSimulator();
+  }
+
+  public void mvLeft()
+  {
+    move(-1, 0);
+  }
+
+  public void mvRight()
+  {
+    move(1, 0);
+  }
+
+  public void mvDown()
+  {
+    move(0, -1);
+  }
+
+  public void mvUp()
+  {
+    move(0, 1);
   }
 
 
+  private void move(int xDir, int yDir)
+  {
+    Location tmpLocation = new Location(location);
+    double lat = location.getLatitude() + (0.00001 * yDir);
+    double lon = location.getLongitude() + (0.00001 * xDir);
 
+    tmpLocation.setLongitude(lon);
+    tmpLocation.setLatitude(lat);
+    onLocationChanged(tmpLocation);
+  }
+
+  @SuppressWarnings({"BusyWait", "unused"})
   class MoveSimulator extends Thread
   {
     boolean running;
@@ -36,9 +65,6 @@ abstract class GPSSimulator extends GPS
         Location tmpLocation = new Location(location);
         double lat = location.getLatitude() + 0.00001;
         double lon = location.getLongitude() + 0.00001;
-
-        Log.i("pepe", "dzzzzk" + " " + lon + "  " + lat);
-
 
         tmpLocation.setLongitude(lon);
         tmpLocation.setLatitude(lat);

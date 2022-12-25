@@ -35,7 +35,6 @@ import androidx.fragment.app.FragmentTransaction;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
   MyFragment  currentFragment = null;
-  FloatingActionButton fab;
 
   @Override
   protected void onCreate(Bundle savedInstanceState)
@@ -48,14 +47,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Toolbar toolbar = findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
-    fab = findViewById(R.id.fab);
-    fab.setImageResource(R.drawable.play_arrow);
-    fab.setOnClickListener(view -> {
-      if (currentFragment instanceof F_Track)
-          confirmFirstPoint();
-      else if (currentFragment instanceof F_Capture)
-        ((F_Capture) currentFragment).push();
-    });
+//    fab = findViewById(R.id.fab);
+//    fab.setImageResource(R.drawable.play_arrow);
+//    fab.setOnClickListener(view -> {
+//      if (currentFragment instanceof F_Track)
+//          confirmFirstPoint();
+//      else if (currentFragment instanceof F_Capture)
+//        ((F_Capture) currentFragment).push();
+//    });
 
     DrawerLayout drawer = findViewById(R.id.drawer_layout);
     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -159,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         frag.startAproximator();
       else
         frag.reset();
-      fab.setImageResource(frag.isCalibrated() ? R.drawable.ic_pause : R.drawable.play_arrow);
+//      fab.setImageResource(frag.isCalibrated() ? R.drawable.ic_pause : R.drawable.play_arrow);
       }
   }
 }
