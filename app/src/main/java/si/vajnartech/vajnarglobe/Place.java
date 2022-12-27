@@ -28,6 +28,12 @@ public class Place extends Area
   }
 
   @Override
+  public void push()
+  {
+
+  }
+
+  @Override
   protected ArrayList<R2Double> process(R2Double p)
   {
     ArrayList<R2Double> closestPoints = new ArrayList<>();

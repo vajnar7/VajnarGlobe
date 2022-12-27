@@ -51,7 +51,6 @@ public class F_Capture extends MyFragment implements View.OnClickListener
     myView.invalidate();
   }
 
-  // TODO urejanje obmocij da izbrises obmocje/select ...
   @Override
   public void onClick(@NonNull View v)
   {

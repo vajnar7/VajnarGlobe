@@ -32,6 +32,8 @@ import androidx.fragment.app.FragmentTransaction;
 // ++med kontaktiranjem na server progres dialog/bar
 // --ce se ne more kontaktirati server retry
 // undo pri mark tockah, tudi pri construct medtem ko pri push ostane samo delete area!!
+// urejanje obmocij da izbrises obmocje/select ...
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {

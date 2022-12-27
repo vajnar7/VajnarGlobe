@@ -59,6 +59,8 @@ abstract public class Area extends ArrayList<Line>
 
   abstract protected void mark(GeoPoint a);
 
+  abstract public void push();
+
   abstract protected ArrayList<R2Double> process(R2Double p);
 
   abstract public void draw(Canvas canvas, Paint paint, int color, Transformator tr);
