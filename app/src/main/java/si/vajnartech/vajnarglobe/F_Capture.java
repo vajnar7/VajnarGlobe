@@ -47,7 +47,6 @@ public class F_Capture extends MyFragment implements View.OnClickListener
       currentArea.setName(areaName.getText().toString());
       areaName.setEnabled(false);
     }
-    currentArea.mark(myView.currentPoint, act);
     Toast.makeText(act, "Sent", Toast.LENGTH_SHORT).show();
     myView.invalidate();
   }
@@ -58,12 +57,11 @@ public class F_Capture extends MyFragment implements View.OnClickListener
   {
     if (v.getId() ==  R.id.b_clear) {
       new DeleteArea(currentArea.areaName, act);
-      currentArea.currentPoints.clear();
       currentArea.geoPoints.clear();
       myView.invalidate();
       getAreaNameCointainer().setEnabled(true);
     } else if (v.getId() == R.id.b_mark) {
-      currentArea.add(myView.currentPoint);
+      currentArea.mark(myView.currentPoint);
       myView.invalidate();
     } else if (v.getId() == R.id.b_construct) {
       if (currentArea != null) {

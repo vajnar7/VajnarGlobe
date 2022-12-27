@@ -9,15 +9,15 @@ class C
 {
   // ce dostopamo od zunaj
 //  static final String SERVER_ADDRESS = "http://89.142.196.96:8007/";
-  static final String SERVER_ADDRESS = "http://192.168.1.101:8007/";
+  static final String SERVER_ADDRESS = "http://192.168.1.10:8007/";
 
   static final boolean DEBUG_MODE = true;
 
   static final String AREAS          = SERVER_ADDRESS + "rest/geopoint/%s";
   static final String DELETE_AREA    = SERVER_ADDRESS + "rest/delete/%s";
   static final String GET_ALL        = SERVER_ADDRESS + "rest/area/";
-  static final String WATCHDOG_USR   = "vajnar";
-  static final String WATCHDOG_PWD   = "AldebaraN7";
+  static final String WATCHDOG_USR   = "geoplazma";
+  static final String WATCHDOG_PWD   = "geoplazma";
 
   static final String TAG = "pepe";
 

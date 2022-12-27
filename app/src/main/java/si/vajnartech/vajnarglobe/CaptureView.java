@@ -55,8 +55,6 @@ public class CaptureView extends GeoMap
     else {
       for (GeoPoint p : intf.getCurrentArea().geoPoints)
         p.draw(canvas, paint, Color.BLUE, 6, this);
-      for (GeoPoint p : intf.getCurrentArea().currentPoints)
-        p.draw(canvas, paint, Color.GREEN, 4, this);
     }
   }
 }

@@ -31,6 +31,7 @@ import androidx.fragment.app.FragmentTransaction;
 // --nastavljanje actiona v FAB
 // ++med kontaktiranjem na server progres dialog/bar
 // --ce se ne more kontaktirati server retry
+// undo pri mark tockah, tudi pri construct medtem ko pri push ostane samo delete area!!
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {

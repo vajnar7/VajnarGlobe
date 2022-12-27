@@ -11,10 +11,10 @@ class CurrentArea extends Place
   @Override
   protected Area constructArea()
   {
-    Area a = super.constructArea();
-    if (a != null)
+    Area area = super.constructArea();
+    if (area != null)
       isConstructed = true;
-    return a;
+    return area;
   }
 
   public void setName(String name)

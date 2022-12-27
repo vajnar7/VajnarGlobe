@@ -13,14 +13,13 @@ import si.vajnartech.calculus.Transformator;
 abstract public class Area extends ArrayList<Line>
 {
   String areaName;
-  ArrayList<GeoPoint> geoPoints = new ArrayList<>();
-  ArrayList<GeoPoint> currentPoints = new ArrayList<>();
+  protected ArrayList<GeoPoint> geoPoints = new ArrayList<>();
 
   Area(String name, ArrayList<GeoPoint> p)
   {
     areaName = name;
     geoPoints.addAll(p);
-    _sortPoints(geoPoints);
+    sortPoints(geoPoints);
   }
 
   Area(String name)
@@ -28,13 +27,15 @@ abstract public class Area extends ArrayList<Line>
     areaName = name;
   }
 
+  protected ArrayList<GeoPoint> getGeoPoints()
+  {
+    return geoPoints;
+  }
   protected Area constructArea()
   {
-    if (geoPoints.size() == 0) {
-      if (currentPoints.size() < 3) return null;
-      geoPoints.addAll(currentPoints);
-      _sortPoints(geoPoints);
-    }
+    if (geoPoints.size() < 3)
+      return null;
+    sortPoints(geoPoints);
     for (int i = 0; i < geoPoints.size() - 1; i++)
       add(new Line(geoPoints.get(i), geoPoints.get(i + 1)));
     add(new Line(geoPoints.get(geoPoints.size() - 1), geoPoints.get(0)));
@@ -46,7 +47,7 @@ abstract public class Area extends ArrayList<Line>
     return geoPoints.get(0);
   }
 
-  private void _sortPoints(ArrayList<GeoPoint> p)
+  private void sortPoints(ArrayList<GeoPoint> p)
   {
     p.sort(Comparator.comparingLong(o -> o.timestamp));
   }
@@ -56,7 +57,7 @@ abstract public class Area extends ArrayList<Line>
     return areaName;
   }
 
-  abstract protected void mark(GeoPoint a, MainActivity activity);
+  abstract protected void mark(GeoPoint a);
 
   abstract protected ArrayList<R2Double> process(R2Double p);
 
