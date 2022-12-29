@@ -58,9 +58,9 @@ public class Login extends AsyncTask<String, Void, Integer>
     if (getToken().length() > 0)
       return HttpURLConnection.HTTP_OK;
     try {
-      String WATCHDOG = SERVER_ADDRESS + "rest/";
-      URL    url      = new URL(WATCHDOG + "token/");
-      Log.i("REST", "Login dib: " + WATCHDOG + "token/");
+      String login = SERVER_ADDRESS;
+      URL    url      = new URL(login + "token/");
+      Log.i("REST", "Login dib: " + login + "token/");
       HttpURLConnection conn = (HttpURLConnection) url.openConnection();
       conn.setConnectTimeout(30000);
       conn.setReadTimeout(30000);

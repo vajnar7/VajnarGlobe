@@ -90,7 +90,7 @@ public abstract class REST<T> extends AsyncTask<String, Void, T>
       URL url = new URL(this.url);
 
       HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-      conn.setRequestMethod("POST");
+      conn.setRequestMethod("GET");
       int readTimeout = 0;
       conn.setConnectTimeout(readTimeout);
       conn.setReadTimeout(readTimeout);
