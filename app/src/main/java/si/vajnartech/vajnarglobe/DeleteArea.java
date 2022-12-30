@@ -8,7 +8,7 @@ public class DeleteArea extends REST<String>
 
   DeleteArea(String areaName, MainActivity act)
   {
-    super(DELETE_AREA, act);
+    super(DELETE_AREA, act, "DELETE");
     this.areaName = areaName;
   }
 

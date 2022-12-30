@@ -13,7 +13,7 @@ public class GetAreas extends REST<AreaObj>
 
   GetAreas(Runnable run, MainActivity act)
   {
-    super(GET_ALL, act);
+    super(GET_ALL, act, "GET");
     this.run = run;
   }
 
@@ -34,6 +34,8 @@ public class GetAreas extends REST<AreaObj>
   {
     super.onPostExecute(j);
     if (j != null) {
+      if (j.response.isEmpty())
+        act.get().runOnUiThread(() -> Toast.makeText(act.get(), R.string.no_areas, Toast.LENGTH_LONG).show());
       C.areas.clear();
       for (AreaObj.Area a : j.response) {
         if (a.points.size() < 3) continue;
@@ -46,7 +48,8 @@ public class GetAreas extends REST<AreaObj>
       }
       if (run != null)
         run.run();
-    }
+    } else
+      onFail();
   }
 }
 

@@ -6,7 +6,7 @@ public class PushArea extends REST<PushArea.PushReturnObj>
 {
   PushArea(String url, MainActivity act)
   {
-    super(url, act);
+    super(url, act, "PUT");
   }
 
   @Override

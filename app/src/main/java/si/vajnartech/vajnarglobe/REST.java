@@ -20,11 +20,13 @@ import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.util.Objects;
 
-@SuppressWarnings({"unchecked", "ConstantConditions", "ResultOfMethodCallIgnored", "SameParameterValue"})
+@SuppressWarnings({"unchecked", "ResultOfMethodCallIgnored", "SameParameterValue"})
 public abstract class REST<T> extends AsyncTask<String, Void, T>
 {
   private static final String TAG = "REST";
+  protected String requestMethod;
 
   static final         int OUTPUT_TYPE_JSON   = 0;
   private static final int OUTPUT_TYPE_STRING = 1;
@@ -40,11 +42,13 @@ public abstract class REST<T> extends AsyncTask<String, Void, T>
 
   private final Gson gson;
 
-  REST(String url, MainActivity act)
+  REST(String url, MainActivity act, String requestMethod)
   {
     super();
+    this.requestMethod = requestMethod;
     this.act = new WeakReference<>(act);
-    resultClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    resultClass = (Class<T>) ((ParameterizedType) Objects.requireNonNull(getClass().
+        getGenericSuperclass())).getActualTypeArguments()[0];
     this.url = url;
     Log.i(TAG, "URL=" + url);
     this.gson = new Gson();
@@ -90,7 +94,7 @@ public abstract class REST<T> extends AsyncTask<String, Void, T>
       URL url = new URL(this.url);
 
       HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-      conn.setRequestMethod("POST");
+      conn.setRequestMethod(requestMethod);
       int readTimeout = 0;
       conn.setConnectTimeout(readTimeout);
       conn.setReadTimeout(readTimeout);

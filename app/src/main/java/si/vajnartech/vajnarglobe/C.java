@@ -15,7 +15,7 @@ class C
 
   static final String AREAS          = SERVER_ADDRESS + "rest/geopoint/%s";
   static final String DELETE_AREA    = SERVER_ADDRESS + "rest/delete/%s";
-  static final String GET_ALL        = SERVER_ADDRESS + "rest/area/";
+  static final String GET_ALL        = SERVER_ADDRESS + "areas/";
   static final String WATCHDOG_USR   = "geoplazma";
   static final String WATCHDOG_PWD   = "geoplazma";
 
