@@ -13,7 +13,7 @@ public class GetAreas extends REST<AreaObj>
 
   GetAreas(Runnable run, MainActivity act)
   {
-    super(GET_ALL, act, "GET");
+    super(GET_ALL, act, "POST");
     this.run = run;
   }
 
