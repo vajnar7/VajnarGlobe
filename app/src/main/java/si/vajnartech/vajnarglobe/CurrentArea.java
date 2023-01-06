@@ -9,7 +9,7 @@ class CurrentArea extends Place
   }
 
   @Override
-  protected Area constructArea()
+  public Area constructArea()
   {
     Area area = super.constructArea();
     if (area != null)
