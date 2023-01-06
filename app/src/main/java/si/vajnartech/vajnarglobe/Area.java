@@ -31,7 +31,7 @@ abstract public class Area extends ArrayList<Line>
   {
     return geoPoints;
   }
-  protected Area constructArea()
+  public Area constructArea()
   {
     if (geoPoints.size() < 3)
       return null;
