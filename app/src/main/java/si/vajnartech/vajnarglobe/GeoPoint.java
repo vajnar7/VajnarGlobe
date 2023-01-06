@@ -9,7 +9,7 @@ public class GeoPoint extends R2Double
   double lon;
   double lat;
 
-  GeoPoint(double lon, double lat)
+  public GeoPoint(double lon, double lat)
   {
     super(lon, lat);
     this.timestamp = System.currentTimeMillis();

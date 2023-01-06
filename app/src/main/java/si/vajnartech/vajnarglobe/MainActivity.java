@@ -16,6 +16,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentTransaction;
+import si.vajnartech.vajnarglobe.rest.Areas;
 
 // --crkne ko je aplikacija nafrisno dana v sistem GPS not granted
 // ++prevedi stringe
@@ -68,10 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView = findViewById(R.id.nav_view);
     navigationView.setNavigationItemSelectedListener(this);
 
-    new GetAreas(() -> {
-      Log.i(C.TAG, "Areas imported: " + C.areas.size());
-      setFragment("capture", F_Capture.class, new Bundle());
-    }, this);
+    new Areas("GET", () -> setFragment("capture", F_Capture.class, new Bundle()), this);
   }
 
   private void confirmFirstPoint()

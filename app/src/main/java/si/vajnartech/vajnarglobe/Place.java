@@ -10,7 +10,7 @@ import si.vajnartech.calculus.Transformator;
 
 public class Place extends Area
 {
-  Place(String name, ArrayList<GeoPoint> points)
+  public Place(String name, ArrayList<GeoPoint> points)
   {
     super(name, points);
   }
