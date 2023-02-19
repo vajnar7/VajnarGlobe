@@ -35,20 +35,22 @@ public class F_Capture extends MyFragment implements View.OnClickListener
     return res;
   }
 
-  public void push()
+  private void push()
   {
     EditText areaName = getAreaNameCointainer();
-    if (areaName.getText().toString().equals(act.tx(R.string.new_area)) ||
-        C.areas.get(areaName.getText().toString()) != null) {
+    String name = areaName.getText().toString();
+    if (name.isEmpty())
+    {
       areaName.setError(act.tx(R.string.error_wrong_name));
       return;
     }
-    if (areaName.isEnabled()) {
-      currentArea.setName(areaName.getText().toString());
-      areaName.setEnabled(false);
+    currentArea.setName(name);
+    if (currentArea.constructArea()) {
+      currentArea.push(act);
+      Toast.makeText(act, "Sent", Toast.LENGTH_SHORT).show();
+      return;
     }
-    Toast.makeText(act, "Sent", Toast.LENGTH_SHORT).show();
-    myView.invalidate();
+    Toast.makeText(act, "Error constructing area", Toast.LENGTH_SHORT).show();
   }
 
   @Override
@@ -64,7 +66,7 @@ public class F_Capture extends MyFragment implements View.OnClickListener
       myView.invalidate();
     } else if (v.getId() == R.id.b_construct) {
       if (currentArea != null) {
-        currentArea.constructArea();
+        push();
         myView.invalidate();
       }
     } else if (v.getId() == R.id.test_left) {

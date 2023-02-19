@@ -12,7 +12,7 @@ import si.vajnartech.calculus.Transformator;
 @SuppressWarnings("unused")
 abstract public class Area extends ArrayList<Line>
 {
-  String areaName;
+  protected String areaName;
   protected ArrayList<GeoPoint> geoPoints = new ArrayList<>();
 
   Area(String name, ArrayList<GeoPoint> p)
@@ -31,15 +31,15 @@ abstract public class Area extends ArrayList<Line>
   {
     return geoPoints;
   }
-  public Area constructArea()
+  public boolean constructArea()
   {
     if (geoPoints.size() < 3)
-      return null;
+      return false;
     sortPoints(geoPoints);
     for (int i = 0; i < geoPoints.size() - 1; i++)
       add(new Line(geoPoints.get(i), geoPoints.get(i + 1)));
     add(new Line(geoPoints.get(geoPoints.size() - 1), geoPoints.get(0)));
-    return this;
+    return true;
   }
 
   R2Double getFirstPoint()
@@ -52,14 +52,9 @@ abstract public class Area extends ArrayList<Line>
     p.sort(Comparator.comparingLong(o -> o.timestamp));
   }
 
-  public String getName()
-  {
-    return areaName;
-  }
-
   abstract protected void mark(GeoPoint a);
 
-  abstract public void push();
+  abstract public void push(MainActivity act);
 
   abstract protected ArrayList<R2Double> process(R2Double p);
 

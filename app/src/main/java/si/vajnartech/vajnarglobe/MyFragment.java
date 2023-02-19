@@ -16,9 +16,9 @@ public abstract class MyFragment extends DialogFragment implements TrackViewInte
 {
   MainActivity   act;
   TerminalWindow terminal = null;
-  private   View        layout;
-  protected CurrentArea currentArea;
 
+  private View layout;
+  protected CurrentArea currentArea;
 
   public LinearLayout createView(@NonNull LayoutInflater inflater, ViewGroup container)
   {
@@ -28,7 +28,7 @@ public abstract class MyFragment extends DialogFragment implements TrackViewInte
     layout = inflater.inflate(R.layout.bidr, container, false);
     res.addView(layout);
     init(layout);
-    currentArea = new CurrentArea(act.tx(R.string.new_area));
+    currentArea = new CurrentArea();
     return res;
   }
 

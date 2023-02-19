@@ -2,12 +2,11 @@ package si.vajnartech.vajnarglobe;
 
 import si.vajnartech.calculus.R2Double;
 
-@SuppressWarnings("NullableProblems")
 public class GeoPoint extends R2Double
 {
-  long    timestamp;
-  double lon;
-  double lat;
+  public long timestamp;
+  public double lon;
+  public double lat;
 
   public GeoPoint(double lon, double lat)
   {
@@ -15,15 +14,5 @@ public class GeoPoint extends R2Double
     this.timestamp = System.currentTimeMillis();
     this.lon = lon;
     this.lat = lat;
-  }
-
-  @Override
-  public String toString()
-  {
-    return "GeoPoint{" +
-           "timestamp=" + timestamp +
-           "lon=" + lon +
-           ", lat=" + lat +
-           '}';
   }
 }

@@ -4,6 +4,7 @@ import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import si.vajnartech.vajnarglobe.Area;
 import si.vajnartech.vajnarglobe.C;
@@ -16,6 +17,8 @@ import si.vajnartech.vajnarglobe.R;
 public class Areas extends RestBase<AreasObj>
 {
   private final Runnable runAfter;
+  ArrayList<GeoPoint> geoPoints;
+  String name;
 
   public Areas(String requestMethod, Runnable runAfter, MainActivity act)
   {
@@ -23,17 +26,28 @@ public class Areas extends RestBase<AreasObj>
     this.runAfter = runAfter;
   }
 
+  public Areas(MainActivity act, ArrayList<GeoPoint> geoPoints, String name)
+  {
+    super(C.AREAS_API, "POST", act);
+    this.runAfter = null;
+    this.geoPoints = geoPoints;
+    this.name = name;
+  }
+
   @Override
   protected void onPostExecute(AreasObj areasObj)
   {
-    if (areasObj != null) {
+    if (Objects.equals(requestMethod, "POST")) {
+      if (areasObj.return_code != 0)
+        onFail();
+    } else if (areasObj != null) {
       if (areasObj.response.isEmpty())
         Toast.makeText(act.get(), R.string.no_areas, Toast.LENGTH_LONG).show();
       C.areas.clear();
-      for (AreasObj.AreaObj a : areasObj.response) {
+      for (AreaObjR a : areasObj.response) {
         if (a.points.size() < 3) continue;
         ArrayList<GeoPoint> points = new ArrayList<>();
-        for (AreasObj.PointObj p : a.points)
+        for (AreaObjR.PointObj p : a.points)
           points.add(new GeoPoint(p.lon, p.lat));
         Area newArea = new Place(a.name, points);
         C.areas.put(a.name, newArea);
@@ -48,6 +62,9 @@ public class Areas extends RestBase<AreasObj>
   @Override
   protected AreasObj backgroundFunc()
   {
+    if (Objects.equals(requestMethod, "POST")) {
+      return callServer(new AreaObj(geoPoints, name));
+    }
     return callServer(null);
   }
 

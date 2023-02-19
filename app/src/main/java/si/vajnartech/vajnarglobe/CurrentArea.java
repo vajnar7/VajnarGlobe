@@ -3,18 +3,16 @@ package si.vajnartech.vajnarglobe;
 class CurrentArea extends Place
 {
   private boolean isConstructed = false;
-  CurrentArea(String name)
+  CurrentArea()
   {
-    super(name);
+    super("");
   }
 
   @Override
-  public Area constructArea()
+  public boolean constructArea()
   {
-    Area area = super.constructArea();
-    if (area != null)
-      isConstructed = true;
-    return area;
+    isConstructed = super.constructArea();
+    return isConstructed;
   }
 
   public void setName(String name)

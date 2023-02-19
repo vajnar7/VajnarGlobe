@@ -1,7 +1,5 @@
 package si.vajnartech.vajnarglobe.rest;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,10 +32,4 @@ public class AreaObj extends RestBaseObject
     }
   }
 
-  @Override
-  @JsonIgnore
-  protected int getNumParams()
-  {
-    return 2;
-  }
 }
