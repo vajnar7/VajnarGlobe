@@ -1,6 +1,8 @@
 package si.vajnartech.vajnarglobe.rest;
 
 import android.net.Uri;
+import android.util.Log;
+import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -9,15 +11,20 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 import si.vajnartech.vajnarglobe.Json;
+import si.vajnartech.vajnarglobe.MainActivity;
+import si.vajnartech.vajnarglobe.R;
 
 class RestLogin<T extends RestBaseObject> extends AsyncTask<String, Integer>
 {
+  protected final WeakReference<MainActivity> act;
+
   protected String url;
   protected String user;
   protected String password;
@@ -26,12 +33,13 @@ class RestLogin<T extends RestBaseObject> extends AsyncTask<String, Integer>
 
   protected RestBase<T> task;
 
-  RestLogin(RestBase<T> task, String url, String user, String password)
+  RestLogin(RestBase<T> task, String url, String user, String password, MainActivity act)
   {
     this.url = url;
     this.user = user;
     this.password = password;
     this.task = task;
+    this.act = new WeakReference<>(act);
   }
 
   @Override
@@ -75,6 +83,8 @@ class RestLogin<T extends RestBaseObject> extends AsyncTask<String, Integer>
           }
           br.close();
           is.close();
+        } else {
+          onFail();
         }
         return token;
       } finally {
@@ -82,7 +92,9 @@ class RestLogin<T extends RestBaseObject> extends AsyncTask<String, Integer>
           conn.disconnect();
       }
     } catch (SocketTimeoutException ignored) {
+      onFail();
     } catch (IOException e) {
+      onFail();
       e.printStackTrace();
     }
     return null;
@@ -100,5 +112,10 @@ class RestLogin<T extends RestBaseObject> extends AsyncTask<String, Integer>
   static class RegistrationToken
   {
     public String token;
+  }
+
+  protected void onFail()
+  {
+    act.get().runOnUiThread(() -> Toast.makeText(act.get(), R.string.server_conn_error, Toast.LENGTH_LONG).show());
   }
 }

@@ -13,6 +13,7 @@ import android.widget.Toast;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
+import si.vajnartech.vajnarglobe.rest.Areas;
 
 import static si.vajnartech.vajnarglobe.C.areas;
 
@@ -57,7 +58,7 @@ public class F_Capture extends MyFragment implements View.OnClickListener
   public void onClick(@NonNull View v)
   {
     if (v.getId() ==  R.id.b_clear) {
-      new DeleteArea(currentArea.areaName, act);
+      new Areas("DELETE", null, act);
       currentArea.geoPoints.clear();
       myView.invalidate();
       getAreaNameCointainer().setEnabled(true);

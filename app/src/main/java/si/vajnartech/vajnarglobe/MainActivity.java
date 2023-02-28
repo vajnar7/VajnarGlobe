@@ -1,12 +1,10 @@
 package si.vajnartech.vajnarglobe;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
@@ -50,15 +48,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     display.getSize(C.size);
     Toolbar toolbar = findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
-
-//    fab = findViewById(R.id.fab);
-//    fab.setImageResource(R.drawable.play_arrow);
-//    fab.setOnClickListener(view -> {
-//      if (currentFragment instanceof F_Track)
-//          confirmFirstPoint();
-//      else if (currentFragment instanceof F_Capture)
-//        ((F_Capture) currentFragment).push();
-//    });
 
     DrawerLayout drawer = findViewById(R.id.drawer_layout);
     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -159,7 +148,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         frag.startAproximator();
       else
         frag.reset();
-//      fab.setImageResource(frag.isCalibrated() ? R.drawable.ic_pause : R.drawable.play_arrow);
       }
   }
 }

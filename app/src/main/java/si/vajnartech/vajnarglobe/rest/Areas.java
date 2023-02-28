@@ -1,5 +1,6 @@
 package si.vajnartech.vajnarglobe.rest;
 
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -37,7 +38,9 @@ public class Areas extends RestBase<AreasObj>
   @Override
   protected void onPostExecute(AreasObj areasObj)
   {
-    if (Objects.equals(requestMethod, "POST")) {
+    if (Objects.equals(requestMethod, "DELETE")) {
+      Log.i(C.TAG, "TODO DELETE");
+    } else if (Objects.equals(requestMethod, "POST")) {
       if (areasObj.return_code != 0)
         onFail();
     } else if (areasObj != null) {
@@ -71,7 +74,7 @@ public class Areas extends RestBase<AreasObj>
   @Override
   protected void onFail()
   {
-
+    act.get().runOnUiThread(() -> Toast.makeText(act.get(), R.string.server_conn_error, Toast.LENGTH_LONG).show());
   }
 
   @Override

@@ -40,7 +40,7 @@ public abstract class RestBase<T extends RestBaseObject> extends AsyncTask<T, St
     this.url = url;
     this.requestMethod = requestMethod;
     this.act = new WeakReference<>(act);
-    new RestLogin<>(this, C.SERVER_ADDRESS, "geoplazma", "geoplazma").execute(null);
+    new RestLogin<>(this, C.SERVER_ADDRESS, "vajnar", "AldebaraN7", act).execute(null);
   }
 
   @Override

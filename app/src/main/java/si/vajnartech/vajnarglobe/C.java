@@ -9,17 +9,13 @@ public class C
 {
   // ce dostopamo od zunaj
 //  static final String SERVER_ADDRESS = "http://89.142.196.96:8007/";
-  public static final String SERVER_ADDRESS = "http://192.168.1.10:8007/";
+  public static final String SERVER_ADDRESS = "http://192.168.237.153:8007/";
 
-  static final boolean DEBUG_MODE = true;
+  public static final boolean DEBUG_MODE = true;
 
-  static final String AREAS          = SERVER_ADDRESS + "rest/geopoint/%s";
-  static final String        DELETE_AREA  = SERVER_ADDRESS + "rest/delete/%s";
   public static final String AREAS_API    = SERVER_ADDRESS + "areas/";
-  static final String        WATCHDOG_USR = "geoplazma";
-  static final String WATCHDOG_PWD   = "geoplazma";
 
-  static final String TAG = "pepe";
+  public static final String TAG = "pepe";
 
   static double DEF_LONGITUDE = 13.826209;  //x
   static double DEF_LATITUDE  = 46.487243;  //y
