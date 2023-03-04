@@ -61,11 +61,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     new Areas("GET", () -> setFragment("capture", F_Capture.class, new Bundle()), this);
   }
 
-  private void confirmFirstPoint()
-  {
-    setStatus();
-  }
-
   @Override
   public void onBackPressed()
   {
@@ -137,18 +132,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     if (formatArgs.length > 0)
       return getString(stringId, formatArgs);
     return getString(stringId);
-  }
-
-  void setStatus()
-  {
-    if (currentFragment instanceof F_Track) {
-      F_Track frag = (F_Track) currentFragment;
-      frag.calibrate(!frag.isCalibrated());
-      if (frag.isCalibrated())
-        frag.startAproximator();
-      else
-        frag.reset();
-      }
   }
 }
 

@@ -1,11 +1,15 @@
 package si.vajnartech.vajnarglobe;
 
+import static si.vajnartech.vajnarglobe.C.areas;
+
 import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.location.Location;
 import android.view.MotionEvent;
 import android.view.View;
+
+import java.util.Map;
 
 import si.vajnartech.calculus.D;
 import si.vajnartech.calculus.R2Double;
@@ -18,11 +22,14 @@ class GeoMap extends GPSSimulator implements Transformator
   protected R2Double firstPoint;
   protected R2Double currentPoint;
 
+  protected Area currentArea;
+
   private final D dK = new D();
 
   GeoMap(MainActivity ctx)
   {
     super(ctx);
+    initLocation();
   }
 
   @Override
@@ -86,5 +93,31 @@ class GeoMap extends GPSSimulator implements Transformator
     RnDouble tmp = d.mul(scale);
     RnDouble b = origin.plus(tmp);
     return new R2Double(b.get(0), b.get(1));
+  }
+
+  // na zacetku je treba poinicializirati lokacijo sploh ce ni GPS se up
+  protected void initLocation()
+  {
+    Location loc = new Location("");
+    if (areas.size() > 0) {
+      Map.Entry<String, Area> entry = C.areas.entrySet().iterator().next();
+      Area a = entry.getValue();
+      C.DEF_LONGITUDE = a.geoPoints.get(1).lon;
+      C.DEF_LATITUDE = a.geoPoints.get(1).lat;
+    }
+    loc.setLongitude(C.DEF_LONGITUDE);
+    loc.setLatitude(C.DEF_LATITUDE);
+    onLocationChanged(loc);
+  }
+
+  protected Area setCurrentArea(R2Double p)
+  {
+    if (p == null)
+      return null;
+    for (Area a: areas.values())
+      if (a.isInside(p)) {
+        return a;
+      }
+    return null;
   }
 }

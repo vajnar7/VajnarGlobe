@@ -39,7 +39,8 @@ public abstract class MyFragment extends DialogFragment implements TrackViewInte
       res = cls.newInstance();
       res.act = act;
     } catch (java.lang.InstantiationException | IllegalAccessException e) {
-      e.printStackTrace();
+      e.printStackTrace();    if (currentArea != null)
+      intf.setAreaName(currentArea.areaName);
     }
     return res;
   }

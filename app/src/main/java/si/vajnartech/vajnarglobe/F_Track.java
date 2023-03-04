@@ -29,29 +29,28 @@ public class F_Track extends MyFragment implements View.OnClickListener
     myView.setOnTouchListener(myView);
     res.addView(myView);
 
-    defaultLocation();
     return res;
   }
 
-  void calibrate(boolean val)
-  {
-    myView.isCalibrated = val;
-  }
+//  void calibrate(boolean val)
+//  {
+//    myView.isCalibrated = val;
+//  }
 
-  boolean isCalibrated()
-  {
-    return myView.isCalibrated;
-  }
-
-  void reset()
-  {
-    myView.aproximator.end();
-  }
-
-  void startAproximator()
-  {
-    myView.start();
-  }
+//  boolean isCalibrated()
+//  {
+//    return myView.isCalibrated;
+//  }
+//
+//  void reset()
+//  {
+//    myView.aproximator.end();
+//  }
+//
+//  void startAproximator()
+//  {
+//    myView.start();
+//  }
 
   @Override
   protected void init(View layout)
@@ -67,20 +66,6 @@ public class F_Track extends MyFragment implements View.OnClickListener
       layout.findViewById(R.id.test_up).setOnClickListener(this);
       layout.findViewById(R.id.test_down).setOnClickListener(this);
     }
-  }
-
-  private void defaultLocation()
-  {
-    Location loc = new Location("");
-    if (areas.size() > 0) {
-      Map.Entry<String, Area> entry = C.areas.entrySet().iterator().next();
-      Area                    a     = entry.getValue();
-      C.DEF_LONGITUDE = a.geoPoints.get(1).lon;
-      C.DEF_LATITUDE = a.geoPoints.get(1).lat;
-    }
-    loc.setLongitude(C.DEF_LONGITUDE);
-    loc.setLatitude(C.DEF_LATITUDE);
-    myView.onLocationChanged(loc);
   }
 
   @Override

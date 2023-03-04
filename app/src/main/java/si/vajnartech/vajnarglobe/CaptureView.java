@@ -30,7 +30,10 @@ public class CaptureView extends GeoMap
   protected void notifyMe(Location loc)
   {
     super.notifyMe(loc);
-    intf.printLocation(loc);
+    intf.printLocation(loc);---->GeoMap
+    currentArea = setCurrentArea(currentPoint);
+    if (currentArea != null)
+      intf.setAreaName(currentArea.areaName);
   }
 
   @Override

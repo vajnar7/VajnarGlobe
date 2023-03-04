@@ -34,8 +34,7 @@ public class TrackView extends GeoMap
   private R2Double     aproxPosition = null;
   long currentTime;
 
-  private  Area currentArea;
-  boolean isCalibrated = false;
+  private boolean isCalibrated = false;
 
   MyFunction   fs;
   MyDerivative fv;
@@ -45,6 +44,7 @@ public class TrackView extends GeoMap
   {
     super(ctx);
     this.intf = intf;
+    setStatus();
   }
 
   VectorField H = new VectorField()
@@ -67,6 +67,10 @@ public class TrackView extends GeoMap
   @Override
   protected void notifyMe(Location loc)
   {
+    super.notifyMe(loc);
+    intf.printLocation(loc);
+    H.add(currentPoint);
+
     if (loc != null) {
       if (intf == null) return;
       GeoPoint geos = new GeoPoint(loc.getLongitude(), loc.getLatitude());
@@ -83,19 +87,9 @@ public class TrackView extends GeoMap
       }
       intf.printLocation(loc);
     }
-    currentArea = _setCurrentArea(currentPoint);
-  }
-
-  private Area _setCurrentArea(R2Double p)
-  {
-    if (p == null)
-      return null;
-    for (Area a: areas.values())
-      if (a.isInside(p)) {
-        intf.setAreaName(a.areaName);
-        return a;
-      }
-    return null;
+    currentArea = setCurrentArea(currentPoint);
+    if (currentArea != null)
+      intf.setAreaName(currentArea.areaName);
   }
 
   @Override
@@ -271,11 +265,20 @@ public class TrackView extends GeoMap
     }
   }
 
-  void start()
+  private void start()
   {
     fs = new MyFunction();
     fv = new MyDerivative(fs);
     aproximator = new MyAproximator(1000);
+  }
+
+  protected void setStatus()
+  {
+    isCalibrated = !isCalibrated;
+    if (isCalibrated)
+      start();
+    else
+      aproximator.end();
   }
 }
 
