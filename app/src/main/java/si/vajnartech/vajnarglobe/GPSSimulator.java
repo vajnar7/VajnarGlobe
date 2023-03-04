@@ -2,6 +2,8 @@ package si.vajnartech.vajnarglobe;
 
 import android.location.Location;
 
+import androidx.annotation.NonNull;
+
 abstract class GPSSimulator extends GPS
 {
   GPSSimulator(MainActivity ctx)
@@ -10,7 +12,7 @@ abstract class GPSSimulator extends GPS
   }
 
   @Override
-  protected void initGPSService(MainActivity ctx)
+  protected void initGPSService(@NonNull MainActivity ctx)
   {
     location.setLatitude(C.DEF_LATITUDE);
     location.setLongitude(C.DEF_LONGITUDE);

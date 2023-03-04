@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import si.vajnartech.calculus.R2Double;
 import si.vajnartech.calculus.RnDouble;
@@ -28,8 +29,6 @@ public abstract class GPS extends View implements LocationListener, View.OnTouch
 
   protected Paint paint = new Paint();
 
-  protected R2Double firstPoint;
-
   GPS(MainActivity ctx)
   {
     super(ctx);
@@ -40,7 +39,7 @@ public abstract class GPS extends View implements LocationListener, View.OnTouch
     getDimensions(this);
   }
 
-  protected void initGPSService(MainActivity ctx)
+  protected void initGPSService(@NonNull MainActivity ctx)
   {
     final String[] INITIAL_PERMS = {
         Manifest.permission.ACCESS_FINE_LOCATION,
@@ -58,7 +57,7 @@ public abstract class GPS extends View implements LocationListener, View.OnTouch
   }
 
   @Override
-  public void onLocationChanged(Location loc)
+  public void onLocationChanged(@NonNull Location loc)
   {
     location.setLongitude(loc.getLongitude());
     location.setLatitude(loc.getLatitude());

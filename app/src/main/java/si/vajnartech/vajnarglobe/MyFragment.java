@@ -88,4 +88,6 @@ public abstract class MyFragment extends DialogFragment implements TrackViewInte
   }
 
   protected abstract void init(View layout);
+
+
 }

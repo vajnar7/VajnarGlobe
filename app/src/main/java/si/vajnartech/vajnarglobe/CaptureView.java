@@ -29,13 +29,8 @@ public class CaptureView extends GeoMap
   @Override
   protected void notifyMe(Location loc)
   {
-    if (loc != null) {
-      if (intf == null) return;
-      currentPoint = new GeoPoint(loc.getLongitude(), loc.getLatitude());
-      super.notifyMe(loc);
-      intf.printLocation(loc);
-    }
-    invalidate();
+    super.notifyMe(loc);
+    intf.printLocation(loc);
   }
 
   @Override

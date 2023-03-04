@@ -32,9 +32,6 @@ public class TrackView extends GeoMap
   private final TrackViewInterface intf;
 
   private R2Double     aproxPosition = null;
-
-  private R2Double currentPoint;
-  private R2Double firstPoint;
   long currentTime;
 
   private  Area currentArea;

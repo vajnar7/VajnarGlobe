@@ -32,7 +32,7 @@ public class F_Capture extends MyFragment implements View.OnClickListener
     myView.setOnTouchListener(myView);
     res.addView(myView);
 
-    _defaultLocation();
+    defaultLocation();
     return res;
   }
 
@@ -57,12 +57,7 @@ public class F_Capture extends MyFragment implements View.OnClickListener
   @Override
   public void onClick(@NonNull View v)
   {
-    if (v.getId() ==  R.id.b_clear) {
-      new Areas("DELETE", null, act);
-      currentArea.geoPoints.clear();
-      myView.invalidate();
-      getAreaNameCointainer().setEnabled(true);
-    } else if (v.getId() == R.id.b_mark) {
+    if (v.getId() == R.id.b_mark) {
       currentArea.mark(myView.currentPoint);
       myView.invalidate();
     } else if (v.getId() == R.id.b_construct) {
@@ -70,14 +65,18 @@ public class F_Capture extends MyFragment implements View.OnClickListener
         push();
         myView.invalidate();
       }
-    } else if (v.getId() == R.id.test_left) {
-      myView.mvLeft();
-    } else if (v.getId() == R.id.test_right) {
-      myView.mvRight();
-    } else if (v.getId() == R.id.test_up) {
-      myView.mvUp();
-    } else if (v.getId() == R.id.test_down) {
-      myView.mvDown();
+    }
+
+    if (C.DEBUG_MODE) {
+      if (v.getId() == R.id.test_left) {
+        myView.mvLeft();
+      } else if (v.getId() == R.id.test_right) {
+        myView.mvRight();
+      } else if (v.getId() == R.id.test_up) {
+        myView.mvUp();
+      } else if (v.getId() == R.id.test_down) {
+        myView.mvDown();
+      }
     }
   }
 
@@ -94,6 +93,7 @@ public class F_Capture extends MyFragment implements View.OnClickListener
   {
     layout.findViewById(R.id.b_mark).setOnClickListener(this);
     layout.findViewById(R.id.b_construct).setOnClickListener(this);
+    layout.findViewById(R.id.b_clear).setVisibility(View.GONE);
 
     if (C.DEBUG_MODE) {
       layout.findViewById(R.id.test_buttons).setVisibility(View.VISIBLE);
@@ -104,7 +104,7 @@ public class F_Capture extends MyFragment implements View.OnClickListener
     }
   }
 
-  private void _defaultLocation()
+  private void defaultLocation()
   {
     Location loc = new Location("");
     if (areas.size() > 0) {

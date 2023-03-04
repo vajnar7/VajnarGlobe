@@ -15,6 +15,9 @@ import si.vajnartech.calculus.Transformator;
 @SuppressLint("ViewConstructor")
 class GeoMap extends GPSSimulator implements Transformator
 {
+  protected R2Double firstPoint;
+  protected R2Double currentPoint;
+
   private final D dK = new D();
 
   GeoMap(MainActivity ctx)
@@ -37,6 +40,8 @@ class GeoMap extends GPSSimulator implements Transformator
   {
     if (firstPoint == null)
       firstPoint = new GeoPoint(loc.getLongitude(), loc.getLatitude());
+    currentPoint = new GeoPoint(loc.getLongitude(), loc.getLatitude());
+    invalidate();
   }
 
   @Override
