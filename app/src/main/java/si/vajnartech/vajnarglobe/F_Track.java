@@ -23,7 +23,6 @@ public class F_Track extends MyFragment implements View.OnClickListener
   {
     LinearLayout res = createView(inflater, container);
 
-    setAreaName("");
     printMessage(act.tx(R.string.mode_tracking));
     myView = new TrackView(act, this);
     myView.setOnTouchListener(myView);

@@ -13,19 +13,9 @@ public class CaptureView extends GeoMap
 
   GeoPoint currentPoint;
 
-  CaptureView(MainActivity ctx)
+  CaptureView(MainActivity ctx, UpdateUI updateUI)
   {
-    super(ctx);
-  }
-
-  @Override
-  protected void notifyMe(Location loc)
-  {
-    super.notifyMe(loc);
-    geoMapInterface.printLocation(loc);
-    currentArea = (CurrentArea) updateCurrentArea(currentPoint);
-    if (currentArea != null)
-      geoMapInterface.setAreaName(currentArea.areaName);
+    super(ctx, updateUI);
   }
 
   @Override

@@ -21,6 +21,8 @@ public class F_Capture extends MyFragment implements View.OnClickListener
 {
   CaptureView myView;
 
+  private CurrentArea currentArea;
+
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
   {
@@ -31,6 +33,7 @@ public class F_Capture extends MyFragment implements View.OnClickListener
 
     myView.setOnTouchListener(myView);
     res.addView(myView);
+    currentArea = myView.currentArea;
 
     return res;
   }

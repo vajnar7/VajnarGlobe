@@ -77,10 +77,10 @@ public abstract class MyFragment extends DialogFragment implements UpdateUI
   }
 
   @Override
-  public void setAreaName(String name)
+  public void setAreaName(@NonNull Area area)
   {
     layout.findViewById(R.id.ed_area_name).setEnabled(false);
-    ((TextView) layout.findViewById(R.id.ed_area_name)).setText(name);
+    ((TextView) layout.findViewById(R.id.ed_area_name)).setText(area.areaName);
   }
 
   protected abstract void init(View layout);

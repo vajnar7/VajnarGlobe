@@ -18,13 +18,13 @@ import si.vajnartech.calculus.Transformator;
 import static si.vajnartech.vajnarglobe.C.Parameters.numPoints;
 import static si.vajnartech.vajnarglobe.C.TAG;
 
+import androidx.annotation.NonNull;
+
 @SuppressLint("ViewConstructor")
 public class TrackView extends GeoMap
 {
-  private final TrackViewInterface intf;
-
-  private R2Double     aproxPosition = null;
-  long currentTime;
+  private R2Double aproxPosition = null;
+  private long currentTime;
 
   private boolean isCalibrated = false;
 
@@ -32,10 +32,9 @@ public class TrackView extends GeoMap
   MyDerivative fv;
   Aproximator  aproximator;
 
-  TrackView(MainActivity ctx, TrackViewInterface intf)
+  TrackView(MainActivity ctx, UpdateUI updateUI)
   {
-    super(ctx);
-    this.intf = intf;
+    super(ctx, updateUI);
     setStatus();
   }
 
@@ -60,8 +59,6 @@ public class TrackView extends GeoMap
   protected void notifyMe(Location loc)
   {
     super.notifyMe(loc);
-    updateCurrentArea();
-    updateUI.printLocation(loc);
     H.add(currentPoint);
 
 //    if (loc != null) {
@@ -122,7 +119,7 @@ public class TrackView extends GeoMap
     }
   }
 
-  private void _predict(R2Double startPoint, Canvas canvas, Area area, int i)
+  private void _predict(R2Double startPoint, Canvas canvas, @NonNull Area area, int i)
   {
     Line approx = new Line(startPoint, currentPoint);
     fs.f(currentTime + 2000).draw(canvas, paint, Color.MAGENTA, 4, this);

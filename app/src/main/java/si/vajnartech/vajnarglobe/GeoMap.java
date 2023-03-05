@@ -51,6 +51,8 @@ class GeoMap extends GPSSimulator implements Transformator
     if (firstPoint == null)
       firstPoint = new GeoPoint(loc.getLongitude(), loc.getLatitude());
     currentPoint = new GeoPoint(loc.getLongitude(), loc.getLatitude());
+    updateCurrentArea();
+    updateUI.printLocation(loc);
     invalidate();
   }
 
