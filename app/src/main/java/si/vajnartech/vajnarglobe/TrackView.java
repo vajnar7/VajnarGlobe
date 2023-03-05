@@ -8,7 +8,6 @@ import android.location.Location;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import si.vajnartech.calculus.Derivative;
 import si.vajnartech.calculus.Function;
@@ -18,13 +17,6 @@ import si.vajnartech.calculus.Transformator;
 
 import static si.vajnartech.vajnarglobe.C.Parameters.numPoints;
 import static si.vajnartech.vajnarglobe.C.TAG;
-import static si.vajnartech.vajnarglobe.C.areas;
-
-interface TrackViewInterface
-{
-  void printLocation(Location loc);
-  void setAreaName(String name);
-}
 
 @SuppressLint("ViewConstructor")
 public class TrackView extends GeoMap
@@ -68,28 +60,26 @@ public class TrackView extends GeoMap
   protected void notifyMe(Location loc)
   {
     super.notifyMe(loc);
-    intf.printLocation(loc);
+    updateCurrentArea();
+    updateUI.printLocation(loc);
     H.add(currentPoint);
 
-    if (loc != null) {
-      if (intf == null) return;
-      GeoPoint geos = new GeoPoint(loc.getLongitude(), loc.getLatitude());
-      if (isCalibrated)
-        H.add(geos);
-      else {
-        currentPoint = geos;
-        invalidate();
-      }
-      if (firstPoint == null) {
-        Map.Entry<String, Area> entry = C.areas.entrySet().iterator().next();
-        Area                    value = entry.getValue();
-        firstPoint = value.getFirstPoint();
-      }
-      intf.printLocation(loc);
-    }
-    currentArea = setCurrentArea(currentPoint);
-    if (currentArea != null)
-      intf.setAreaName(currentArea.areaName);
+//    if (loc != null) {
+//      if (intf == null) return;
+//      GeoPoint geos = new GeoPoint(loc.getLongitude(), loc.getLatitude());
+//      if (isCalibrated)
+//        H.add(geos);
+//      else {
+//        currentPoint = geos;
+//        invalidate();
+//      }
+//      if (firstPoint == null) {
+//        Map.Entry<String, Area> entry = C.areas.entrySet().iterator().next();
+//        Area                    value = entry.getValue();
+//        firstPoint = value.getFirstPoint();
+//      }
+//      UpdateUI.printLocation(loc);
+//    }
   }
 
   @Override

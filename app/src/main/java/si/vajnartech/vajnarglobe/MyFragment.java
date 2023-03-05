@@ -12,13 +12,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
-public abstract class MyFragment extends DialogFragment implements TrackViewInterface, CaptureViewInterface
+public abstract class MyFragment extends DialogFragment implements UpdateUI
 {
   MainActivity   act;
   TerminalWindow terminal = null;
 
   private View layout;
-  protected CurrentArea currentArea;
+//  protected CurrentArea currentArea;
 
   public LinearLayout createView(@NonNull LayoutInflater inflater, ViewGroup container)
   {
@@ -28,7 +28,7 @@ public abstract class MyFragment extends DialogFragment implements TrackViewInte
     layout = inflater.inflate(R.layout.bidr, container, false);
     res.addView(layout);
     init(layout);
-    currentArea = new CurrentArea();
+//    currentArea = new CurrentArea();
     return res;
   }
 
@@ -39,8 +39,9 @@ public abstract class MyFragment extends DialogFragment implements TrackViewInte
       res = cls.newInstance();
       res.act = act;
     } catch (java.lang.InstantiationException | IllegalAccessException e) {
-      e.printStackTrace();    if (currentArea != null)
-      intf.setAreaName(currentArea.areaName);
+      e.printStackTrace();
+//      if (currentArea != null)
+//      intf.setAreaName(currentArea.areaName);
     }
     return res;
   }
@@ -73,12 +74,6 @@ public abstract class MyFragment extends DialogFragment implements TrackViewInte
   {
     ((TextView) layout.findViewById(R.id.longitude)).setText(Double.toString(loc.getLongitude()));
     ((TextView) layout.findViewById(R.id.latitude)).setText(Double.toString(loc.getLatitude()));
-  }
-
-  @Override
-  public CurrentArea getCurrentArea()
-  {
-    return currentArea;
   }
 
   @Override

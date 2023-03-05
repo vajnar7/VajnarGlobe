@@ -6,34 +6,26 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.location.Location;
 
-interface CaptureViewInterface
-{
-  void printLocation(Location loc);
-  CurrentArea getCurrentArea();
-}
-
 @SuppressLint("ViewConstructor")
 public class CaptureView extends GeoMap
 {
   private final Paint paint = new Paint();
 
   GeoPoint currentPoint;
-  private final CaptureViewInterface intf;
 
-  CaptureView(MainActivity ctx, CaptureViewInterface intf)
+  CaptureView(MainActivity ctx)
   {
     super(ctx);
-    this.intf = intf;
   }
 
   @Override
   protected void notifyMe(Location loc)
   {
     super.notifyMe(loc);
-    intf.printLocation(loc);---->GeoMap
-    currentArea = setCurrentArea(currentPoint);
+    geoMapInterface.printLocation(loc);
+    currentArea = (CurrentArea) updateCurrentArea(currentPoint);
     if (currentArea != null)
-      intf.setAreaName(currentArea.areaName);
+      geoMapInterface.setAreaName(currentArea.areaName);
   }
 
   @Override
@@ -48,10 +40,10 @@ public class CaptureView extends GeoMap
     super.onDraw(canvas);
     if (currentPoint != null)
       currentPoint.draw(canvas, paint, Color.RED, 4, this);
-    if (intf.getCurrentArea().isConstructed())
-      intf.getCurrentArea().draw(canvas, paint, Color.BLACK, this);
+    if (currentArea.isConstructed())
+      currentArea.draw(canvas, paint, Color.BLACK, this);
     else {
-      for (GeoPoint p : intf.getCurrentArea().geoPoints)
+      for (GeoPoint p : currentArea.geoPoints)
         p.draw(canvas, paint, Color.BLUE, 6, this);
     }
   }

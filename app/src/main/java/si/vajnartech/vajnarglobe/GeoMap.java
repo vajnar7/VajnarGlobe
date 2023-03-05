@@ -22,13 +22,16 @@ class GeoMap extends GPSSimulator implements Transformator
   protected R2Double firstPoint;
   protected R2Double currentPoint;
 
-  protected Area currentArea;
+  protected final UpdateUI updateUI;
+
+  protected CurrentArea currentArea;
 
   private final D dK = new D();
 
-  GeoMap(MainActivity ctx)
+  GeoMap(MainActivity ctx, UpdateUI updateUI)
   {
     super(ctx);
+    this.updateUI = updateUI;
     initLocation();
   }
 
@@ -110,14 +113,13 @@ class GeoMap extends GPSSimulator implements Transformator
     onLocationChanged(loc);
   }
 
-  protected Area setCurrentArea(R2Double p)
+  protected void updateCurrentArea()
   {
-    if (p == null)
-      return null;
     for (Area a: areas.values())
-      if (a.isInside(p)) {
-        return a;
+      if (a.isInside(currentPoint)) {
+        currentArea = (CurrentArea) a;
+        updateUI.setAreaName(currentArea);
+        return;
       }
-    return null;
   }
 }
