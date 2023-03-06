@@ -12,6 +12,7 @@
   <string name="capture">My areas</string>
   <string name="track">track</string>
   <string name="construct">CONSTRUCT</string>
+  <string name="add_new_area">NEW</string>
   <string name="longitude">Longitude</string>
   <string name="server_conn_error">Unable to contact server</string>
   <string name="mark">MARK</string>

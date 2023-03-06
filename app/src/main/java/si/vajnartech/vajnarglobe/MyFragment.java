@@ -80,5 +80,8 @@ public abstract class MyFragment extends DialogFragment implements UpdateUI
 
   protected abstract void init(View layout);
 
+  protected void markButton(boolean visibility) {
+    layout.findViewById(R.id.b_mark).setVisibility(visibility ? View.VISIBLE : View.GONE);
+  }
 
 }

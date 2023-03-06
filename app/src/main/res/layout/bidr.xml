@@ -20,9 +20,15 @@
     <Button android:id="@+id/b_construct" android:layout_width="wrap_content" android:layout_height="wrap_content"
       android:layout_weight="1" android:backgroundTint="@color/colorBtn1" android:text="@string/construct"
       tools:ignore="ButtonStyle" />
-    <Button android:id="@+id/b_clear" style="?android:attr/buttonBarButtonStyle" android:layout_width="wrap_content"
-      android:layout_height="wrap_content" android:layout_weight="1" android:backgroundTint="@color/colorRead"
-      android:text="@string/clear" android:textColor="#000000" />
+
+    <Button
+        android:id="@+id/b_new"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:backgroundTint="@color/colorBtn2"
+        android:text="@string/new_area_name"
+        tools:ignore="ButtonStyle" />
   </LinearLayout>
   <LinearLayout android:id="@+id/test_buttons" android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="horizontal" android:visibility="gone">

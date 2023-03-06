@@ -31,32 +31,11 @@ public class F_Track extends MyFragment implements View.OnClickListener
     return res;
   }
 
-//  void calibrate(boolean val)
-//  {
-//    myView.isCalibrated = val;
-//  }
-
-//  boolean isCalibrated()
-//  {
-//    return myView.isCalibrated;
-//  }
-//
-//  void reset()
-//  {
-//    myView.aproximator.end();
-//  }
-//
-//  void startAproximator()
-//  {
-//    myView.start();
-//  }
-
   @Override
   protected void init(View layout)
   {
     layout.findViewById(R.id.b_mark).setVisibility(View.GONE);
     layout.findViewById(R.id.b_construct).setVisibility(View.GONE);
-    layout.findViewById(R.id.b_clear).setVisibility(View.GONE);
 
     if (C.DEBUG_MODE) {
       layout.findViewById(R.id.test_buttons).setVisibility(View.VISIBLE);

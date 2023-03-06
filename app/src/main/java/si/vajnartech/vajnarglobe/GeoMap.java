@@ -19,12 +19,17 @@ import si.vajnartech.calculus.Transformator;
 @SuppressLint("ViewConstructor")
 class GeoMap extends GPSSimulator implements Transformator
 {
+  public static final int NONE = 0;
+  public static final int CONSTRUCTING_AREA = 1;
+
   protected GeoPoint firstPoint;
   protected GeoPoint currentPoint;
 
   protected final UpdateUI updateUI;
 
   protected CurrentArea currentArea;
+
+  protected int mode = NONE;
 
   private final D dK = new D();
 
@@ -118,6 +123,9 @@ class GeoMap extends GPSSimulator implements Transformator
 
   public void updateCurrentArea()
   {
+    if (mode == CONSTRUCTING_AREA)
+      return;
+
     boolean found = false;
     for (Area a: areas.values())
       if (a.isInside(currentPoint)) {

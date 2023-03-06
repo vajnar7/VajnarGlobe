@@ -21,8 +21,6 @@ public class F_Capture extends MyFragment implements View.OnClickListener
 {
   CaptureView myView;
 
-  private CurrentArea currentArea;
-
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
   {
@@ -33,7 +31,6 @@ public class F_Capture extends MyFragment implements View.OnClickListener
 
     myView.setOnTouchListener(myView);
     res.addView(myView);
-    currentArea = myView.currentArea;
 
     return res;
   }
@@ -42,6 +39,8 @@ public class F_Capture extends MyFragment implements View.OnClickListener
   {
     EditText areaName = getAreaNameCointainer();
     String name = areaName.getText().toString();
+    CurrentArea currentArea = myView.currentArea;
+
     if (name.isEmpty())
     {
       areaName.setError(act.tx(R.string.error_wrong_name));
@@ -56,23 +55,19 @@ public class F_Capture extends MyFragment implements View.OnClickListener
     Toast.makeText(act, "Error constructing area", Toast.LENGTH_SHORT).show();
   }
 
-  private void refresh()
-  {
-    myView.updateCurrentArea();
-    myView.invalidate();
-  }
-
   @Override
   public void onClick(@NonNull View v)
   {
     if (v.getId() == R.id.b_mark) {
-      currentArea.mark(myView.currentPoint);
-      refresh();
+      myView.currentArea.mark(myView.currentPoint);
+      myView.invalidate();
     } else if (v.getId() == R.id.b_construct) {
-      if (currentArea != null) {
         push();
         myView.invalidate();
-      }
+    } else if (v.getId() == R.id.b_new) {
+      markButton(true);
+      myView.mode = GeoMap.CONSTRUCTING_AREA;
+      myView.currentArea = new CurrentArea();
     }
 
     if (C.DEBUG_MODE) {
@@ -101,7 +96,8 @@ public class F_Capture extends MyFragment implements View.OnClickListener
   {
     layout.findViewById(R.id.b_mark).setOnClickListener(this);
     layout.findViewById(R.id.b_construct).setOnClickListener(this);
-    layout.findViewById(R.id.b_clear).setVisibility(View.GONE);
+    markButton(false);
+
 
     if (C.DEBUG_MODE) {
       layout.findViewById(R.id.test_buttons).setVisibility(View.VISIBLE);
