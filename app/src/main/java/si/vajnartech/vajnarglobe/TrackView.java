@@ -41,13 +41,13 @@ public class TrackView extends GeoMap
   VectorField H = new VectorField()
   {
     @Override
-    void done(R2Double v)
+    void done(GeoPoint v)
     {
       _hector(v);
     }
   };
 
-  private void _hector(R2Double point)
+  private void _hector(GeoPoint point)
   {
     currentTime = System.currentTimeMillis();
     fs.put(currentTime, point);

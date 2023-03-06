@@ -8,6 +8,11 @@ class CurrentArea extends Place
     super("");
   }
 
+  CurrentArea(Area area)
+  {
+    super(area.areaName, area.getGeoPoints());
+  }
+
   @Override
   public boolean constructArea()
   {

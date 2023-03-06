@@ -18,7 +18,6 @@ public abstract class MyFragment extends DialogFragment implements UpdateUI
   TerminalWindow terminal = null;
 
   private View layout;
-//  protected CurrentArea currentArea;
 
   public LinearLayout createView(@NonNull LayoutInflater inflater, ViewGroup container)
   {
@@ -28,7 +27,6 @@ public abstract class MyFragment extends DialogFragment implements UpdateUI
     layout = inflater.inflate(R.layout.bidr, container, false);
     res.addView(layout);
     init(layout);
-//    currentArea = new CurrentArea();
     return res;
   }
 
@@ -40,8 +38,6 @@ public abstract class MyFragment extends DialogFragment implements UpdateUI
       res.act = act;
     } catch (java.lang.InstantiationException | IllegalAccessException e) {
       e.printStackTrace();
-//      if (currentArea != null)
-//      intf.setAreaName(currentArea.areaName);
     }
     return res;
   }
@@ -70,7 +66,7 @@ public abstract class MyFragment extends DialogFragment implements UpdateUI
 
   @Override
   @SuppressLint("SetTextI18n")
-  public void printLocation(Location loc)
+  public void printLocation(@NonNull Location loc)
   {
     ((TextView) layout.findViewById(R.id.longitude)).setText(Double.toString(loc.getLongitude()));
     ((TextView) layout.findViewById(R.id.latitude)).setText(Double.toString(loc.getLatitude()));
@@ -79,7 +75,6 @@ public abstract class MyFragment extends DialogFragment implements UpdateUI
   @Override
   public void setAreaName(@NonNull Area area)
   {
-    layout.findViewById(R.id.ed_area_name).setEnabled(false);
     ((TextView) layout.findViewById(R.id.ed_area_name)).setText(area.areaName);
   }
 

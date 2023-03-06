@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 import si.vajnartech.calculus.R2Double;
 
-public abstract class VectorField extends ArrayList<R2Double>
+public abstract class VectorField extends ArrayList<GeoPoint>
 {
   @Override
-  public boolean add(R2Double v)
+  public boolean add(GeoPoint v)
   {
     if (C.Parameters.lim.getAndDecrement() > 0)
       return true;
@@ -19,14 +19,14 @@ public abstract class VectorField extends ArrayList<R2Double>
     return true;
   }
 
-  private R2Double average()
+  private GeoPoint average()
   {
-    R2Double a = new R2Double(0.0, 0.0);
-    for (R2Double v: this)
-      a.is(a.plus(v));
-    a.is(a.divS((double) C.Parameters.avaragePoints));
-    return (a);
+    GeoPoint point = new GeoPoint(0.0, 0.0);
+    for (GeoPoint p: this)
+      point.is(point.plus(p));
+    point.is(point.divS((double) C.Parameters.avaragePoints));
+    return point;
   }
 
-  abstract void done(R2Double point);
+  abstract void done(GeoPoint point);
 }

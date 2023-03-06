@@ -19,8 +19,8 @@ import si.vajnartech.calculus.Transformator;
 @SuppressLint("ViewConstructor")
 class GeoMap extends GPSSimulator implements Transformator
 {
-  protected R2Double firstPoint;
-  protected R2Double currentPoint;
+  protected GeoPoint firstPoint;
+  protected GeoPoint currentPoint;
 
   protected final UpdateUI updateUI;
 
@@ -61,7 +61,8 @@ class GeoMap extends GPSSimulator implements Transformator
   {
     super.onDraw(canvas);
     for (Area a : C.areas.values()) {
-      if (firstPoint == null) firstPoint = a.getFirstPoint();
+      if (firstPoint == null)
+        firstPoint = a.getFirstPoint();
       a.draw(canvas, paint, Color.BLACK, this);
     }
   }
@@ -115,13 +116,18 @@ class GeoMap extends GPSSimulator implements Transformator
     onLocationChanged(loc);
   }
 
-  protected void updateCurrentArea()
+  public void updateCurrentArea()
   {
+    boolean found = false;
     for (Area a: areas.values())
       if (a.isInside(currentPoint)) {
-        currentArea = (CurrentArea) a;
-        updateUI.setAreaName(currentArea);
-        return;
+        currentArea = new CurrentArea(a);
+        found = true;
       }
+
+    if (currentArea == null || !found)
+      currentArea = new CurrentArea();
+
+    updateUI.setAreaName(currentArea);
   }
 }

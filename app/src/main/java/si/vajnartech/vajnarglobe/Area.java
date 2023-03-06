@@ -42,7 +42,7 @@ abstract public class Area extends ArrayList<Line>
     return true;
   }
 
-  R2Double getFirstPoint()
+  GeoPoint getFirstPoint()
   {
     return geoPoints.get(0);
   }

@@ -56,12 +56,18 @@ public class F_Capture extends MyFragment implements View.OnClickListener
     Toast.makeText(act, "Error constructing area", Toast.LENGTH_SHORT).show();
   }
 
+  private void refresh()
+  {
+    myView.updateCurrentArea();
+    myView.invalidate();
+  }
+
   @Override
   public void onClick(@NonNull View v)
   {
     if (v.getId() == R.id.b_mark) {
       currentArea.mark(myView.currentPoint);
-      myView.invalidate();
+      refresh();
     } else if (v.getId() == R.id.b_construct) {
       if (currentArea != null) {
         push();
@@ -84,7 +90,7 @@ public class F_Capture extends MyFragment implements View.OnClickListener
 
   @Override
   @SuppressLint("SetTextI18n")
-  public void printLocation(Location loc)
+  public void printLocation(@NonNull Location loc)
   {
     getLongitudeContainer().setText(Double.toString(loc.getLongitude()));
     getLatitudeContainer().setText(Double.toString(loc.getLatitude()));
