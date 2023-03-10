@@ -1,12 +1,13 @@
 package si.vajnartech.vajnarglobe;
 
+import android.content.Context;
 import android.location.Location;
 
 import androidx.annotation.NonNull;
 
 abstract class GPSSimulator extends GPS
 {
-  GPSSimulator(MainActivity ctx)
+  GPSSimulator(Context ctx)
   {
     super(ctx);
   }

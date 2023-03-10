@@ -3,6 +3,7 @@ package si.vajnartech.vajnarglobe;
 import static si.vajnartech.vajnarglobe.C.areas;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.location.Location;
@@ -16,7 +17,6 @@ import si.vajnartech.calculus.R2Double;
 import si.vajnartech.calculus.RnDouble;
 import si.vajnartech.calculus.Transformator;
 
-@SuppressLint("ViewConstructor")
 class GeoMap extends GPSSimulator implements Transformator
 {
   public static final int NONE = 0;
@@ -33,7 +33,7 @@ class GeoMap extends GPSSimulator implements Transformator
 
   private final D dK = new D();
 
-  GeoMap(MainActivity ctx, UpdateUI updateUI)
+  GeoMap(Context ctx, UpdateUI updateUI)
   {
     super(ctx);
     this.updateUI = updateUI;
@@ -123,8 +123,9 @@ class GeoMap extends GPSSimulator implements Transformator
 
   public void updateCurrentArea()
   {
-    if (mode == CONSTRUCTING_AREA)
+    if (mode == CONSTRUCTING_AREA) {
       return;
+    }
 
     boolean found = false;
     for (Area a: areas.values())

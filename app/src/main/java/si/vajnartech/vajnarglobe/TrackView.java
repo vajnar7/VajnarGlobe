@@ -1,6 +1,7 @@
 package si.vajnartech.vajnarglobe;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -20,7 +21,6 @@ import static si.vajnartech.vajnarglobe.C.TAG;
 
 import androidx.annotation.NonNull;
 
-@SuppressLint("ViewConstructor")
 public class TrackView extends GeoMap
 {
   private R2Double aproxPosition = null;
@@ -32,20 +32,17 @@ public class TrackView extends GeoMap
   MyDerivative fv;
   Aproximator  aproximator;
 
+  VectorField H;
+
+  TrackView(Context context)
+  {
+    super(context);
+  }
   TrackView(MainActivity ctx, UpdateUI updateUI)
   {
     super(ctx, updateUI);
     setStatus();
   }
-
-  VectorField H = new VectorField()
-  {
-    @Override
-    void done(GeoPoint v)
-    {
-      _hector(v);
-    }
-  };
 
   private void _hector(GeoPoint point)
   {
@@ -59,6 +56,16 @@ public class TrackView extends GeoMap
   protected void notifyMe(Location loc)
   {
     super.notifyMe(loc);
+    if (H == null) {
+      H = new VectorField()
+      {
+        @Override
+        void done(GeoPoint v)
+        {
+          _hector(v);
+        }
+      };
+    }
     H.add(currentPoint);
 
 //    if (loc != null) {

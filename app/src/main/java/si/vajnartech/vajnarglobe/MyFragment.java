@@ -14,6 +14,10 @@ import androidx.fragment.app.DialogFragment;
 
 public abstract class MyFragment extends DialogFragment implements UpdateUI
 {
+  protected static int MARK_BUTTON = R.id.b_mark;
+  protected static int CONSTRUCT_BUTTON = R.id.b_construct;
+  protected static int NEW_AREA_BUTTON = R.id.b_new;
+
   MainActivity   act;
   TerminalWindow terminal = null;
 
@@ -80,8 +84,8 @@ public abstract class MyFragment extends DialogFragment implements UpdateUI
 
   protected abstract void init(View layout);
 
-  protected void markButton(boolean visibility) {
-    layout.findViewById(R.id.b_mark).setVisibility(visibility ? View.VISIBLE : View.GONE);
+  protected void buttonShow(int id, boolean visibility)
+  {
+    layout.findViewById(id).setVisibility(visibility ? View.VISIBLE : View.GONE);
   }
-
 }

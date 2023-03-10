@@ -62,10 +62,17 @@ public class F_Capture extends MyFragment implements View.OnClickListener
       myView.currentArea.mark(myView.currentPoint);
       myView.invalidate();
     } else if (v.getId() == R.id.b_construct) {
+        myView.mode = GeoMap.NONE;
         push();
+        buttonShow(CONSTRUCT_BUTTON, false);
+        buttonShow(MARK_BUTTON, false);
+        buttonShow(NEW_AREA_BUTTON, true);
+        myView.updateCurrentArea();
         myView.invalidate();
     } else if (v.getId() == R.id.b_new) {
-      markButton(true);
+      buttonShow(MARK_BUTTON, true);
+      buttonShow(CONSTRUCT_BUTTON, true);
+      buttonShow(NEW_AREA_BUTTON, false);
       myView.mode = GeoMap.CONSTRUCTING_AREA;
       myView.currentArea = new CurrentArea();
     }
@@ -96,8 +103,10 @@ public class F_Capture extends MyFragment implements View.OnClickListener
   {
     layout.findViewById(R.id.b_mark).setOnClickListener(this);
     layout.findViewById(R.id.b_construct).setOnClickListener(this);
-    markButton(false);
+    layout.findViewById(R.id.b_new).setOnClickListener(this);
 
+    buttonShow(MARK_BUTTON, false);
+    buttonShow(CONSTRUCT_BUTTON, false);
 
     if (C.DEBUG_MODE) {
       layout.findViewById(R.id.test_buttons).setVisibility(View.VISIBLE);

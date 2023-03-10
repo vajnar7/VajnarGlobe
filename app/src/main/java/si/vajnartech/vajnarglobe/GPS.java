@@ -29,13 +29,13 @@ public abstract class GPS extends View implements LocationListener, View.OnTouch
 
   protected Paint paint = new Paint();
 
-  GPS(MainActivity ctx)
+  GPS(Context ctx)
   {
     super(ctx);
 
-    activity = ctx;
+    activity = (MainActivity) ctx;
     location = new Location("");
-    initGPSService(ctx);
+    initGPSService((MainActivity) ctx);
     getDimensions(this);
   }
 
