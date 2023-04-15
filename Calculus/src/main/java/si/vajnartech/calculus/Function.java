@@ -10,7 +10,7 @@ interface FunctionBase<K, V>
   V sum(K x0, K x1);
 }
 
-@SuppressWarnings("NullableProblems")
+
 public abstract class Function<K, V> extends HashMap<K, V> implements FunctionBase<K, V>
 {
   private ArrayList<K> keys = new ArrayList<>();

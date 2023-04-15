@@ -2,7 +2,8 @@ package si.vajnartech.calculus;
 
 import java.util.ArrayList;
 
-public abstract class Derivative<K,V> extends Function<K, V>
+public abstract class
+Derivative<K,V> extends Function<K, V>
 {
   private Function<K, V> fun;
 

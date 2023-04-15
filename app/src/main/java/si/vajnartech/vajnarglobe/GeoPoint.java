@@ -1,8 +1,9 @@
 package si.vajnartech.vajnarglobe;
 
-import si.vajnartech.calculus.R2Double;
 
-public class GeoPoint extends R2Double
+import si.vajnartech.vajnarglobe.math.NumDouble2;
+
+public class GeoPoint extends NumDouble2
 {
   public long timestamp;
   public double lon;

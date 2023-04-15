@@ -9,7 +9,7 @@ public class C
 {
   // ce dostopamo od zunaj
 //  static final String SERVER_ADDRESS = "http://89.142.196.96:8007/";
-  public static final String SERVER_ADDRESS = "http://192.168.237.153:8007/";
+  public static final String SERVER_ADDRESS = "http://192.168.1.101:8007/";
 
   public static final boolean DEBUG_MODE = true;
 
@@ -30,8 +30,6 @@ public class C
   @SuppressWarnings("unused")
   static class Parameters
   {
-    // approximation
-    static final int           avaragePoints = 1;    // get ~ points to determine current position
     // 35 is this value if min Time and minDist are zero.
     static final AtomicInteger lim           = new AtomicInteger(1);
     static final int           minTime = 1000;    // ms

@@ -15,8 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
-import si.vajnartech.calculus.R2Double;
-import si.vajnartech.calculus.RnDouble;
+import si.vajnartech.vajnarglobe.math.NumDouble2;
 
 import static si.vajnartech.vajnarglobe.C.Parameters.minDist;
 import static si.vajnartech.vajnarglobe.C.Parameters.minTime;
@@ -24,7 +23,9 @@ import static si.vajnartech.vajnarglobe.C.Parameters.minTime;
 public abstract class GPS extends View implements LocationListener, View.OnTouchListener
 {
   protected volatile Location location;
-  protected RnDouble origin = null;
+
+  protected NumDouble2 origin = null;
+
   protected MainActivity activity;
 
   protected Paint paint = new Paint();
@@ -35,7 +36,7 @@ public abstract class GPS extends View implements LocationListener, View.OnTouch
 
     activity = (MainActivity) ctx;
     location = new Location("");
-    initGPSService((MainActivity) ctx);
+    initGPSService(activity);
     getDimensions(this);
   }
 
@@ -88,6 +89,6 @@ public abstract class GPS extends View implements LocationListener, View.OnTouch
     v.post(this::invalidate);
   }
 
-  protected abstract RnDouble setOrigin();
+  protected abstract NumDouble2 setOrigin();
   protected abstract void notifyMe(Location loc);
 }

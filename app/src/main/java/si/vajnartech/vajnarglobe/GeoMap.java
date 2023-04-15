@@ -1,8 +1,5 @@
 package si.vajnartech.vajnarglobe;
 
-import static si.vajnartech.vajnarglobe.C.areas;
-
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -12,20 +9,22 @@ import android.view.View;
 
 import java.util.Map;
 
-import si.vajnartech.calculus.D;
-import si.vajnartech.calculus.R2Double;
 import si.vajnartech.calculus.RnDouble;
-import si.vajnartech.calculus.Transformator;
+import si.vajnartech.vajnarglobe.math.D;
+import si.vajnartech.vajnarglobe.math.NumDouble2;
 
-class GeoMap extends GPSSimulator implements Transformator
+import static si.vajnartech.vajnarglobe.C.areas;
+
+class GeoMap extends GPSSimulator implements Transform
 {
   public static final int NONE = 0;
   public static final int CONSTRUCTING_AREA = 1;
+  public static final int TRACKING = 2;
 
   protected GeoPoint firstPoint;
   protected GeoPoint currentPoint;
 
-  protected final UpdateUI updateUI;
+  protected UpdateUI updateUI;
 
   protected CurrentArea currentArea;
 
@@ -33,21 +32,25 @@ class GeoMap extends GPSSimulator implements Transformator
 
   private final D dK = new D();
 
+  GeoMap(Context ctx)
+  {
+    super(ctx);
+  }
+
   GeoMap(Context ctx, UpdateUI updateUI)
   {
     super(ctx);
     this.updateUI = updateUI;
-    initLocation();
   }
 
   @Override
-  protected R2Double setOrigin()
+  protected NumDouble2 setOrigin()
   {
     double   x1 = getWidth();
     double   x2 = getHeight();
-    R2Double o  = new R2Double(x1, x2);
-    RnDouble a  = o.divS(2.0);
-    return new R2Double(a.get(0), a.get(1));
+    NumDouble2 res  = new NumDouble2(x1, x2);
+    res.div(new NumDouble2(2.0, 2.0));
+    return res;
   }
 
   @Override
@@ -81,29 +84,19 @@ class GeoMap extends GPSSimulator implements Transformator
     case MotionEvent.ACTION_DOWN:
       rx = event.getRawX();
       ry = event.getRawY();
-      dK.up(new R2Double(rx, ry));
+      dK.up(new NumDouble2(rx, ry));
       break;
     case MotionEvent.ACTION_UP:
       rx = event.getRawX();
       ry = event.getRawY();
-      dK.up(new R2Double(rx, ry));
-      origin.is(origin.plus(dK));
+      dK.up(new NumDouble2(rx, ry));
+      origin.plus(dK);
       view.invalidate();
       break;
     default:
       return false;
     }
     return true;
-  }
-
-  @Override
-  public R2Double transform(R2Double p)
-  {
-    RnDouble d = p.minus(firstPoint);
-    R2Double scale = new R2Double(-C.Parameters.getScale(), C.Parameters.getScale());
-    RnDouble tmp = d.mul(scale);
-    RnDouble b = origin.plus(tmp);
-    return new R2Double(b.get(0), b.get(1));
   }
 
   // na zacetku je treba poinicializirati lokacijo sploh ce ni GPS se up
@@ -128,15 +121,30 @@ class GeoMap extends GPSSimulator implements Transformator
     }
 
     boolean found = false;
-    for (Area a: areas.values())
-      if (a.isInside(currentPoint)) {
-        currentArea = new CurrentArea(a);
+    for (Area area : areas.values()) {
+      if (found)
+        break;
+      if (area.isInside(currentPoint)) {
+        currentArea = new CurrentArea(area);
+        currentArea.constructArea();
         found = true;
       }
+    }
 
     if (currentArea == null || !found)
       currentArea = new CurrentArea();
 
     updateUI.setAreaName(currentArea);
+  }
+
+  @Override
+  public NumDouble2 transform(NumDouble2 p)
+  {
+    NumDouble2 res = new NumDouble2(p);
+    res.minus(firstPoint);
+    NumDouble2 scale = new NumDouble2(C.Parameters.getScale(), -C.Parameters.getScale());
+    res.mul(scale);
+    res.plus(origin);
+    return res;
   }
 }

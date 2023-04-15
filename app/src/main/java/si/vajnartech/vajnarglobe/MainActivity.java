@@ -15,7 +15,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentTransaction;
 import si.vajnartech.vajnarglobe.rest.Areas;
-
+// scroll na touch ne deva
+// ko capture novo areo in das construct ti nove ne narise razen ko s serverja spet nalozi
 // --crkne ko je aplikacija nafrisno dana v sistem GPS not granted
 // ++prevedi stringe
 // ++ce kliknem pobrisi na zaslonu se vedno ostaja area, zbrise  pa prav iz baze

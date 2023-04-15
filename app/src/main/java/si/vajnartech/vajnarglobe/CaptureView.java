@@ -1,19 +1,23 @@
 package si.vajnartech.vajnarglobe;
 
-import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.location.Location;
 
-@SuppressLint("ViewConstructor")
 public class CaptureView extends GeoMap
 {
   private final Paint paint = new Paint();
 
+  CaptureView(Context ctx)
+  {
+    super(ctx);
+  }
+
   CaptureView(MainActivity ctx, UpdateUI updateUI)
   {
     super(ctx, updateUI);
+    initLocation();
   }
 
   @Override

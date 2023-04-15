@@ -4,18 +4,33 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public abstract class Aproximator
+public class Aproximator
 {
-  ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-  Aproximator(int timeout)
+  private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+
+  private final int timeout;
+
+  private final AproximatorRunnable runnable;
+
+  Aproximator(int timeout, AproximatorRunnable runnable)
   {
-    executor.scheduleAtFixedRate(this::go, 0, timeout, TimeUnit.MILLISECONDS);
+    this.timeout = timeout;
+    this.runnable = runnable;
+    start();
   }
 
-  void end()
+  private void start()
+  {
+    executor.scheduleAtFixedRate(runnable::aproximatorRun, 0, timeout, TimeUnit.MILLISECONDS);
+  }
+
+  public void end()
   {
     executor.shutdownNow();
   }
 
-  abstract void go();
+  public interface AproximatorRunnable
+  {
+    void aproximatorRun();
+  }
 }

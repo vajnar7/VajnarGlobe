@@ -5,8 +5,6 @@ import android.graphics.Paint;
 
 import java.util.ArrayList;
 
-import si.vajnartech.calculus.R2Double;
-import si.vajnartech.calculus.Transformator;
 import si.vajnartech.vajnarglobe.rest.Areas;
 
 public class Place extends Area
@@ -34,16 +32,16 @@ public class Place extends Area
   }
 
   @Override
-  protected ArrayList<R2Double> process(R2Double p)
+  protected ArrayList<GeoPoint> process(GeoPoint point)
   {
-    ArrayList<R2Double> closestPoints = new ArrayList<>();
+    ArrayList<GeoPoint> closestPoints = new ArrayList<>();
     for (Line l : this)
-      closestPoints.add(getClosestPoint(l, p));
+      closestPoints.add(l.getClosestPoint(point));
     return closestPoints;
   }
 
   @Override
-  public void draw(Canvas canvas, Paint paint, int color, Transformator tr)
+  public void draw(Canvas canvas, Paint paint, int color, Transform tr)
   {
     for (Line l : this)
       l.draw(canvas, paint, color, tr);
