@@ -76,7 +76,7 @@ public class TrackView extends GeoMap implements AveragerOfPosition.AveragerRunn
         if (area.get(idx).onMe(point)) {
           point.draw(canvas, paint, Color.GREEN, 4, this);
         }
-      predict(startPoint, canvas, area, idx);
+//      predict(startPoint, canvas, area, idx);
       }
     }
 
