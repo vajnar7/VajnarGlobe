@@ -76,7 +76,7 @@ public class F_Capture extends MyFragment implements View.OnClickListener
       myView.mode = GeoMap.CONSTRUCTING_AREA;
       myView.currentArea = new CurrentArea();
     }
-
+    // ko sklopis debug mode tole zakomentiraj
     if (C.DEBUG_MODE) {
       if (v.getId() == R.id.test_left) {
         myView.mvLeft();

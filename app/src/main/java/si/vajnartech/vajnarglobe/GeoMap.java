@@ -1,5 +1,7 @@
 package si.vajnartech.vajnarglobe;
 
+import static si.vajnartech.vajnarglobe.C.areas;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -7,13 +9,9 @@ import android.location.Location;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.util.Map;
-
-import si.vajnartech.calculus.RnDouble;
 import si.vajnartech.vajnarglobe.math.D;
+import si.vajnartech.vajnarglobe.math.DxDtDouble2;
 import si.vajnartech.vajnarglobe.math.NumDouble2;
-
-import static si.vajnartech.vajnarglobe.C.areas;
 
 class GeoMap extends GPSSimulator implements Transform
 {
@@ -28,9 +26,14 @@ class GeoMap extends GPSSimulator implements Transform
 
   protected CurrentArea currentArea;
 
+  protected Boolean isMoving;
+
   protected int mode = NONE;
 
   private final D dK = new D();
+
+  // odvod funkcije poti po casu
+  volatile DxDtDouble2 dsDt = new DxDtDouble2();
 
   GeoMap(Context ctx)
   {
@@ -56,9 +59,26 @@ class GeoMap extends GPSSimulator implements Transform
   @Override
   protected void notifyMe(Location loc)
   {
-    if (firstPoint == null)
-      firstPoint = new GeoPoint(loc.getLongitude(), loc.getLatitude());
-    currentPoint = new GeoPoint(loc.getLongitude(), loc.getLatitude());
+    dsDt.add(new NumDouble2(loc.getLongitude(), loc.getLatitude()));
+    isMoving = isObjectMoving();
+    if (isMoving!= null) {
+      if (firstPoint == null)
+        firstPoint = new GeoPoint(loc.getLongitude(), loc.getLatitude());
+      currentPoint = new GeoPoint(loc.getLongitude(), loc.getLatitude());
+      refresh(loc);
+    }
+  }
+
+  private Boolean isObjectMoving()
+  {
+    NumDouble2 val = dsDt.value(0);
+    if (val == null)
+      return null;
+    return val.get(0) != 0.0 || val.get(1) != 0.0;
+  }
+
+  private void refresh(Location loc)
+  {
     updateCurrentArea();
     updateUI.printLocation(loc);
     invalidate();
@@ -68,11 +88,9 @@ class GeoMap extends GPSSimulator implements Transform
   protected void onDraw(Canvas canvas)
   {
     super.onDraw(canvas);
-    for (Area a : C.areas.values()) {
-      if (firstPoint == null)
-        firstPoint = a.getFirstPoint();
-      a.draw(canvas, paint, Color.BLACK, this);
-    }
+    if (firstPoint != null)
+      for (Area a : C.areas.values())
+        a.draw(canvas, paint, Color.BLACK, this);
   }
 
   @Override
@@ -103,15 +121,9 @@ class GeoMap extends GPSSimulator implements Transform
   protected void initLocation()
   {
     Location loc = new Location("");
-    if (areas.size() > 0) {
-      Map.Entry<String, Area> entry = C.areas.entrySet().iterator().next();
-      Area a = entry.getValue();
-      C.DEF_LONGITUDE = a.geoPoints.get(1).lon;
-      C.DEF_LATITUDE = a.geoPoints.get(1).lat;
-    }
     loc.setLongitude(C.DEF_LONGITUDE);
     loc.setLatitude(C.DEF_LATITUDE);
-    onLocationChanged(loc);
+    startScheduler();
   }
 
   public void updateCurrentArea()

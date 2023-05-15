@@ -4,15 +4,11 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.location.Location;
-import android.provider.Settings;
-import android.util.Log;
 
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import si.vajnartech.vajnarglobe.math.NumDouble2;
-
-import static si.vajnartech.vajnarglobe.C.TAG;
 
 public class TrackView extends GeoMap implements AveragerOfPosition.AveragerRunnable, Aproximator.AproximatorRunnable
 {
@@ -33,7 +29,8 @@ public class TrackView extends GeoMap implements AveragerOfPosition.AveragerRunn
     super(ctx, updateUI);
     mode = GeoMap.TRACKING;
     averager = new AveragerOfPosition(this, 1.0);
-    initLocation();
+    if (C.DEBUG_MODE)
+      initLocation();
 //    new Aproximator(1000, this);
   }
 

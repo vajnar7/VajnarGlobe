@@ -39,6 +39,11 @@ abstract class GPSSimulator extends GPS
     move(0, 1);
   }
 
+  public void startScheduler()
+  {
+    new MoveSimulator();
+  }
+
 
   private void move(int xDir, int yDir)
   {
@@ -51,32 +56,53 @@ abstract class GPSSimulator extends GPS
     onLocationChanged(tmpLocation);
   }
 
-  @SuppressWarnings({"BusyWait", "unused"})
+  @SuppressWarnings("BusyWait")
   class MoveSimulator extends Thread
   {
+    int fx = 1;
+    int fy = 1;
     boolean running;
+    int n = 1;
     MoveSimulator()
     {
       start();
       running = true;
     }
 
+    // ++ SV
+    // +- SZ
+    // -+ JV
+    // -- JZ
     @Override
     public void run()
     {
       while(running) {
-        Location tmpLocation = new Location(location);
-        double lat = location.getLatitude() + 0.00001;
-        double lon = location.getLongitude() + 0.00001;
+        if (n % 5 != 0) {
+          if (n == 19) {
+            fy = 1;
+            fx = -1;
+          } else if (n == 38) {
+            fy = -1;
+            fx = -1;
+          } else if (n == 57) {
+            fy = -1;
+            fx = 1;
+          }
+          double lat = location.getLatitude() + (0.00001 * fy);
+          double lon = location.getLongitude() + (0.00001 * fx);
+          Location tmpLoc = new Location("GPS");
+          tmpLoc.setLongitude(lon);
+          tmpLoc.setLatitude(lat);
+          onLocationChanged(tmpLoc);
+        } else
+          onLocationChanged(location);
 
-        tmpLocation.setLongitude(lon);
-        tmpLocation.setLatitude(lat);
-        onLocationChanged(tmpLocation);
         try {
-          sleep(5000);
+          sleep(1000);
         } catch (InterruptedException e) {
           e.printStackTrace();
         }
+        n += 1;
       }
     }
   }

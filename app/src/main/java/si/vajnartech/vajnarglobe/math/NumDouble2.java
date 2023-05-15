@@ -20,6 +20,13 @@ public class NumDouble2 extends NumDouble
     add(values[1]);
   }
 
+  public NumDouble2()
+  {
+    super(2);
+    add(0.0);
+    add(0.0);
+  }
+
   public void draw(Canvas canvas, Paint paint, int color, int r, Transform tr)
   {
     NumDouble2 p = tr.transform(this);

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Handler;
 
 public class CaptureView extends GeoMap
 {
@@ -17,7 +18,9 @@ public class CaptureView extends GeoMap
   CaptureView(MainActivity ctx, UpdateUI updateUI)
   {
     super(ctx, updateUI);
-    initLocation();
+    if (C.DEBUG_MODE) {
+      new Handler().postDelayed(this::initLocation, 4700);
+    }
   }
 
   @Override
@@ -31,8 +34,15 @@ public class CaptureView extends GeoMap
   {
     super.onDraw(canvas);
 
-    if (currentPoint != null)
-      currentPoint.draw(canvas, paint, Color.RED, 4, this);
+    if (currentPoint != null) {
+      if (!isMoving)
+        currentPoint.draw(canvas, paint, Color.GREEN, 8, this);
+      else
+        currentPoint.draw(canvas, paint, Color.RED, 3, this);
+    }
+
+    if (currentArea == null)
+      return;
 
     if (currentArea.isConstructed())
       currentArea.draw(canvas, paint, Color.BLACK, this);

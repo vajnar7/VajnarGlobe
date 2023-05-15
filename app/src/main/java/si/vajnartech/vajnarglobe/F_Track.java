@@ -49,6 +49,8 @@ public class F_Track extends MyFragment implements View.OnClickListener
   @Override
   public void onClick(View v)
   {
+    // ko sklopis debug mode tole zakomentiraj
+
     if (C.DEBUG_MODE) {
       if (v.getId() == R.id.test_left) {
         myView.mvLeft();
