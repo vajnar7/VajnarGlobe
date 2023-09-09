@@ -27,4 +27,6 @@
   <string name="mode_capture">my areas</string>
   <string name="test">T</string>
   <string name="no_areas">No areas</string>
+  <string name="str_zoom_in">zoom in</string>
+  <string name="str_zoom_out">zoom out</string>
 </resources>

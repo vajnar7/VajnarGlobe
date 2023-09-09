@@ -10,12 +10,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import java.util.Map;
-
 import androidx.annotation.NonNull;
-import si.vajnartech.vajnarglobe.rest.Areas;
-
-import static si.vajnartech.vajnarglobe.C.areas;
 
 public class F_Capture extends MyFragment implements View.OnClickListener
 {
@@ -75,19 +70,25 @@ public class F_Capture extends MyFragment implements View.OnClickListener
       buttonShow(NEW_AREA_BUTTON, false);
       myView.mode = GeoMap.CONSTRUCTING_AREA;
       myView.currentArea = new CurrentArea();
+    } else if (v.getId() == R.id.zoom_in) {
+      C.Parameters.zoomIn();
+      myView.invalidate();
+    } else if (v.getId() == R.id.zoom_out) {
+      C.Parameters.zoomOut();
+      myView.invalidate();
     }
     // ko sklopis debug mode tole zakomentiraj
-    if (C.DEBUG_MODE) {
-      if (v.getId() == R.id.test_left) {
-        myView.mvLeft();
-      } else if (v.getId() == R.id.test_right) {
-        myView.mvRight();
-      } else if (v.getId() == R.id.test_up) {
-        myView.mvUp();
-      } else if (v.getId() == R.id.test_down) {
-        myView.mvDown();
-      }
-    }
+//    if (C.DEBUG_MODE) {
+//      if (v.getId() == R.id.test_left) {
+//        myView.mvLeft();
+//      } else if (v.getId() == R.id.test_right) {
+//        myView.mvRight();
+//      } else if (v.getId() == R.id.test_up) {
+//        myView.mvUp();
+//      } else if (v.getId() == R.id.test_down) {
+//        myView.mvDown();
+//      }
+//    }
   }
 
   @Override
@@ -104,6 +105,8 @@ public class F_Capture extends MyFragment implements View.OnClickListener
     layout.findViewById(R.id.b_mark).setOnClickListener(this);
     layout.findViewById(R.id.b_construct).setOnClickListener(this);
     layout.findViewById(R.id.b_new).setOnClickListener(this);
+    layout.findViewById(R.id.zoom_in).setOnClickListener(this);
+    layout.findViewById(R.id.zoom_out).setOnClickListener(this);
 
     buttonShow(MARK_BUTTON, false);
     buttonShow(CONSTRUCT_BUTTON, false);

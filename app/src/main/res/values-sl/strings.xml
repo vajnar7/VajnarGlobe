@@ -27,4 +27,6 @@
   <string name="test">T</string>
   <string name="no_areas">Ni območij</string>
   <string name="add_new_area">NOVO</string>
+  <string name="str_zoom_in">zoom in</string>
+  <string name="str_zoom_out">zoom out</string>
 </resources>

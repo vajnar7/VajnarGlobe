@@ -13,7 +13,9 @@ import si.vajnartech.vajnarglobe.math.D;
 import si.vajnartech.vajnarglobe.math.DxDtDouble2;
 import si.vajnartech.vajnarglobe.math.NumDouble2;
 
-class GeoMap extends GPSSimulator implements Transform
+// DEBUG_MODE
+//class GeoMap extends GPSSimulator implements Transform
+class GeoMap extends GPS implements Transform
 {
   public static final int NONE = 0;
   public static final int CONSTRUCTING_AREA = 1;
@@ -123,7 +125,8 @@ class GeoMap extends GPSSimulator implements Transform
     Location loc = new Location("");
     loc.setLongitude(C.DEF_LONGITUDE);
     loc.setLatitude(C.DEF_LATITUDE);
-    startScheduler();
+//    DEBUG_MODE
+//    startScheduler();
   }
 
   public void updateCurrentArea()
@@ -154,7 +157,8 @@ class GeoMap extends GPSSimulator implements Transform
   {
     NumDouble2 res = new NumDouble2(p);
     res.minus(firstPoint);
-    NumDouble2 scale = new NumDouble2(C.Parameters.getScale(), -C.Parameters.getScale());
+    NumDouble2 scale = new NumDouble2((double) C.Parameters.getScale (),
+        (double) -C.Parameters.getScale());
     res.mul(scale);
     res.plus(origin);
     return res;
