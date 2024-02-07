@@ -1,4 +1,4 @@
-django==3.1.14
+django==3.2.24
 djangorestframework==3.12.1
 psycopg2-binary==2.8.6
 django-allauth==0.42.0
