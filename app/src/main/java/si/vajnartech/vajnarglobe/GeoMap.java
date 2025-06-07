@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.location.Location;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -14,8 +15,8 @@ import si.vajnartech.vajnarglobe.math.DxDtDouble2;
 import si.vajnartech.vajnarglobe.math.NumDouble2;
 
 // DEBUG_MODE
-//class GeoMap extends GPSSimulator implements Transform
-class GeoMap extends GPS implements Transform
+class GeoMap extends GPSSimulator implements Transform
+//class GeoMap extends GPS implements Transform
 {
   public static final int NONE = 0;
   public static final int CONSTRUCTING_AREA = 1;
@@ -32,7 +33,9 @@ class GeoMap extends GPS implements Transform
 
   protected int mode = NONE;
 
-  private final D dK = new D();
+  protected  NumDouble2 touchPoint;
+
+  protected D dK = new D();
 
   // odvod funkcije poti po casu
   volatile DxDtDouble2 dsDt = new DxDtDouble2();
@@ -46,6 +49,7 @@ class GeoMap extends GPS implements Transform
   {
     super(ctx);
     this.updateUI = updateUI;
+    updateUI.setMessage(((MainActivity)ctx).tx(R.string.no_location));
   }
 
   @Override
@@ -63,7 +67,7 @@ class GeoMap extends GPS implements Transform
   {
     dsDt.add(new NumDouble2(loc.getLongitude(), loc.getLatitude()));
     isMoving = isObjectMoving();
-    if (isMoving!= null) {
+    if (isMoving != null) {
       if (firstPoint == null)
         firstPoint = new GeoPoint(loc.getLongitude(), loc.getLatitude());
       currentPoint = new GeoPoint(loc.getLongitude(), loc.getLatitude());
@@ -71,6 +75,7 @@ class GeoMap extends GPS implements Transform
     }
   }
 
+  //ko real GPS vcasih posilja nenatancne koordinate tudi ko mirujem
   private Boolean isObjectMoving()
   {
     NumDouble2 val = dsDt.value(0);
@@ -90,7 +95,7 @@ class GeoMap extends GPS implements Transform
   protected void onDraw(Canvas canvas)
   {
     super.onDraw(canvas);
-    if (firstPoint != null)
+    if (isInit())
       for (Area a : C.areas.values())
         a.draw(canvas, paint, Color.BLACK, this);
   }
@@ -116,17 +121,16 @@ class GeoMap extends GPS implements Transform
     default:
       return false;
     }
+    touchPoint = new NumDouble2(rx, ry);
     return true;
   }
 
-  // na zacetku je treba poinicializirati lokacijo sploh ce ni GPS se up
+  // na zacetku je treba poinicializirati lokacijo sploh ce ni GPS se up za DEBUG
   protected void initLocation()
   {
     Location loc = new Location("");
     loc.setLongitude(C.DEF_LONGITUDE);
     loc.setLatitude(C.DEF_LATITUDE);
-//    DEBUG_MODE
-//    startScheduler();
   }
 
   public void updateCurrentArea()
@@ -162,5 +166,23 @@ class GeoMap extends GPS implements Transform
     res.mul(scale);
     res.plus(origin);
     return res;
+  }
+
+  // convert point from screen space to geo space
+  protected NumDouble2 toGeoSpace(NumDouble2 p)
+  {
+    NumDouble2 res = new NumDouble2(p);
+    NumDouble2 scale = new NumDouble2((double) C.Parameters.getScale (),
+            (double) -C.Parameters.getScale());
+
+    res.minus(origin);
+    res.div(scale);
+    res.plus(firstPoint);
+    return res;
+  }
+
+  protected boolean isInit()
+  {
+    return firstPoint != null;
   }
 }

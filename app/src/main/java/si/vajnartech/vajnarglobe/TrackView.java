@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.location.Location;
+import android.view.MotionEvent;
+import android.view.View;
 
 import java.util.ArrayList;
 
@@ -38,7 +40,10 @@ public class TrackView extends GeoMap implements AveragerOfPosition.AveragerRunn
   protected void notifyMe(Location loc)
   {
     super.notifyMe(loc);
-    averager.add(currentPoint);
+    if (isInit()) {
+      averager.add(currentPoint);
+      updateUI.setMessage(activity.tx(R.string.mode_tracking));
+    }
   }
 
   @Override

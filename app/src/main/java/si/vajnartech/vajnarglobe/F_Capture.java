@@ -21,7 +21,7 @@ public class F_Capture extends MyFragment implements View.OnClickListener
   {
     LinearLayout res = createView(inflater, container);
 
-    printMessage(act.tx(R.string.mode_capture));
+    printMessage(act.tx(R.string.no_location));
     myView = new CaptureView(act, this);
 
     myView.setOnTouchListener(myView);
@@ -78,17 +78,18 @@ public class F_Capture extends MyFragment implements View.OnClickListener
       myView.invalidate();
     }
     // ko sklopis debug mode tole zakomentiraj
-//    if (C.DEBUG_MODE) {
-//      if (v.getId() == R.id.test_left) {
-//        myView.mvLeft();
-//      } else if (v.getId() == R.id.test_right) {
-//        myView.mvRight();
-//      } else if (v.getId() == R.id.test_up) {
-//        myView.mvUp();
-//      } else if (v.getId() == R.id.test_down) {
-//        myView.mvDown();
-//      }
-//    }
+    if (C.DEBUG_MODE) {
+      if (v.getId() == R.id.test_left) {
+        myView.mvLeft();
+      } else if (v.getId() == R.id.test_right) {
+        myView.mvRight();
+      } else if (v.getId() == R.id.test_up) {
+        myView.mvUp();
+      } else if (v.getId() == R.id.test_down) {
+        myView.mvDown();
+
+      }
+    }
   }
 
   @Override
@@ -97,6 +98,12 @@ public class F_Capture extends MyFragment implements View.OnClickListener
   {
     getLongitudeContainer().setText(Double.toString(loc.getLongitude()));
     getLatitudeContainer().setText(Double.toString(loc.getLatitude()));
+  }
+
+  @Override
+  public void setMessage(String msg)
+  {
+    printMessage(msg);
   }
 
   @Override

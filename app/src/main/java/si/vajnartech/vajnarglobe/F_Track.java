@@ -36,6 +36,9 @@ public class F_Track extends MyFragment implements View.OnClickListener
   {
     layout.findViewById(R.id.b_mark).setVisibility(View.GONE);
     layout.findViewById(R.id.b_construct).setVisibility(View.GONE);
+    layout.findViewById(R.id.zoom_in).setOnClickListener(this);
+    layout.findViewById(R.id.zoom_out).setOnClickListener(this);
+
 
     if (C.DEBUG_MODE) {
       layout.findViewById(R.id.test_buttons).setVisibility(View.VISIBLE);
@@ -50,16 +53,30 @@ public class F_Track extends MyFragment implements View.OnClickListener
   public void onClick(View v)
   {
     // ko sklopis debug mode tole zakomentiraj
-//    if (C.DEBUG_MODE) {
-//      if (v.getId() == R.id.test_left) {
-//        myView.mvLeft();
-//      } else if (v.getId() == R.id.test_right) {
-//        myView.mvRight();
-//      } else if (v.getId() == R.id.test_up) {
-//        myView.mvUp();
-//      } else if (v.getId() == R.id.test_down) {
-//        myView.mvDown();
-//      }
-//    }
+    if (C.DEBUG_MODE) {
+      if (v.getId() == R.id.test_left) {
+        myView.mvLeft();
+      } else if (v.getId() == R.id.test_right) {
+        myView.mvRight();
+      } else if (v.getId() == R.id.test_up) {
+        myView.mvUp();
+      } else if (v.getId() == R.id.test_down) {
+        myView.mvDown();
+      }
+    }
+
+    if (v.getId() == R.id.zoom_in) {
+      C.Parameters.zoomIn();
+      myView.invalidate();
+    } else if (v.getId() == R.id.zoom_out) {
+      C.Parameters.zoomOut();
+      myView.invalidate();
+    }
+  }
+
+  @Override
+  public void setMessage(String msg)
+  {
+    printMessage(msg);
   }
 }

@@ -20,6 +20,7 @@ abstract class Num<T> extends ArrayList<T>
 
   public void is(Num<T> val)
   {
+    clear();
     addAll(val);
   }
 

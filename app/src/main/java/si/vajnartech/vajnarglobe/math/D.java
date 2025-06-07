@@ -18,4 +18,8 @@ public class D extends NumDouble2
     q_y = v.get(1);
     is(res);
   }
+
+  public boolean isZero() {
+    return get(0) == 0.0 && get(1) == 0.0;
+  }
 }

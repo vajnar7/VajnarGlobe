@@ -24,6 +24,7 @@
   <string name="add">Dodaj</string>
   <string name="mode_tracking">sledenje</string>
   <string name="mode_capture">urejanje področij</string>
+  <string name="no_location">ni lokacije</string>
   <string name="test">T</string>
   <string name="no_areas">Ni območij</string>
   <string name="add_new_area">NOVO</string>

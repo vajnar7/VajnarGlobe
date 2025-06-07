@@ -1,4 +1,4 @@
-//http://rkg.gov.si/GERK/WebViewer/
+//http://rkg.gov.si/GERK/WebViewer/ NTRIP protocol, for GPS corrections
 package si.vajnartech.vajnarglobe;
 
 import android.Manifest;

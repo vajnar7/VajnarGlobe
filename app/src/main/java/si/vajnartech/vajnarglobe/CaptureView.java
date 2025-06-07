@@ -4,7 +4,13 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.location.Location;
 import android.os.Handler;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+
+import si.vajnartech.vajnarglobe.math.NumDouble2;
 
 public class CaptureView extends GeoMap
 {
@@ -49,5 +55,24 @@ public class CaptureView extends GeoMap
 
     for (GeoPoint p : currentArea.geoPoints)
       p.draw(canvas, paint, Color.BLUE, 6, this);
+  }
+
+  @Override
+  protected void notifyMe(Location loc)
+  {
+    super.notifyMe(loc);
+    updateUI.setMessage(activity.tx(R.string.mode_capture));
+  }
+
+  @Override
+  public boolean onTouch(View view, MotionEvent event) {
+
+    boolean res = super.onTouch(view, event);
+    if (dK.isZero()) {
+      NumDouble2 selPoint = toGeoSpace(touchPoint);
+      Log.i("pepe", "Touch point: " + selPoint);
+    }
+
+    return res;
   }
 }
