@@ -14,10 +14,8 @@ import si.vajnartech.vajnarglobe.rest.Areas;
 
 import static si.vajnartech.vajnarglobe.C.areas;
 
-public class F_Track extends MyFragment implements View.OnClickListener
+public class F_Track extends MyFragment<TrackView> implements View.OnClickListener
 {
-  public TrackView myView;
-
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
   {

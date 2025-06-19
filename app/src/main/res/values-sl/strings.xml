@@ -30,4 +30,10 @@
   <string name="add_new_area">NOVO</string>
   <string name="str_zoom_in">zoom in</string>
   <string name="str_zoom_out">zoom out</string>
+  <string name="warning">Opozorilo</string>
+  <string name="ok">OK</string>
+  <string name="cancel">Prekliči</string>
+  <string name="delete_area">Ali ste prepričani, da želite zbrisati območje?</string>
+
+
 </resources>

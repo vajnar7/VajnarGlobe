@@ -12,11 +12,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
-public abstract class MyFragment extends DialogFragment implements UpdateUI
+public abstract class MyFragment<V extends View> extends DialogFragment implements UpdateUI
 {
+  V myView;
+
   protected static int MARK_BUTTON = R.id.b_mark;
   protected static int CONSTRUCT_BUTTON = R.id.b_construct;
   protected static int NEW_AREA_BUTTON = R.id.b_new;
+  protected static int DELETE_AREA_BUTTON = R.id.b_delete;
 
   MainActivity   act;
   TerminalWindow terminal = null;

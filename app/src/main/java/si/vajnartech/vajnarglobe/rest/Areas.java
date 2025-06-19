@@ -1,11 +1,9 @@
 package si.vajnartech.vajnarglobe.rest;
 
-import android.util.Log;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.util.ArrayList;
-import java.util.Objects;
 
 import si.vajnartech.vajnarglobe.Area;
 import si.vajnartech.vajnarglobe.C;
@@ -21,29 +19,31 @@ public class Areas extends RestBase<AreasObj>
   ArrayList<GeoPoint> geoPoints;
   String name;
 
-  public Areas(String requestMethod, Runnable runAfter, MainActivity act)
+  public Areas(String requestMethod, MainActivity act, String param, Runnable runAfter)
   {
     super(C.AREAS_API, requestMethod, act);
     this.runAfter = runAfter;
+    this.name = param;
   }
 
-  public Areas(MainActivity act, ArrayList<GeoPoint> geoPoints, String name)
+  public Areas(MainActivity act, ArrayList<GeoPoint> geoPoints, String name, Runnable runAfter)
   {
     super(C.AREAS_API, "POST", act);
-    this.runAfter = null;
     this.geoPoints = geoPoints;
     this.name = name;
+    this.runAfter = runAfter;
   }
 
   @Override
   protected void onPostExecute(AreasObj areasObj)
   {
-    if (Objects.equals(requestMethod, "DELETE")) {
-      Log.i(C.TAG, "TODO DELETE");
-    } else if (Objects.equals(requestMethod, "POST")) {
-      if (areasObj.return_code != 0)
-        onFail();
-    } else if (areasObj != null) {
+    if (areasObj == null)
+    {
+      onFail();
+      return;
+    }
+
+    if (requestMethod.equals("GET")) {
       if (areasObj.response.isEmpty())
         Toast.makeText(act.get(), R.string.no_areas, Toast.LENGTH_LONG).show();
       C.areas.clear();
@@ -56,17 +56,19 @@ public class Areas extends RestBase<AreasObj>
         C.areas.put(a.name, newArea);
         newArea.constructArea();
       }
-      if (runAfter != null)
-        runAfter.run();
-    } else
-      onFail();
+    }
+
+    if (runAfter != null)
+      runAfter.run();
   }
 
   @Override
   protected AreasObj backgroundFunc()
   {
-    if (Objects.equals(requestMethod, "POST")) {
+    if (requestMethod.equals("POST")) {
       return callServer(new AreaObj(geoPoints, name));
+    } else if (requestMethod.equals("DELETE")) {
+      return callServer(new AreaObj(new ArrayList<>(), name));
     }
     return callServer(null);
   }

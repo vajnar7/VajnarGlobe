@@ -12,9 +12,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-public class F_Capture extends MyFragment implements View.OnClickListener
+import si.vajnartech.vajnarglobe.rest.Areas;
+
+public class F_Capture extends MyFragment<CaptureView> implements View.OnClickListener
 {
-  CaptureView myView;
 
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -28,6 +29,13 @@ public class F_Capture extends MyFragment implements View.OnClickListener
     res.addView(myView);
 
     return res;
+  }
+
+  private void deleteArea()
+  {
+    if (myView.currentArea != null) {
+      act.showAlert(act.tx(R.string.delete_area), () -> myView.currentArea.delete(act));
+    }
   }
 
   private void push()
@@ -62,8 +70,6 @@ public class F_Capture extends MyFragment implements View.OnClickListener
         buttonShow(CONSTRUCT_BUTTON, false);
         buttonShow(MARK_BUTTON, false);
         buttonShow(NEW_AREA_BUTTON, true);
-        myView.updateCurrentArea();
-        myView.invalidate();
     } else if (v.getId() == R.id.b_new) {
       buttonShow(MARK_BUTTON, true);
       buttonShow(CONSTRUCT_BUTTON, true);
@@ -76,6 +82,8 @@ public class F_Capture extends MyFragment implements View.OnClickListener
     } else if (v.getId() == R.id.zoom_out) {
       C.Parameters.zoomOut();
       myView.invalidate();
+    } else if (v.getId() == DELETE_AREA_BUTTON) {
+      deleteArea();
     }
     // ko sklopis debug mode tole zakomentiraj
     if (C.DEBUG_MODE) {
@@ -114,6 +122,7 @@ public class F_Capture extends MyFragment implements View.OnClickListener
     layout.findViewById(R.id.b_new).setOnClickListener(this);
     layout.findViewById(R.id.zoom_in).setOnClickListener(this);
     layout.findViewById(R.id.zoom_out).setOnClickListener(this);
+    layout.findViewById(DELETE_AREA_BUTTON).setOnClickListener(this);
 
     buttonShow(MARK_BUTTON, false);
     buttonShow(CONSTRUCT_BUTTON, false);

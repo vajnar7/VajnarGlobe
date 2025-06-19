@@ -2,6 +2,7 @@ package si.vajnartech.vajnarglobe;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.os.Bundle;
 
 import java.util.ArrayList;
 
@@ -28,7 +29,15 @@ public class Place extends Area
   @Override
   public void push(MainActivity act)
   {
-    new Areas(act, geoPoints, areaName);
+    new Areas(act, geoPoints, areaName,
+            () -> new Areas("GET", act, "", null)
+    );
+  }
+
+  public void delete(MainActivity act) {
+    new Areas("DELETE", act, areaName,
+            () -> new Areas("GET", act, "", null)
+    );
   }
 
   @Override

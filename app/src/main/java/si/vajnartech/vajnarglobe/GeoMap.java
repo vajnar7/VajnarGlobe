@@ -72,6 +72,7 @@ class GeoMap extends GPSSimulator implements Transform
         firstPoint = new GeoPoint(loc.getLongitude(), loc.getLatitude());
       currentPoint = new GeoPoint(loc.getLongitude(), loc.getLatitude());
       refresh(loc);
+      refresh();
     }
   }
 
@@ -86,10 +87,13 @@ class GeoMap extends GPSSimulator implements Transform
 
   private void refresh(Location loc)
   {
-    updateCurrentArea();
     updateUI.printLocation(loc);
-    invalidate();
   }
+
+ public void refresh() {
+   updateCurrentArea(currentPoint);
+   invalidate();
+ }
 
   @Override
   protected void onDraw(Canvas canvas)
@@ -107,13 +111,13 @@ class GeoMap extends GPSSimulator implements Transform
     double rx, ry;
     switch (event.getAction()) {
     case MotionEvent.ACTION_DOWN:
-      rx = event.getRawX();
-      ry = event.getRawY();
+      rx = event.getX();
+      ry = event.getY();
       dK.up(new NumDouble2(rx, ry));
       break;
     case MotionEvent.ACTION_UP:
-      rx = event.getRawX();
-      ry = event.getRawY();
+      rx = event.getX();
+      ry = event.getY();
       dK.up(new NumDouble2(rx, ry));
       origin.plus(dK);
       view.invalidate();
@@ -133,7 +137,7 @@ class GeoMap extends GPSSimulator implements Transform
     loc.setLatitude(C.DEF_LATITUDE);
   }
 
-  public void updateCurrentArea()
+  protected void updateCurrentArea(GeoPoint point)
   {
     if (mode == CONSTRUCTING_AREA) {
       return;
@@ -143,7 +147,7 @@ class GeoMap extends GPSSimulator implements Transform
     for (Area area : areas.values()) {
       if (found)
         break;
-      if (area.isInside(currentPoint)) {
+      if (area.isInside(point)) {
         currentArea = new CurrentArea(area);
         currentArea.constructArea();
         found = true;

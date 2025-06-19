@@ -43,8 +43,10 @@ public class CaptureView extends GeoMap
     if (currentPoint != null) {
       if (!isMoving)
         currentPoint.draw(canvas, paint, Color.GREEN, 8, this);
-      else
+      else {
+        transform(currentPoint);
         currentPoint.draw(canvas, paint, Color.RED, 3, this);
+      }
     }
 
     if (currentArea == null)
@@ -71,6 +73,7 @@ public class CaptureView extends GeoMap
     if (dK.isZero()) {
       NumDouble2 selPoint = toGeoSpace(touchPoint);
       Log.i("pepe", "Touch point: " + selPoint);
+      updateCurrentArea(new GeoPoint(selPoint.get(0), selPoint.get(1)));
     }
 
     return res;

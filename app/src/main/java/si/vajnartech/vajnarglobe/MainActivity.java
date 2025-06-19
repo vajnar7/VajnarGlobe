@@ -1,5 +1,6 @@
 package si.vajnartech.vajnarglobe;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.Menu;
@@ -9,6 +10,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -37,7 +39,7 @@ import si.vajnartech.vajnarglobe.rest.Areas;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
-  MyFragment  currentFragment = null;
+  MyFragment<?>  currentFragment = null;
 
   @Override
   protected void onCreate(Bundle savedInstanceState)
@@ -59,7 +61,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView = findViewById(R.id.nav_view);
     navigationView.setNavigationItemSelectedListener(this);
 
-    new Areas("GET", () -> setFragment("capture", F_Capture.class, new Bundle()), this);
+    // TODO: ali lahko ukinemo do aftr lambdo, zrihtaj konstruktor?????
+    setFragment("capture", F_Capture.class, new Bundle());
+    new Areas("GET", this, "", null);
   }
 
   @Override
@@ -102,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     return true;
   }
 
-  public void setFragment(String tag, Class<? extends MyFragment> cls, Bundle params)
+  public void setFragment(String tag, Class<? extends MyFragment<?>> cls, Bundle params)
   {
     currentFragment = createFragment(tag, cls, params);
     if (currentFragment == null) return;
@@ -113,10 +117,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     transaction.commit();
   }
 
-  public MyFragment createFragment(String tag, Class<? extends MyFragment> cls, Bundle params)
+  public MyFragment<?> createFragment(String tag, Class<? extends MyFragment<?>> cls, Bundle params)
   {
-    MyFragment frag;
-    frag = (MyFragment) getSupportFragmentManager().findFragmentByTag(tag);
+    MyFragment<?> frag;
+    frag = (MyFragment<?>) getSupportFragmentManager().findFragmentByTag(tag);
     if (frag == null && cls != null)
       try {
         frag = MyFragment.instantiate(cls, this);
@@ -133,6 +137,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     if (formatArgs.length > 0)
       return getString(stringId, formatArgs);
     return getString(stringId);
+  }
+
+  public void showAlert(String msg, Runnable onOk)
+  {
+    AlertDialog.Builder builder = new AlertDialog.Builder(this)
+            .setMessage(msg)
+            .setTitle(R.string.warning)
+            .setPositiveButton(R.string.ok, (dialogInterface, i) -> {
+              if (onOk != null)
+                onOk.run();
+            })
+            .setNegativeButton(R.string.cancel, null);
+
+    builder.create();
+    builder.show();
   }
 }
 

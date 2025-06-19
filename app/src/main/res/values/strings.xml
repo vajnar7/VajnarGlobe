@@ -30,4 +30,9 @@
   <string name="no_areas">No areas</string>
   <string name="str_zoom_in">zoom in</string>
   <string name="str_zoom_out">zoom out</string>
+  <string name="warning">Warning</string>
+  <string name="ok">OK</string>
+  <string name="cancel">Cancel</string>
+  <string name="delete_area">Are you sure you want to delete area?</string>
+
 </resources>
