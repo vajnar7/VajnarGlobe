@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentTransaction;
 import si.vajnartech.vajnarglobe.rest.Areas;
 // scroll na touch ne deva
@@ -34,12 +35,12 @@ import si.vajnartech.vajnarglobe.rest.Areas;
 // ++med kontaktiranjem na server progres dialog/bar
 // --ce se ne more kontaktirati server retry
 // undo pri mark tockah, tudi pri construct medtem ko pri push ostane samo delete area!!
-// urejanje obmocij da izbrises obmocje/select ...
+
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
-  MyFragment<?>  currentFragment = null;
+  DialogFragment currentFragment = null;
 
   @Override
   protected void onCreate(Bundle savedInstanceState)
@@ -61,9 +62,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView = findViewById(R.id.nav_view);
     navigationView.setNavigationItemSelectedListener(this);
 
-    // TODO: ali lahko ukinemo do aftr lambdo, zrihtaj konstruktor?????
-    setFragment("capture", F_Capture.class, new Bundle());
-    new Areas("GET", this, "", null);
+    SharedPref sp = new SharedPref(this);
+    if (!sp.getBool("registered")) {
+      setFragmentFlat("login", F_Login.class, new Bundle());
+    } else {
+      setFragment("capture", F_Track.class, new Bundle());
+      new Areas("GET", this, "", sp.getString("username"), null);
+    }
   }
 
   @Override
@@ -124,6 +129,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     if (frag == null && cls != null)
       try {
         frag = MyFragment.instantiate(cls, this);
+        frag.setArguments(params);
+      } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+      }
+    return frag;
+  }
+
+  public void setFragmentFlat(String tag, Class<? extends MyFragmentFlat> cls, Bundle params)
+  {
+    currentFragment = createFragmentFlat(tag, cls, params);
+    if (currentFragment == null) return;
+
+    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+    transaction.replace(R.id.content, currentFragment);
+    transaction.addToBackStack(null);
+    transaction.commit();
+  }
+
+  public MyFragmentFlat createFragmentFlat(String tag, Class<? extends MyFragmentFlat> cls, Bundle params)
+  {
+    MyFragmentFlat frag;
+    frag = (MyFragmentFlat) getSupportFragmentManager().findFragmentByTag(tag);
+    if (frag == null && cls != null)
+      try {
+        frag = MyFragmentFlat.instantiate(cls, this);
         frag.setArguments(params);
       } catch (Exception e) {
         e.printStackTrace();

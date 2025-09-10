@@ -29,4 +29,5 @@ class CurrentArea extends Place
   {
     return isConstructed;
   }
+
 }

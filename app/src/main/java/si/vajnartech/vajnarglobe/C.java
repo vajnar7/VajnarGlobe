@@ -14,6 +14,8 @@ public class C
 
   public static final String AREAS_API    = SERVER_ADDRESS + "areas/";
 
+  public static final String USER_API = SERVER_ADDRESS + "userlogin/";
+
   public static final String TAG = "pepe";
 
   static double DEF_LONGITUDE = 13.826209;  //x
@@ -28,7 +30,7 @@ public class C
 
   static class Parameters
   {
-    static private final int MAX_SCALE = 1500000;
+    static private final int MAX_SCALE = 2000000;
     static private final int MIN_SCALE = 100000;
     static private final int SCALE_STEP = 100000;
 

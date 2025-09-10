@@ -29,14 +29,16 @@ public class Place extends Area
   @Override
   public void push(MainActivity act)
   {
-    new Areas(act, geoPoints, areaName,
-            () -> new Areas("GET", act, "", null)
+    String user = new SharedPref(act).getString("username");
+    new Areas(act, geoPoints, areaName, user,
+            () -> new Areas("GET", act, "", user, null)
     );
   }
 
   public void delete(MainActivity act) {
-    new Areas("DELETE", act, areaName,
-            () -> new Areas("GET", act, "", null)
+    String user = new SharedPref(act).getString("username");
+    new Areas("DELETE", act, areaName, user,
+            () -> new Areas("GET", act, "", user, null)
     );
   }
 

@@ -6,7 +6,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.location.Location;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -21,6 +20,7 @@ class GeoMap extends GPSSimulator implements Transform
   public static final int NONE = 0;
   public static final int CONSTRUCTING_AREA = 1;
   public static final int TRACKING = 2;
+  public static final int MANUAL_SELECT = 3;
 
   protected GeoPoint firstPoint;
   protected GeoPoint currentPoint;
@@ -67,16 +67,10 @@ class GeoMap extends GPSSimulator implements Transform
   {
     dsDt.add(new NumDouble2(loc.getLongitude(), loc.getLatitude()));
     isMoving = isObjectMoving();
-    if (isMoving != null) {
-      if (firstPoint == null)
-        firstPoint = new GeoPoint(loc.getLongitude(), loc.getLatitude());
-      currentPoint = new GeoPoint(loc.getLongitude(), loc.getLatitude());
-      refresh(loc);
-      refresh();
-    }
+    refresh(loc);
   }
 
-  //ko real GPS vcasih posilja nenatancne koordinate tudi ko mirujem
+  // ko real GPS vcasih posilja nenatancne koordinate tudi ko mirujem
   private Boolean isObjectMoving()
   {
     NumDouble2 val = dsDt.value(0);
@@ -90,8 +84,11 @@ class GeoMap extends GPSSimulator implements Transform
     updateUI.printLocation(loc);
   }
 
- public void refresh() {
-   updateCurrentArea(currentPoint);
+ public void refresh()
+ {
+   if (mode != CONSTRUCTING_AREA && mode != MANUAL_SELECT)
+     updateCurrentArea(currentPoint);
+
    invalidate();
  }
 
@@ -139,10 +136,6 @@ class GeoMap extends GPSSimulator implements Transform
 
   protected void updateCurrentArea(GeoPoint point)
   {
-    if (mode == CONSTRUCTING_AREA) {
-      return;
-    }
-
     boolean found = false;
     for (Area area : areas.values()) {
       if (found)
@@ -187,6 +180,6 @@ class GeoMap extends GPSSimulator implements Transform
 
   protected boolean isInit()
   {
-    return firstPoint != null;
+    return (isMoving != null && firstPoint != null);
   }
 }

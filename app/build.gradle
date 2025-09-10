@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 36
     defaultConfig {
         applicationId "si.vajnartech.vajnarglobe"
         minSdkVersion 24
         //noinspection OldTargetApi
-        targetSdkVersion 32
+        targetSdkVersion 36
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -31,4 +31,5 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
+    implementation 'androidx.security:security-crypto:1.1.0-alpha06'
 }

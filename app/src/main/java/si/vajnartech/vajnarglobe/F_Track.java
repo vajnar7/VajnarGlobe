@@ -24,19 +24,23 @@ public class F_Track extends MyFragment<TrackView> implements View.OnClickListen
     printMessage(act.tx(R.string.mode_tracking));
     myView = new TrackView(act, this);
     myView.setOnTouchListener(myView);
+    myView.updateUI.setMessage(act.tx(R.string.mode_tracking));
+
     res.addView(myView);
 
     return res;
   }
 
   @Override
-  protected void init(View layout)
+  protected void init()
   {
     layout.findViewById(R.id.b_mark).setVisibility(View.GONE);
     layout.findViewById(R.id.b_construct).setVisibility(View.GONE);
     layout.findViewById(R.id.zoom_in).setOnClickListener(this);
     layout.findViewById(R.id.zoom_out).setOnClickListener(this);
-
+    layout.findViewById(CANCEL_BUTTON).setVisibility(View.GONE);
+    layout.findViewById(NEW_AREA_BUTTON).setVisibility(View.GONE);
+    layout.findViewById(DELETE_AREA_BUTTON).setVisibility(View.GONE);
 
     if (C.DEBUG_MODE) {
       layout.findViewById(R.id.test_buttons).setVisibility(View.VISIBLE);
@@ -70,11 +74,5 @@ public class F_Track extends MyFragment<TrackView> implements View.OnClickListen
       C.Parameters.zoomOut();
       myView.invalidate();
     }
-  }
-
-  @Override
-  public void setMessage(String msg)
-  {
-    printMessage(msg);
   }
 }

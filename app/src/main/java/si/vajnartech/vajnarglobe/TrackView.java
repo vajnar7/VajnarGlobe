@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.location.Location;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -40,10 +41,7 @@ public class TrackView extends GeoMap implements AveragerOfPosition.AveragerRunn
   protected void notifyMe(Location loc)
   {
     super.notifyMe(loc);
-    if (isInit()) {
-      averager.add(currentPoint);
-      updateUI.setMessage(activity.tx(R.string.mode_tracking));
-    }
+    averager.add(new GeoPoint(loc.getLongitude(), loc.getLatitude()));
   }
 
   @Override
@@ -56,27 +54,30 @@ public class TrackView extends GeoMap implements AveragerOfPosition.AveragerRunn
   protected void onDraw(Canvas canvas)
   {
     super.onDraw(canvas);
-    if (currentPoint == null) return;
-    currentPoint.draw(canvas, paint, Color.RED, 5, this);
-    if (currentArea != null)
+    if (isInit())
       draw(currentArea, canvas);
    }
 
   private void draw(Area area, Canvas canvas)
   {
+    if (isMoving)
+      currentPoint.draw(canvas, paint, Color.RED, 2, this);
+    else {
+      fs.put(System.currentTimeMillis(), currentPoint);
+      currentPoint.draw(canvas, paint, Color.GREEN, 5, this);
+    }
+
     fs.draw(canvas, paint, Color.GRAY, this);
-    GeoPoint startPoint = (GeoPoint) fs.f(0);
-    startPoint.draw(canvas, paint, Color.BLUE, 4, this);
 
     if (aproxPosition != null)
-      aproxPosition.draw(canvas, paint, Color.GREEN, 4, this);
+      aproxPosition.draw(canvas, paint, Color.MAGENTA, 2, this);
 
     if (area.isInside(currentPoint)) {
       ArrayList<GeoPoint> closestPoints = area.process(currentPoint);
       int idx = 0;
       for (GeoPoint point : closestPoints) {
         if (area.get(idx).onMe(point)) {
-          point.draw(canvas, paint, Color.GREEN, 4, this);
+          point.draw(canvas, paint, Color.YELLOW, 2, this);
         }
 //      predict(startPoint, canvas, area, idx);
       }
@@ -128,10 +129,11 @@ public class TrackView extends GeoMap implements AveragerOfPosition.AveragerRunn
   @Override
   public void averagerRun(GeoPoint point)
   {
-    fs.put(System.currentTimeMillis(), point);
     currentPoint = point;
-    invalidate();
+    if (firstPoint == null) firstPoint = point;
+    refresh();
   }
+
 
 //  static class MyDerivative extends Derivative<Long, R2Double>
 //  {

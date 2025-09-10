@@ -10,7 +10,7 @@
   <string name="latitude">Latitude</string>
   <string name="send">SEND</string>
   <string name="capture">My areas</string>
-  <string name="track">track</string>
+  <string name="track">Navigation</string>
   <string name="construct">CONSTRUCT</string>
   <string name="add_new_area">NEW</string>
   <string name="longitude">Longitude</string>
@@ -23,7 +23,7 @@
   <string name="new_area">New Area</string>
   <string name="error_wrong_name">Not valid name</string>
   <string name="add">Add</string>
-  <string name="mode_tracking">tracking</string>
+  <string name="mode_tracking">navigation</string>
   <string name="mode_capture">my areas</string>
   <string name="no_location">no location</string>
   <string name="test">T</string>
@@ -34,5 +34,19 @@
   <string name="ok">OK</string>
   <string name="cancel">Cancel</string>
   <string name="delete_area">Are you sure you want to delete area?</string>
+  <string name="edit">edit</string>
+  <string name="user_name">user name</string>
+  <string name="same_as_email">user name is the same as e-mail address</string>
+  <string name="password">password</string>
+  <string name="login">login</string>
+  <string name="register">register</string>
+  <string name="email">email</string>
+  <string name="katastrske_obcine_test">GOZD (2170)</string>
+  <string name="katastrske_obcine">katastrske obcine</string>
+  <string name="reg_notice">Hvala za vaše zanimanje. V kratkem dobite elektronsko sporočilo z navodili za aktiviranje aplikacije</string>
+  <string name="lets_register">Hvala za vaše zanimanje. Prosimo, da se registrirate</string>
+  <string name="parcel">parcele</string>
+  <string name="calibrate">calibrate</string>
+
 
 </resources>

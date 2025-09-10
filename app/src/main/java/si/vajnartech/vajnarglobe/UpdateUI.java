@@ -6,6 +6,6 @@ interface UpdateUI
 {
   void printLocation(Location loc);
   void setAreaName(Area name);
-
   void setMessage(String msg);
+  void buttonShow(int id, boolean visibility);
 }

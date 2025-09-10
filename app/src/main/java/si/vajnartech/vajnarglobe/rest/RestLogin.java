@@ -1,6 +1,7 @@
 package si.vajnartech.vajnarglobe.rest;
 
 import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -17,9 +18,11 @@ import java.net.SocketTimeoutException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
+import si.vajnartech.vajnarglobe.F_Login;
 import si.vajnartech.vajnarglobe.Json;
 import si.vajnartech.vajnarglobe.MainActivity;
 import si.vajnartech.vajnarglobe.R;
+import si.vajnartech.vajnarglobe.SharedPref;
 
 class RestLogin<T extends RestBaseObject> extends AsyncTask<String, Integer>
 {

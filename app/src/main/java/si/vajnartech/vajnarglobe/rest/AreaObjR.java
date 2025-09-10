@@ -2,7 +2,7 @@ package si.vajnartech.vajnarglobe.rest;
 
 import java.util.List;
 
-class AreaObjR
+public class AreaObjR
 {
   public String         name;
   public List<PointObj> points;

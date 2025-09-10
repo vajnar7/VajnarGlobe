@@ -20,11 +20,12 @@ public abstract class MyFragment<V extends View> extends DialogFragment implemen
   protected static int CONSTRUCT_BUTTON = R.id.b_construct;
   protected static int NEW_AREA_BUTTON = R.id.b_new;
   protected static int DELETE_AREA_BUTTON = R.id.b_delete;
+  protected static int CANCEL_BUTTON = R.id.b_cancel;
 
   MainActivity   act;
   TerminalWindow terminal = null;
 
-  private View layout;
+  protected View layout;
 
   public LinearLayout createView(@NonNull LayoutInflater inflater, ViewGroup container)
   {
@@ -33,11 +34,11 @@ public abstract class MyFragment<V extends View> extends DialogFragment implemen
 
     layout = inflater.inflate(R.layout.bidr, container, false);
     res.addView(layout);
-    init(layout);
+    init();
     return res;
   }
 
-  public static <T extends MyFragment> T instantiate(@NonNull Class<T> cls, MainActivity act)
+  public static <T extends MyFragment<?>> T instantiate(@NonNull Class<T> cls, MainActivity act)
   {
     T res = null;
     try {
@@ -85,9 +86,16 @@ public abstract class MyFragment<V extends View> extends DialogFragment implemen
     ((TextView) layout.findViewById(R.id.ed_area_name)).setText(area.areaName);
   }
 
-  protected abstract void init(View layout);
+  @Override
+  public void setMessage(String msg)
+  {
+    printMessage(msg);
+  }
 
-  protected void buttonShow(int id, boolean visibility)
+  protected abstract void init();
+
+  @Override
+  public void buttonShow(int id, boolean visibility)
   {
     layout.findViewById(id).setVisibility(visibility ? View.VISIBLE : View.GONE);
   }

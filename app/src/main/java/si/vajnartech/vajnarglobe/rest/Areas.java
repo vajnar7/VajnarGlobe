@@ -17,19 +17,22 @@ public class Areas extends RestBase<AreasObj>
 {
   private final Runnable runAfter;
   ArrayList<GeoPoint> geoPoints;
+  String user;
   String name;
 
-  public Areas(String requestMethod, MainActivity act, String param, Runnable runAfter)
+  public Areas(String requestMethod, MainActivity act, String name, String user, Runnable runAfter)
   {
     super(C.AREAS_API, requestMethod, act);
     this.runAfter = runAfter;
-    this.name = param;
+    this.user = user;
+    this.name = name;
   }
 
-  public Areas(MainActivity act, ArrayList<GeoPoint> geoPoints, String name, Runnable runAfter)
+  public Areas(MainActivity act, ArrayList<GeoPoint> geoPoints, String name, String user, Runnable runAfter)
   {
     super(C.AREAS_API, "POST", act);
     this.geoPoints = geoPoints;
+    this.user = user;
     this.name = name;
     this.runAfter = runAfter;
   }
@@ -43,9 +46,7 @@ public class Areas extends RestBase<AreasObj>
       return;
     }
 
-    if (requestMethod.equals("GET")) {
-      if (areasObj.response.isEmpty())
-        Toast.makeText(act.get(), R.string.no_areas, Toast.LENGTH_LONG).show();
+    if (!areasObj.response.isEmpty()) {
       C.areas.clear();
       for (AreaObjR a : areasObj.response) {
         if (a.points.size() < 3) continue;
@@ -65,12 +66,17 @@ public class Areas extends RestBase<AreasObj>
   @Override
   protected AreasObj backgroundFunc()
   {
-    if (requestMethod.equals("POST")) {
-      return callServer(new AreaObj(geoPoints, name));
-    } else if (requestMethod.equals("DELETE")) {
-      return callServer(new AreaObj(new ArrayList<>(), name));
-    }
-    return callServer(null);
+      switch (requestMethod) {
+          case "POST":
+              return callServer(new AreaObj(geoPoints, name, user));
+          case "DELETE":
+              return callServer(new AreaObj(new ArrayList<>(), name, user));
+          case "GET":
+              requestMethod = "POST";
+              break;
+      }
+
+    return callServer(new AreaObj(new ArrayList<>(), "", user));
   }
 
   @Override

@@ -1,5 +1,8 @@
 package si.vajnartech.vajnarglobe;
 
+import static si.vajnartech.vajnarglobe.GeoMap.MANUAL_SELECT;
+import static si.vajnartech.vajnarglobe.GeoMap.NONE;
+
 import android.annotation.SuppressLint;
 import android.location.Location;
 import android.os.Bundle;
@@ -12,7 +15,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import si.vajnartech.vajnarglobe.rest.Areas;
 
 public class F_Capture extends MyFragment<CaptureView> implements View.OnClickListener
 {
@@ -35,6 +37,15 @@ public class F_Capture extends MyFragment<CaptureView> implements View.OnClickLi
   {
     if (myView.currentArea != null) {
       act.showAlert(act.tx(R.string.delete_area), () -> myView.currentArea.delete(act));
+    }
+  }
+
+  private void cancel()
+  {
+    if (myView.mode == MANUAL_SELECT) {
+      buttonShow(CANCEL_BUTTON, false);
+      myView.mode = NONE;
+      myView.refresh();
     }
   }
 
@@ -65,7 +76,7 @@ public class F_Capture extends MyFragment<CaptureView> implements View.OnClickLi
       myView.currentArea.mark(myView.currentPoint);
       myView.invalidate();
     } else if (v.getId() == R.id.b_construct) {
-        myView.mode = GeoMap.NONE;
+        myView.mode = NONE;
         push();
         buttonShow(CONSTRUCT_BUTTON, false);
         buttonShow(MARK_BUTTON, false);
@@ -84,6 +95,8 @@ public class F_Capture extends MyFragment<CaptureView> implements View.OnClickLi
       myView.invalidate();
     } else if (v.getId() == DELETE_AREA_BUTTON) {
       deleteArea();
+    } else if (v.getId() == CANCEL_BUTTON) {
+      cancel();
     }
     // ko sklopis debug mode tole zakomentiraj
     if (C.DEBUG_MODE) {
@@ -109,13 +122,7 @@ public class F_Capture extends MyFragment<CaptureView> implements View.OnClickLi
   }
 
   @Override
-  public void setMessage(String msg)
-  {
-    printMessage(msg);
-  }
-
-  @Override
-  protected void init(View layout)
+  protected void init()
   {
     layout.findViewById(R.id.b_mark).setOnClickListener(this);
     layout.findViewById(R.id.b_construct).setOnClickListener(this);
@@ -123,9 +130,11 @@ public class F_Capture extends MyFragment<CaptureView> implements View.OnClickLi
     layout.findViewById(R.id.zoom_in).setOnClickListener(this);
     layout.findViewById(R.id.zoom_out).setOnClickListener(this);
     layout.findViewById(DELETE_AREA_BUTTON).setOnClickListener(this);
+    layout.findViewById(CANCEL_BUTTON).setOnClickListener(this);
 
     buttonShow(MARK_BUTTON, false);
     buttonShow(CONSTRUCT_BUTTON, false);
+    buttonShow(CANCEL_BUTTON,false);
 
     if (C.DEBUG_MODE) {
       layout.findViewById(R.id.test_buttons).setVisibility(View.VISIBLE);

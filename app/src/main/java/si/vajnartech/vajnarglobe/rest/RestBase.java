@@ -15,6 +15,7 @@ import java.util.HashMap;
 import si.vajnartech.vajnarglobe.C;
 import si.vajnartech.vajnarglobe.Json;
 import si.vajnartech.vajnarglobe.MainActivity;
+import si.vajnartech.vajnarglobe.SharedPref;
 
 public abstract class RestBase<T extends RestBaseObject> extends AsyncTask<T, String>
 {

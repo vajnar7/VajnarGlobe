@@ -1,5 +1,7 @@
 package si.vajnartech.vajnarglobe;
 
+import static si.vajnartech.vajnarglobe.MyFragment.CANCEL_BUTTON;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -44,7 +46,6 @@ public class CaptureView extends GeoMap
       if (!isMoving)
         currentPoint.draw(canvas, paint, Color.GREEN, 8, this);
       else {
-        transform(currentPoint);
         currentPoint.draw(canvas, paint, Color.RED, 3, this);
       }
     }
@@ -72,7 +73,9 @@ public class CaptureView extends GeoMap
     boolean res = super.onTouch(view, event);
     if (dK.isZero()) {
       NumDouble2 selPoint = toGeoSpace(touchPoint);
-      Log.i("pepe", "Touch point: " + selPoint);
+      mode = MANUAL_SELECT;
+      updateUI.setMessage(activity.tx(R.string.edit));
+      updateUI.buttonShow(CANCEL_BUTTON, true);
       updateCurrentArea(new GeoPoint(selPoint.get(0), selPoint.get(1)));
     }
 

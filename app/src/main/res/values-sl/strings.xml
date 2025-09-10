@@ -10,7 +10,7 @@
   <string name="latitude">Latitude</string>
   <string name="send">Pošlji</string>
   <string name="capture">Moja področja</string>
-  <string name="track">Sledi</string>
+  <string name="track">Navigacija</string>
   <string name="longitude">Longitude</string>
   <string name="construct">C</string>
   <string name="server_conn_error">Napaka pri dostopu na strežnik</string>
@@ -22,7 +22,7 @@
   <string name="new_area">Novo območje</string>
   <string name="error_wrong_name">Neveljavno ime</string>
   <string name="add">Dodaj</string>
-  <string name="mode_tracking">sledenje</string>
+  <string name="mode_tracking">navigacija</string>
   <string name="mode_capture">urejanje področij</string>
   <string name="no_location">ni lokacije</string>
   <string name="test">T</string>
@@ -34,6 +34,19 @@
   <string name="ok">OK</string>
   <string name="cancel">Prekliči</string>
   <string name="delete_area">Ali ste prepričani, da želite zbrisati območje?</string>
+  <string name="edit">urejanje</string>
+  <string name="user_name">uporabnik</string>
+  <string name="same_as_email">porabniško ime je enako elektronskemu naslovu</string>
+  <string name="password">geslo</string>
+  <string name="login">prijava</string>
+  <string name="register">registracija</string>
+  <string name="email">elektronski naslov</string>
+  <string name="katastrske_obcine_test">GOZD (2170)</string>
+  <string name="katastrske_obcine">katastrske obcine</string>
+  <string name="reg_notice">Hvala za vaše zanimanje. V kratkem dobite elektronsko sporočilo z navodili za aktiviranje aplikacije</string>
+  <string name="lets_register">Hvala za vaše zanimanje. Prosimo, da se registrirate</string>
+  <string name="parcel">parcele</string>
+  <string name="calibrate">kalibriraj</string>
 
 
 </resources>
