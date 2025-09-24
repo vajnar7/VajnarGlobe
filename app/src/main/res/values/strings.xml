@@ -2,8 +2,8 @@
   <string name="app_name">VajnarGlobe</string>
   <string name="navigation_drawer_open">Open navigation drawer</string>
   <string name="navigation_drawer_close">Close navigation drawer</string>
-  <string name="nav_header_title">Android Studio</string>
-  <string name="nav_header_subtitle">android.studio@android.com</string>
+  <string name="nav_header_title">Vajnar Globe</string>
+  <string name="nav_header_subtitle">vajnar7@gmail.com</string>
   <string name="nav_header_desc">Navigation header</string>
   <string name="action_settings">Settings</string>
 
@@ -11,6 +11,7 @@
   <string name="send">SEND</string>
   <string name="capture">My areas</string>
   <string name="track">Navigation</string>
+  <string name="precise_track">Precise Navigation</string>
   <string name="construct">CONSTRUCT</string>
   <string name="add_new_area">NEW</string>
   <string name="longitude">Longitude</string>

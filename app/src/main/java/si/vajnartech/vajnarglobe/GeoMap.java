@@ -21,6 +21,7 @@ class GeoMap extends GPSSimulator implements Transform
   public static final int CONSTRUCTING_AREA = 1;
   public static final int TRACKING = 2;
   public static final int MANUAL_SELECT = 3;
+  public static final int PRECISE_POSITIONING = 4;
 
   protected GeoPoint firstPoint;
   protected GeoPoint currentPoint;

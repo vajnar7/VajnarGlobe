@@ -2,8 +2,8 @@
   <string name="app_name">VajnarGlobe</string>
   <string name="navigation_drawer_open">Open navigation drawer</string>
   <string name="navigation_drawer_close">Close navigation drawer</string>
-  <string name="nav_header_title">Android Studio</string>
-  <string name="nav_header_subtitle">android.studio@android.com</string>
+  <string name="nav_header_title">Vajnar Globe</string>
+  <string name="nav_header_subtitle">vajnar7@gmail.com</string>
   <string name="nav_header_desc">Navigation header</string>
   <string name="action_settings">Settings</string>
 
@@ -11,6 +11,7 @@
   <string name="send">Pošlji</string>
   <string name="capture">Moja področja</string>
   <string name="track">Navigacija</string>
+  <string name="precise_track">Natančna Navigacija</string>
   <string name="longitude">Longitude</string>
   <string name="construct">C</string>
   <string name="server_conn_error">Napaka pri dostopu na strežnik</string>

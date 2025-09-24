@@ -9,22 +9,12 @@
       android:icon="@drawable/ic_menu_send"
       android:title="@string/track" />
     <item
+        android:id="@+id/id_precise_track"
+        android:icon="@drawable/ic_menu_send"
+        android:title="@string/precise_track" />
+    <item
       android:id="@+id/id_capture"
       android:icon="@drawable/ic_menu_camera"
       android:title="@string/capture" />
   </group>
-
-  <item android:title="Communicate">
-    <menu>
-      <item
-        android:id="@+id/nav_share"
-        android:icon="@drawable/ic_menu_share"
-        android:title="Share" />
-      <item
-        android:id="@+id/nav_send"
-        android:icon="@drawable/ic_menu_send"
-        android:title="Send" />
-    </menu>
-  </item>
-
 </menu>

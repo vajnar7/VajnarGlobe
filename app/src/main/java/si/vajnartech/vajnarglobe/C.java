@@ -8,7 +8,7 @@ public class C
 {
   // ce dostopamo od zunaj
   public static final String SERVER_ADDRESS = "http://89.142.196.96:8007/";
-//  public static final String SERVER_ADDRESS = "http://192.168.1.101:8007/";
+//  public static final String SERVER_ADDRESS = "http://192.168.1.10:8007/";
 
   public static final boolean DEBUG_MODE = true;
 
@@ -18,8 +18,8 @@ public class C
 
   public static final String TAG = "pepe";
 
-  static double DEF_LONGITUDE = 13.826209;  //x
-  static double DEF_LATITUDE  = 46.487243;  //y
+  static double DEF_LONGITUDE = 13.825696327;  //x
+  static double DEF_LATITUDE  = 46.486163422;  //y
 
   // DB of areas
   public static HashMap<String, Area> areas = new HashMap<>();
