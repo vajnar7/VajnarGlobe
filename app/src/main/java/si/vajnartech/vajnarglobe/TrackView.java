@@ -61,7 +61,7 @@ public class TrackView extends GeoMap implements AveragerOfPosition.AveragerRunn
   private void draw(Area area, Canvas canvas)
   {
     if (isMoving)
-      currentPoint.draw(canvas, paint, Color.RED, 2, this);
+      currentPoint.draw(canvas, paint, Color.RED, 5, this);
     else {
       fs.put(System.currentTimeMillis(), currentPoint);
       currentPoint.draw(canvas, paint, Color.GREEN, 5, this);

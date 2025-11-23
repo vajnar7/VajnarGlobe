@@ -24,6 +24,7 @@
   <string name="error_wrong_name">Neveljavno ime</string>
   <string name="add">Dodaj</string>
   <string name="mode_tracking">navigacija</string>
+  <string name="mode_precise">natančna navigacija</string>
   <string name="mode_capture">urejanje področij</string>
   <string name="no_location">ni lokacije</string>
   <string name="test">T</string>
@@ -48,6 +49,9 @@
   <string name="lets_register">Hvala za vaše zanimanje. Prosimo, da se registrirate</string>
   <string name="parcel">parcele</string>
   <string name="calibrate">kalibriraj</string>
-
+  <string name="start">start</string>
+  <string name="stop">stop</string>
+  <string name="no_crnt_position">Ni veljavne lokacija</string>
+  <string name="invalid_gnss_data">Neveljavni vhodni navigacijski podatki</string>
 
 </resources>

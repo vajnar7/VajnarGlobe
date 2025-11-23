@@ -7,7 +7,8 @@ import java.util.HashMap;
 public class C
 {
   // ce dostopamo od zunaj
-  public static final String SERVER_ADDRESS = "http://89.142.196.96:8007/";
+  public static final String SERVER_ADDRESS = "http://89.142.196.96:13005/";
+//  public static final String SERVER_ADDRESS = "http://192.168.1.10:13005/";
 //  public static final String SERVER_ADDRESS = "http://192.168.1.10:8007/";
 
   public static final boolean DEBUG_MODE = true;
@@ -15,6 +16,8 @@ public class C
   public static final String AREAS_API    = SERVER_ADDRESS + "areas/";
 
   public static final String USER_API = SERVER_ADDRESS + "userlogin/";
+
+  public static final String POS_API = SERVER_ADDRESS + "position/";
 
   public static final String TAG = "pepe";
 

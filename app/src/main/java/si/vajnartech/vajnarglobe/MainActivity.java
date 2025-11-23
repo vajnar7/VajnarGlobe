@@ -1,12 +1,12 @@
 package si.vajnartech.vajnarglobe;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
+import com.vajnar.vajnargnss.NtripClient;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -66,8 +66,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     if (!sp.getBool("registered")) {
       setFragmentFlat("login", F_Login.class, new Bundle());
     } else {
-      setFragment("capture", F_Track.class, new Bundle());
+      setFragment("precise", F_Precise.class, new Bundle());
       new Areas("GET", this, "", sp.getString("username"), null);
+      new NtripClient();
     }
   }
 
@@ -105,6 +106,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
       setFragment("capture", F_Capture.class, new Bundle());
     else if (item.getItemId() == R.id.id_track)
       setFragment("track", F_Track.class, new Bundle());
+    else if (item.getItemId() == R.id.id_precise_track)
+      setFragment("precise track", F_Precise.class, new Bundle());
 
     DrawerLayout drawer = findViewById(R.id.drawer_layout);
     drawer.closeDrawer(GravityCompat.START);

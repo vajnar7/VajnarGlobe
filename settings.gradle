@@ -1,2 +1,3 @@
 include ':Calculus'
 include ':app'
+include ':VajnarGNSS'

@@ -16,6 +16,8 @@
   <string name="add_new_area">NEW</string>
   <string name="longitude">Longitude</string>
   <string name="server_conn_error">Unable to contact server</string>
+  <string name="invalid_gnss_data">Invalid input GNSS data</string>
+  <string name="no_crnt_position">No current position</string>
   <string name="mark">MARK</string>
   <string name="lat">LAT</string>
   <string name="lon">LON</string>
@@ -26,6 +28,7 @@
   <string name="add">Add</string>
   <string name="mode_tracking">navigation</string>
   <string name="mode_capture">my areas</string>
+  <string name="mode_precise">precise</string>
   <string name="no_location">no location</string>
   <string name="test">T</string>
   <string name="no_areas">No areas</string>
@@ -48,6 +51,9 @@
   <string name="lets_register">Hvala za vaše zanimanje. Prosimo, da se registrirate</string>
   <string name="parcel">parcele</string>
   <string name="calibrate">calibrate</string>
+  <string name="start">start</string>
+  <string name="stop">stop</string>
+
 
 
 </resources>

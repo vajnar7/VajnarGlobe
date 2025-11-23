@@ -88,6 +88,7 @@ public abstract class RestBase<T extends RestBaseObject> extends AsyncTask<T, St
         if (responseCode == HttpURLConnection.HTTP_OK) {
           InputStream    is = conn.getInputStream();
           BufferedReader br = new BufferedReader(new InputStreamReader(is), 512);
+
           result = deserialize(br);
           br.close();
         } else {

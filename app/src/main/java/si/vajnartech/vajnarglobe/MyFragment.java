@@ -21,6 +21,8 @@ public abstract class MyFragment<V extends View> extends DialogFragment implemen
   protected static int NEW_AREA_BUTTON = R.id.b_new;
   protected static int DELETE_AREA_BUTTON = R.id.b_delete;
   protected static int CANCEL_BUTTON = R.id.b_cancel;
+  protected static int PRECISE_NAVIGATION_BUTTONS = R.id.precise_navigation;
+  protected static int START_STOP_BUTTON = R.id.b_precise;
 
   MainActivity   act;
   TerminalWindow terminal = null;

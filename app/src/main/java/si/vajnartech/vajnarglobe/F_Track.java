@@ -24,7 +24,6 @@ public class F_Track extends MyFragment<TrackView> implements View.OnClickListen
     printMessage(act.tx(R.string.mode_tracking));
     myView = new TrackView(act, this);
     myView.setOnTouchListener(myView);
-    myView.updateUI.setMessage(act.tx(R.string.mode_tracking));
 
     res.addView(myView);
 

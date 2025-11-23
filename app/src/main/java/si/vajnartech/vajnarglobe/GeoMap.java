@@ -50,7 +50,6 @@ class GeoMap extends GPSSimulator implements Transform
   {
     super(ctx);
     this.updateUI = updateUI;
-    updateUI.setMessage(((MainActivity)ctx).tx(R.string.no_location));
   }
 
   @Override
@@ -179,7 +178,7 @@ class GeoMap extends GPSSimulator implements Transform
     return res;
   }
 
-  protected boolean isInit()
+  public boolean isInit()
   {
     return (isMoving != null && firstPoint != null);
   }
