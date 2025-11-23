@@ -12,17 +12,26 @@ import java.util.HashMap;
 public class NtripClient extends AsyncTask<TcpClient, byte[], byte[]>
 {
     private final ByteArrayOutputStream result = new ByteArrayOutputStream();
+    private TcpClient client;
 
     public NtripClient()
     {
         new CasterLogin(this).execute();
     }
 
+    public void stop()
+    {
+        try {
+            client.stop();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     protected byte[] doInBackground(HashMap<String, TcpClient> params)
     {
-        TcpClient client = params.get("client");
-        ByteArrayOutputStream result = new ByteArrayOutputStream();
+        client = params.get("client");
 
         if (client != null) {
             try {
@@ -34,7 +43,6 @@ public class NtripClient extends AsyncTask<TcpClient, byte[], byte[]>
         }}
 
 
-        Log.i("PEPE", "Isteku se je task!");
         return result.toByteArray();
     }
 
@@ -43,11 +51,9 @@ public class NtripClient extends AsyncTask<TcpClient, byte[], byte[]>
     {
         try {
             result.write(value);
-            Log.i("PEPE", "Publishalo je tole v result " + Arrays.toString(value));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Log.i("PEPE", "Drekula");
     }
 
     @Override

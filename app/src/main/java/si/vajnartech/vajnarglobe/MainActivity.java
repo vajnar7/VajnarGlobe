@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     } else {
       setFragment("precise", F_Precise.class, new Bundle());
       new Areas("GET", this, "", sp.getString("username"), null);
-      new NtripClient();
     }
   }
 

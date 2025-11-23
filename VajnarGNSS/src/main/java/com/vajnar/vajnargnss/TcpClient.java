@@ -54,18 +54,16 @@ public class TcpClient
 
     public void run(OnDataReceived onDataReceived) throws IOException
     {
-//      running.set(true);
+      running.set(true);
 
-      onDataReceived.dataReceived(receive(128));
-
-//      while (running.get()) {
-//          onDataReceived.dataReceived(receive(128));
-//      }
+      while (running.get()) {
+          onDataReceived.dataReceived(receive(128));
+      }
     }
 
-    public void stop()
-    {
+    public void stop() throws IOException {
         running.set(false);
+        socket.close();
     }
 
 //    public ByteArrayOutputStream receive() throws IOException {

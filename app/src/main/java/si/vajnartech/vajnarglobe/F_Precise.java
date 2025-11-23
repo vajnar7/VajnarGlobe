@@ -69,7 +69,8 @@ public class F_Precise extends MyFragment<PreciseView> implements View.OnClickLi
             } else {
                 b.setText(R.string.start);
                 hasStarted.set(false);
-                new PrecisePosition(act, "STOP", this);
+//                new PrecisePosition(act, "STOP", this);
+                client.stop();
             }
         }
 
