@@ -63,24 +63,7 @@ public class TcpClient
 
     public void stop() throws IOException {
         running.set(false);
-        socket.close();
     }
-
-//    public ByteArrayOutputStream receive() throws IOException {
-//        int n;
-//        byte[] data = new byte[1024 * 4];
-//        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-//
-//        InputStream is = socket.getInputStream();
-//        DataInputStream input = new DataInputStream(is);
-//
-//        while ((n = input.read(data, 0, data.length)) != -1) {
-//           buffer.write(data, 0, n);
-//        }
-//        input.close();
-//
-//        return buffer.toByteArray();
-//    }
 
     public void connect() throws IOException {
         InetAddress serverAddr = InetAddress.getByName(serverIp);
@@ -93,10 +76,4 @@ public class TcpClient
     {
         void dataReceived(ByteArrayOutputStream data);
     }
-
-    public Socket getSocket()
-    {
-        return socket;
-    }
-
 }
