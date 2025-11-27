@@ -7,6 +7,7 @@ import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
 import com.vajnar.vajnargnss.NtripClient;
+import com.vajnar.vajnargnss.logger.GnssLogger;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;

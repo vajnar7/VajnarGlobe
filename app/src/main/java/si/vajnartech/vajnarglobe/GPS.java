@@ -20,6 +20,8 @@ import si.vajnartech.vajnarglobe.math.NumDouble2;
 import static si.vajnartech.vajnarglobe.C.Parameters.minDist;
 import static si.vajnartech.vajnarglobe.C.Parameters.minTime;
 
+import com.vajnar.vajnargnss.logger.GnssLogger;
+
 public abstract class GPS extends View implements LocationListener, View.OnTouchListener
 {
   protected volatile Location location;
@@ -29,6 +31,8 @@ public abstract class GPS extends View implements LocationListener, View.OnTouch
   protected MainActivity activity;
 
   protected Paint paint = new Paint();
+
+  protected GnssLogger gnssLogger;
 
   GPS(Context ctx)
   {
@@ -53,8 +57,10 @@ public abstract class GPS extends View implements LocationListener, View.OnTouch
     if (ActivityCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
         ActivityCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
       Toast.makeText(ctx, "GPS not granted", Toast.LENGTH_LONG).show();
-    } else
+    } else {
       locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDist, this);
+      gnssLogger = new GnssLogger(ctx);
+    }
   }
 
   @Override
