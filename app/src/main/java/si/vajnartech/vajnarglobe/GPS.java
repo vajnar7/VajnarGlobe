@@ -20,9 +20,10 @@ import si.vajnartech.vajnarglobe.math.NumDouble2;
 import static si.vajnartech.vajnarglobe.C.Parameters.minDist;
 import static si.vajnartech.vajnarglobe.C.Parameters.minTime;
 
+import com.vajnar.vajnargnss.logger.GPSProvider;
 import com.vajnar.vajnargnss.logger.GnssLogger;
 
-public abstract class GPS extends View implements LocationListener, View.OnTouchListener
+public abstract class GPS extends GPSProvider
 {
   protected volatile Location location;
 
@@ -66,25 +67,16 @@ public abstract class GPS extends View implements LocationListener, View.OnTouch
   @Override
   public void onLocationChanged(@NonNull Location loc)
   {
+    super.onLocationChanged(loc);
+
     location.setLongitude(loc.getLongitude());
     location.setLatitude(loc.getLatitude());
     notifyMe(location);
   }
 
-  @Override
-  public void onStatusChanged(String s, int i, Bundle bundle)
-  {}
 
   @Override
-  public void onProviderEnabled(String s)
-  {}
-
-  @Override
-  public void onProviderDisabled(String s)
-  {}
-
-  @Override
-  protected void onDraw(Canvas canvas)
+  protected void onDraw(@NonNull Canvas canvas)
   {
     if (origin == null)
       origin = setOrigin();
