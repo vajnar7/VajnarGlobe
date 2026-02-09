@@ -99,18 +99,18 @@ public class F_Capture extends MyFragment<CaptureView> implements View.OnClickLi
       cancel();
     }
     // ko sklopis debug mode tole zakomentiraj
-    if (C.DEBUG_MODE) {
-      if (v.getId() == R.id.test_left) {
-        myView.mvLeft();
-      } else if (v.getId() == R.id.test_right) {
-        myView.mvRight();
-      } else if (v.getId() == R.id.test_up) {
-        myView.mvUp();
-      } else if (v.getId() == R.id.test_down) {
-        myView.mvDown();
-
-      }
-    }
+//    if (C.DEBUG_MODE) {
+//      if (v.getId() == R.id.test_left) {
+//        myView.mvLeft();
+//      } else if (v.getId() == R.id.test_right) {
+//        myView.mvRight();
+//      } else if (v.getId() == R.id.test_up) {
+//        myView.mvUp();
+//      } else if (v.getId() == R.id.test_down) {
+//        myView.mvDown();
+//
+//      }
+//    }
   }
 
   @Override

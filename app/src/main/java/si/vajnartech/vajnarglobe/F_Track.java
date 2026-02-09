@@ -54,17 +54,17 @@ public class F_Track extends MyFragment<TrackView> implements View.OnClickListen
   public void onClick(View v)
   {
     // ko sklopis debug mode tole zakomentiraj
-    if (C.DEBUG_MODE) {
-      if (v.getId() == R.id.test_left) {
-        myView.mvLeft();
-      } else if (v.getId() == R.id.test_right) {
-        myView.mvRight();
-      } else if (v.getId() == R.id.test_up) {
-        myView.mvUp();
-      } else if (v.getId() == R.id.test_down) {
-        myView.mvDown();
-      }
-    }
+//    if (C.DEBUG_MODE) {
+//      if (v.getId() == R.id.test_left) {
+//        myView.mvLeft();
+//      } else if (v.getId() == R.id.test_right) {
+//        myView.mvRight();
+//      } else if (v.getId() == R.id.test_up) {
+//        myView.mvUp();
+//      } else if (v.getId() == R.id.test_down) {
+//        myView.mvDown();
+//      }
+//    }
 
     if (v.getId() == R.id.zoom_in) {
       C.Parameters.zoomIn();

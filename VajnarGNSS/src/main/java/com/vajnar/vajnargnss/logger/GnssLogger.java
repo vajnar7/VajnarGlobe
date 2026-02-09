@@ -79,7 +79,7 @@ public class GnssLogger implements MeasurementListener
                 String manufacturer = Build.MANUFACTURER;
                 String model = Build.MODEL;
                 String fileVersion =
-                        ctx.getString(R.string.app_version)
+                                "1.0.1"
                                 + " Platform: "
                                 + Build.VERSION.RELEASE
                                 + " "
@@ -263,7 +263,10 @@ public class GnssLogger implements MeasurementListener
     }
 
     @Override
-    public void onListenerRegistration(String listener, boolean result) {}
+    public void onListenerRegistration(String listener, boolean result)
+    {
+        Log.i("PEPE", "Listener Registered: " + listener + ": " + result);
+    }
 
     @Override
     public void onNmeaReceived(long timestamp, String s)
@@ -336,12 +339,12 @@ public class GnssLogger implements MeasurementListener
     }
 
     private void logException(String errorMessage, Exception e) {
-        Log.e(MeasurementProvider.TAG + TAG, errorMessage, e);
+        Log.e(TAG, errorMessage, e);
         Toast.makeText(ctx, errorMessage, Toast.LENGTH_LONG).show();
     }
 
     private void logError(String errorMessage) {
-        Log.e(MeasurementProvider.TAG + TAG, errorMessage);
+        Log.e(TAG, errorMessage);
         Toast.makeText(ctx, errorMessage, Toast.LENGTH_LONG).show();
     }
 

@@ -13,7 +13,7 @@ abstract class GPSSimulator extends GPS
   }
 
   @Override
-  protected void initGPSService(@NonNull MainActivity ctx)
+  protected void registerLocation()
   {
     location.setLatitude(C.DEF_LATITUDE);
     location.setLongitude(C.DEF_LONGITUDE);

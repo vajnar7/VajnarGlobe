@@ -14,8 +14,8 @@ import si.vajnartech.vajnarglobe.math.DxDtDouble2;
 import si.vajnartech.vajnarglobe.math.NumDouble2;
 
 // DEBUG_MODE
-class GeoMap extends GPSSimulator implements Transform
-//class GeoMap extends GPS implements Transform
+//class GeoMap extends GPSSimulator implements Transform
+class GeoMap extends GPS implements Transform
 {
   public static final int NONE = 0;
   public static final int CONSTRUCTING_AREA = 1;

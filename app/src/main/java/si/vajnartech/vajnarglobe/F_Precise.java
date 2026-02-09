@@ -54,10 +54,11 @@ public class F_Precise extends MyFragment<PreciseView> implements View.OnClickLi
         } else if (v.getId() == START_STOP_BUTTON) {
             Button b = layout.findViewById(v.getId());
             if (!hasStarted.get()) {
-                if (DEBUG_MODE) {
-                    myView.mvUp();
-                    myView.mvDown();
-                }
+                // ko sklopis debug mode tole zakomentiraj
+//                if (DEBUG_MODE) {
+//                    myView.mvUp();
+//                    myView.mvDown();
+//                }
                 if (myView.isInit()) {
                     b.setText(R.string.stop);
                     hasStarted.set(true);
@@ -75,17 +76,17 @@ public class F_Precise extends MyFragment<PreciseView> implements View.OnClickLi
         }
 
         // ko sklopis debug mode tole zakomentiraj
-        if (DEBUG_MODE) {
-            if (v.getId() == R.id.test_left) {
-                myView.mvLeft();
-            } else if (v.getId() == R.id.test_right) {
-                myView.mvRight();
-            } else if (v.getId() == R.id.test_up) {
-                myView.mvUp();
-            } else if (v.getId() == R.id.test_down) {
-                myView.mvDown();
-            }
-        }
+//        if (DEBUG_MODE) {
+//            if (v.getId() == R.id.test_left) {
+//                myView.mvLeft();
+//            } else if (v.getId() == R.id.test_right) {
+//                myView.mvRight();
+//            } else if (v.getId() == R.id.test_up) {
+//                myView.mvUp();
+//            } else if (v.getId() == R.id.test_down) {
+//                myView.mvDown();
+//            }
+//        }
     }
 
     @Override
