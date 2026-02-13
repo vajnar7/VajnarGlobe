@@ -62,8 +62,9 @@ public class F_Precise extends MyFragment<PreciseView> implements View.OnClickLi
                 if (myView.isInit()) {
                     b.setText(R.string.stop);
                     hasStarted.set(true);
-                    client = new NtripClient();
-//                    new PrecisePosition(act,"START", myView.currentPoint.get(0), myView.currentPoint.get(1), 755.0);
+//                    tegale mozakarja enableas in all in one mode
+//                    client = new NtripClient();
+                    new PrecisePosition(act,"START", myView.currentPoint.get(0), myView.currentPoint.get(1), 755.0);
                 }
                 else
                     act.runOnUiThread(() -> Toast.makeText(act, R.string.no_crnt_position, Toast.LENGTH_LONG).show());

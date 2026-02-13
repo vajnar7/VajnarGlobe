@@ -43,6 +43,7 @@ public abstract class GPS extends GPSProvider implements View.OnTouchListener
     activity = (MainActivity) ctx;
     location = new Location("");
     initGPSService(activity);
+//    tegale majstra enableas in all in one mode
 //    registerLocation();
 //    registerMeasurements();
     getDimensions(this);
