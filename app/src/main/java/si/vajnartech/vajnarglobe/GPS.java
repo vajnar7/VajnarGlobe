@@ -42,30 +42,30 @@ public abstract class GPS extends GPSProvider implements View.OnTouchListener
 
     activity = (MainActivity) ctx;
     location = new Location("");
-//    initGPSService(activity);
-    registerLocation();
-    registerMeasurements();
+    initGPSService(activity);
+//    registerLocation();
+//    registerMeasurements();
     getDimensions(this);
   }
 
-//  protected void initGPSService(@NonNull MainActivity ctx)
-//  {
-//    final String[] INITIAL_PERMS = {
-//        Manifest.permission.ACCESS_FINE_LOCATION,
-//        Manifest.permission.ACCESS_COARSE_LOCATION
-//    };
-//    final int INITIAL_REQUEST = 1337;
-//    ctx.requestPermissions(INITIAL_PERMS, INITIAL_REQUEST);
-//
-//    LocationManager locationManager = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
-//    if (ActivityCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-//        ActivityCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//      Toast.makeText(ctx, "GPS not granted", Toast.LENGTH_LONG).show();
-//    } else {
-//      locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDist, this);
-//      gnssLogger = new GnssLogger(ctx);
-//    }
-//  }
+  protected void initGPSService(@NonNull MainActivity ctx)
+  {
+    final String[] INITIAL_PERMS = {
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    };
+    final int INITIAL_REQUEST = 1337;
+    ctx.requestPermissions(INITIAL_PERMS, INITIAL_REQUEST);
+
+    LocationManager locationManager = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
+    if (ActivityCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+        ActivityCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+      Toast.makeText(ctx, "GPS granted", Toast.LENGTH_LONG).show();
+    } else {
+      locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDist, this);
+      gnssLogger = new GnssLogger(ctx);
+    }
+  }
 
   @Override
   public void onLocationChanged(@NonNull Location loc)
