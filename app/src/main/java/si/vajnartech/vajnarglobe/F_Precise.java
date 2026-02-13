@@ -1,5 +1,6 @@
 package si.vajnartech.vajnarglobe;
 
+import static si.vajnartech.vajnarglobe.C.ALL_IN_ONE;
 import static si.vajnartech.vajnarglobe.C.DEBUG_MODE;
 
 import android.os.Bundle;
@@ -62,17 +63,20 @@ public class F_Precise extends MyFragment<PreciseView> implements View.OnClickLi
                 if (myView.isInit()) {
                     b.setText(R.string.stop);
                     hasStarted.set(true);
-//                    tegale mozakarja enableas in all in one mode
-//                    client = new NtripClient();
-                    new PrecisePosition(act,"START", myView.currentPoint.get(0), myView.currentPoint.get(1), 755.0);
+                    if (ALL_IN_ONE)
+                        client = new NtripClient();
+                    else
+                        new PrecisePosition(act,"START", myView.currentPoint.get(0), myView.currentPoint.get(1), 755.0);
                 }
                 else
                     act.runOnUiThread(() -> Toast.makeText(act, R.string.no_crnt_position, Toast.LENGTH_LONG).show());
             } else {
                 b.setText(R.string.start);
                 hasStarted.set(false);
-//                new PrecisePosition(act, "STOP", this);
-                client.stop();
+                if (ALL_IN_ONE)
+                    client.stop();
+                else
+                    new PrecisePosition(act, "STOP", this);
             }
         }
 

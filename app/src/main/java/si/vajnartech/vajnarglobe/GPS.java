@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import si.vajnartech.vajnarglobe.math.NumDouble2;
 
+import static si.vajnartech.vajnarglobe.C.ALL_IN_ONE;
 import static si.vajnartech.vajnarglobe.C.Parameters.minDist;
 import static si.vajnartech.vajnarglobe.C.Parameters.minTime;
 
@@ -43,10 +44,11 @@ public abstract class GPS extends GPSProvider implements View.OnTouchListener
     activity = (MainActivity) ctx;
     location = new Location("");
     initGPSService(activity);
-//    tegale majstra enableas in all in one mode
-//    registerLocation();
-//    registerMeasurements();
-    getDimensions(this);
+    if (ALL_IN_ONE) {
+      registerLocation();
+      registerMeasurements();
+    } else
+      getDimensions(this);
   }
 
   protected void initGPSService(@NonNull MainActivity ctx)
