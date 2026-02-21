@@ -9,6 +9,8 @@ import android.location.Location;
 import android.view.MotionEvent;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 import si.vajnartech.vajnarglobe.math.D;
 import si.vajnartech.vajnarglobe.math.DxDtDouble2;
 import si.vajnartech.vajnarglobe.math.NumDouble2;
@@ -93,7 +95,7 @@ class GeoMap extends GPS implements Transform
  }
 
   @Override
-  protected void onDraw(Canvas canvas)
+  protected void onDraw(@NonNull Canvas canvas)
   {
     super.onDraw(canvas);
     if (isInit())

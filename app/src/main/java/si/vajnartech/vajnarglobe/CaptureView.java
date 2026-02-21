@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 import si.vajnartech.vajnarglobe.math.NumDouble2;
 
 public class CaptureView extends GeoMap
@@ -38,7 +40,7 @@ public class CaptureView extends GeoMap
   }
 
   @Override
-  protected void onDraw(Canvas canvas)
+  protected void onDraw(@NonNull Canvas canvas)
   {
     super.onDraw(canvas);
 

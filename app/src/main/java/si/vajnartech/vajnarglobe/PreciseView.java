@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 
+import androidx.annotation.NonNull;
+
 
 public class PreciseView extends TrackView
 {
@@ -26,7 +28,7 @@ public class PreciseView extends TrackView
     }
 
     @Override
-    protected void onDraw(Canvas canvas)
+    protected void onDraw(@NonNull Canvas canvas)
     {
         super.onDraw(canvas);
         if (precisePoint != null) {

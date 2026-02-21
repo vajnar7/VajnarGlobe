@@ -51,7 +51,7 @@ public class TrackView extends GeoMap implements AveragerOfPosition.AveragerRunn
   }
 
   @Override
-  protected void onDraw(Canvas canvas)
+  protected void onDraw(@NonNull Canvas canvas)
   {
     super.onDraw(canvas);
     if (isInit())
