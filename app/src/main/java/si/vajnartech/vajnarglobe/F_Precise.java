@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.vajnar.vajnargnss.NtripClient;
+import com.vajnar.vajnargnss.logger.GnssLogger;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -27,6 +28,11 @@ public class F_Precise extends MyFragment<PreciseView> implements View.OnClickLi
 {
     protected AtomicBoolean hasStarted = new AtomicBoolean(false);
     private NtripClient client;
+    private GnssLogger gnssLogger;
+
+    public void setFileLogger(GnssLogger value) {
+        gnssLogger = value;
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -59,6 +65,10 @@ public class F_Precise extends MyFragment<PreciseView> implements View.OnClickLi
 //                    myView.mvUp();
 //                    myView.mvDown();
 //                }
+
+                Toast.makeText(getContext(), R.string.start_message, Toast.LENGTH_LONG).show();
+                gnssLogger.startNewLog();
+
                 if (myView.isInit()) {
                     b.setText(R.string.stop);
                     hasStarted.set(true);

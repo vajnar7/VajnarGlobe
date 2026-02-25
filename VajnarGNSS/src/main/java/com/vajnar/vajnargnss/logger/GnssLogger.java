@@ -76,7 +76,6 @@ public class GnssLogger implements MeasurementListener
                 currentFileWriter.newLine();
                 currentFileWriter.write(COMMENT_START);
                 currentFileWriter.write(VERSION_TAG);
-                String manufacturer = Build.MANUFACTURER;
                 String model = Build.MODEL;
                 String fileVersion =
                                 "1.0.1"
@@ -84,7 +83,7 @@ public class GnssLogger implements MeasurementListener
                                 + Build.VERSION.RELEASE
                                 + " "
                                 + "Manufacturer: "
-                                + manufacturer
+                                + "Vajnar Globe"
                                 + " "
                                 + "Model: "
                                 + model;

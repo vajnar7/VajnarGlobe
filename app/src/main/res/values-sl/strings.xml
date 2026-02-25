@@ -53,5 +53,6 @@
   <string name="stop">stop</string>
   <string name="no_crnt_position">Ni veljavne lokacija</string>
   <string name="invalid_gnss_data">Neveljavni vhodni navigacijski podatki</string>
+  <string name="start_message">Starting log…</string>
 
 </resources>

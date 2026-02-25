@@ -42,6 +42,8 @@ import si.vajnartech.vajnarglobe.rest.Areas;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
   DialogFragment currentFragment = null;
+  private GnssLogger gnssLogger;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState)
@@ -64,10 +66,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     navigationView.setNavigationItemSelectedListener(this);
 
     SharedPref sp = new SharedPref(this);
+
+    gnssLogger = new GnssLogger(this);
     if (!sp.getBool("registered")) {
       setFragmentFlat("login", F_Login.class, new Bundle());
     } else {
       setFragment("precise", F_Precise.class, new Bundle());
+      F_Precise preciseFragment = (F_Precise) currentFragment;
+      preciseFragment.setFileLogger(gnssLogger);
       new Areas("GET", this, "", sp.getString("username"), null);
     }
   }
