@@ -67,7 +67,7 @@ public class F_Precise extends MyFragment<PreciseView> implements View.OnClickLi
 //                }
 
                 Toast.makeText(getContext(), R.string.start_message, Toast.LENGTH_LONG).show();
-                gnssLogger.startNewLog();
+//                gnssLogger.startNewLog();
 
                 if (myView.isInit()) {
                     b.setText(R.string.stop);

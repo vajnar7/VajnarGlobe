@@ -50,6 +50,7 @@ public class NtripClient extends AsyncTask<TcpClient, byte[], byte[]>
     protected void onProgressUpdate(byte[] value)
     {
         try {
+            Log.i("PEPE", Arrays.toString(value));
             result.write(value);
         } catch (IOException e) {
             throw new RuntimeException(e);
