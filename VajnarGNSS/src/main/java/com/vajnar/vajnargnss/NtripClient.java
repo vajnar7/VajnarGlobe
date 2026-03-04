@@ -2,9 +2,7 @@ package com.vajnar.vajnargnss;
 
 import android.util.Log;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,9 +11,11 @@ public class NtripClient extends AsyncTask<TcpClient, byte[], byte[]>
 {
     private final ByteArrayOutputStream result = new ByteArrayOutputStream();
     private TcpClient client;
+    protected NtripInterface ntripInterface;
 
-    public NtripClient()
+    public NtripClient(NtripInterface ntripInterface)
     {
+        this.ntripInterface = ntripInterface;
         new CasterLogin(this).execute();
     }
 
@@ -60,6 +60,8 @@ public class NtripClient extends AsyncTask<TcpClient, byte[], byte[]>
     @Override
     protected void onPostExecute(byte[] result)
     {
+        if (result == null) return;
         Log.i("PEPE", "Done: " + Arrays.toString(result));
+        ntripInterface.onRtcmDataPrepared(result);
     }
 }

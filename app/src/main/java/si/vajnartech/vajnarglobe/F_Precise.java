@@ -13,11 +13,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.vajnar.vajnargnss.NtripClient;
+import com.vajnar.vajnargnss.NtripInterface;
 import com.vajnar.vajnargnss.logger.GnssLogger;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import si.vajnartech.vajnarglobe.rest.PrecisePosition;
+import si.vajnartech.vajnarglobe.rest.SendFile;
 
 interface UpdatePrecisePoint
 {
@@ -72,7 +74,7 @@ public class F_Precise extends MyFragment<PreciseView> implements View.OnClickLi
                 if (myView.isInit()) {
                     b.setText(R.string.stop);
                     hasStarted.set(true);
-                    client = new NtripClient();
+                    client = new NtripClient(result -> new SendFile(act, result));
 //                    new PrecisePosition(act,"START", myView.currentPoint.get(0), myView.currentPoint.get(1), 755.0);
                 }
                 else
