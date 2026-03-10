@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.vajnar.vajnargnss.AsyncTask;
+import com.vajnar.vajnargnss.OnFailInterface;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -24,10 +27,8 @@ import si.vajnartech.vajnarglobe.MainActivity;
 import si.vajnartech.vajnarglobe.R;
 import si.vajnartech.vajnarglobe.SharedPref;
 
-class RestLogin<T extends RestBaseObject> extends AsyncTask<String, Integer>
+class RestLogin<T extends RestBaseObject> extends AsyncTask<Integer, Integer, String>
 {
-  protected final WeakReference<MainActivity> act;
-
   protected String url;
   protected String user;
   protected String password;
@@ -36,17 +37,17 @@ class RestLogin<T extends RestBaseObject> extends AsyncTask<String, Integer>
 
   protected RestBase<T> task;
 
-  RestLogin(RestBase<T> task, String url, String user, String password, MainActivity act)
+  RestLogin(RestBase<T> task, String url, String user, String password, OnFailInterface onFail)
   {
+    super(onFail);
     this.url = url;
     this.user = user;
     this.password = password;
     this.task = task;
-    this.act = new WeakReference<>(act);
   }
 
   @Override
-  protected String background(HashMap<String, Integer> params)
+  protected String doInBackground(HashMap<String, Integer> params)
   {
     try {
       HttpURLConnection conn = null;
@@ -61,9 +62,9 @@ class RestLogin<T extends RestBaseObject> extends AsyncTask<String, Integer>
             conn.setDoOutput(true);
 
             String post = new Uri.Builder()
-                .appendQueryParameter("username", user)
-                .appendQueryParameter("password", password)
-                .build().getEncodedQuery();
+                    .appendQueryParameter("username", user)
+                    .appendQueryParameter("password", password)
+                    .build().getEncodedQuery();
 
             OutputStream   os  = conn.getOutputStream();
             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(os, StandardCharsets.UTF_8));
@@ -119,6 +120,6 @@ class RestLogin<T extends RestBaseObject> extends AsyncTask<String, Integer>
 
   protected void onFail()
   {
-    act.get().runOnUiThread(() -> Toast.makeText(act.get(), R.string.server_conn_error, Toast.LENGTH_LONG).show());
+    onFail.onFail("Server connection error");
   }
 }

@@ -13,10 +13,11 @@ public class NtripClient extends AsyncTask<TcpClient, byte[], byte[]>
     private TcpClient client;
     protected NtripInterface ntripInterface;
 
-    public NtripClient(NtripInterface ntripInterface)
+    public NtripClient(NtripInterface ntripInterface, OnFailInterface onFail)
     {
+        super(onFail);
         this.ntripInterface = ntripInterface;
-        new CasterLogin(this).execute();
+        new CasterLogin(this, onFail).execute();
     }
 
     public void stop()

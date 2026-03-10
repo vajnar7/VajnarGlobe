@@ -2,6 +2,8 @@ package si.vajnartech.vajnarglobe.rest;
 
 import android.widget.Toast;
 
+import com.vajnar.vajnargnss.OnFailInterface;
+
 import java.io.BufferedReader;
 
 import si.vajnartech.vajnarglobe.C;
@@ -13,9 +15,9 @@ public class SendFile extends RestBase<FileObjectR>
 {
     private final byte[] result;
 
-    public SendFile(MainActivity act, byte[] result)
+    public SendFile(byte[] result, OnFailInterface onFail)
     {
-        super(C.RTCM_NTRIP_DATA_API, "POST", act);
+        super(C.RTCM_NTRIP_DATA_API, "POST", onFail);
 
         this.result = result;
     }
@@ -24,12 +26,6 @@ public class SendFile extends RestBase<FileObjectR>
     protected FileObjectR backgroundFunc()
     {
         return callServer(new FileObject(result));
-    }
-
-    @Override
-    protected void onFail()
-    {
-        act.get().runOnUiThread(() -> Toast.makeText(act.get(), R.string.server_conn_error, Toast.LENGTH_LONG).show());
     }
 
     @Override

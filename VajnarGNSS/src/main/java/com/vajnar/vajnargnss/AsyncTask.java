@@ -4,6 +4,7 @@ package com.vajnar.vajnargnss;
 import android.os.Handler;
 import android.os.Looper;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -18,10 +19,13 @@ public abstract class AsyncTask<Params, Progress, Result>
 
     private volatile Result result;
 
+    protected OnFailInterface onFail;
+
     private final FutureTask<Result> postExecuteTask;
 
-    protected AsyncTask()
+    protected AsyncTask(OnFailInterface onFail)
     {
+        this.onFail = onFail;
         postExecuteTask = new FutureTask<>(() -> onPostExecute(result), result);
         executor = Executors.newSingleThreadExecutor(r -> {
             Thread t = new Thread(r);

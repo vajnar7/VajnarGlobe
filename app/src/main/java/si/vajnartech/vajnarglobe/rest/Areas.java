@@ -2,6 +2,8 @@ package si.vajnartech.vajnarglobe.rest;
 
 import android.widget.Toast;
 
+import com.vajnar.vajnargnss.OnFailInterface;
+
 import java.io.BufferedReader;
 import java.util.ArrayList;
 
@@ -9,7 +11,6 @@ import si.vajnartech.vajnarglobe.Area;
 import si.vajnartech.vajnarglobe.C;
 import si.vajnartech.vajnarglobe.GeoPoint;
 import si.vajnartech.vajnarglobe.Json;
-import si.vajnartech.vajnarglobe.MainActivity;
 import si.vajnartech.vajnarglobe.Place;
 import si.vajnartech.vajnarglobe.R;
 
@@ -20,17 +21,19 @@ public class Areas extends RestBase<AreasObj>
   String user;
   String name;
 
-  public Areas(String requestMethod, MainActivity act, String name, String user, Runnable runAfter)
+  public Areas(String requestMethod, String name, String user, Runnable runAfter,
+               OnFailInterface onFail)
   {
-    super(C.AREAS_API, requestMethod, act);
+    super(C.AREAS_API, requestMethod, onFail);
     this.runAfter = runAfter;
     this.user = user;
     this.name = name;
   }
 
-  public Areas(MainActivity act, ArrayList<GeoPoint> geoPoints, String name, String user, Runnable runAfter)
+  public Areas(ArrayList<GeoPoint> geoPoints, String name, String user, Runnable runAfter,
+               OnFailInterface onFail)
   {
-    super(C.AREAS_API, "POST", act);
+    super(C.AREAS_API, "POST", onFail);
     this.geoPoints = geoPoints;
     this.user = user;
     this.name = name;
@@ -42,7 +45,7 @@ public class Areas extends RestBase<AreasObj>
   {
     if (areasObj == null)
     {
-      onFail();
+      onFail.onFail("Invalid response from server");
       return;
     }
 
@@ -77,12 +80,6 @@ public class Areas extends RestBase<AreasObj>
       }
 
     return callServer(new AreaObj(new ArrayList<>(), "", user));
-  }
-
-  @Override
-  protected void onFail()
-  {
-    act.get().runOnUiThread(() -> Toast.makeText(act.get(), R.string.server_conn_error, Toast.LENGTH_LONG).show());
   }
 
   @Override

@@ -1,12 +1,14 @@
 package si.vajnartech.vajnarglobe.rest;
 
+import com.vajnar.vajnargnss.AsyncTask;
+import com.vajnar.vajnargnss.OnFailInterface;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.lang.ref.WeakReference;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
@@ -14,13 +16,9 @@ import java.util.HashMap;
 
 import si.vajnartech.vajnarglobe.C;
 import si.vajnartech.vajnarglobe.Json;
-import si.vajnartech.vajnarglobe.MainActivity;
-import si.vajnartech.vajnarglobe.SharedPref;
 
-public abstract class RestBase<T extends RestBaseObject> extends AsyncTask<T, String>
+public abstract class RestBase<T extends RestBaseObject> extends AsyncTask<String, String, T>
 {
-  protected final WeakReference<MainActivity> act;
-
   protected String url;
   protected String requestMethod;
   protected String token;
@@ -36,16 +34,17 @@ public abstract class RestBase<T extends RestBaseObject> extends AsyncTask<T, St
 
   protected int READ_TIMEOUT = 0;
 
-  RestBase(String url, String requestMethod, MainActivity act)
+  RestBase(String url, String requestMethod, OnFailInterface onFail)
   {
+    super(onFail);
     this.url = url;
     this.requestMethod = requestMethod;
-    this.act = new WeakReference<>(act);
-    new RestLogin<>(this, C.SERVER_ADDRESS, "vajnar", "AldebaraN7", act).execute(null);
+    new RestLogin<>(this, C.SERVER_ADDRESS, "vajnar", "AldebaraN7", onFail)
+            .execute(null);
   }
 
   @Override
-  protected T background(HashMap<String, String> params)
+  protected T doInBackground(HashMap<String, String> params)
   {
     token = params.get("token");
     if (token != null)
@@ -101,7 +100,7 @@ public abstract class RestBase<T extends RestBaseObject> extends AsyncTask<T, St
           responseData = resj.toString();
           br.close();
           is.close();
-          onFail();
+          failed(String.valueOf(responseCode));
         }
         return result;
       } finally {
@@ -112,18 +111,18 @@ public abstract class RestBase<T extends RestBaseObject> extends AsyncTask<T, St
       responseCode = SOCKET_TIMEOUT;
       serverException = e;
       responseMessage = "Timeout connecting to " + url;
-      onFail();
+      failed(responseMessage);
     } catch (ConnectException e) {
       responseCode = CONNECT_EXCEPTION;
       serverException = e;
       responseMessage = "Connect exception";
-      onFail();
+      failed(responseMessage);
     } catch (IOException e) {
       responseCode = IO_EXCEPTION;
       serverException = e;
       responseMessage = "IO exception";
       e.printStackTrace();
-      onFail();
+      failed(responseMessage);
     }
 
     return null;
@@ -131,7 +130,10 @@ public abstract class RestBase<T extends RestBaseObject> extends AsyncTask<T, St
 
   protected abstract T backgroundFunc();
 
-  protected abstract void onFail();
-
   protected abstract T deserialize(BufferedReader br);
+
+  private void failed(String msg)
+  {
+    onFail.onFail("Connection to server failed: " + msg);
+  }
 }

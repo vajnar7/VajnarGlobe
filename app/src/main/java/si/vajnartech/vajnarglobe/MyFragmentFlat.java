@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
@@ -35,4 +36,14 @@ public abstract class MyFragmentFlat extends DialogFragment implements View.OnCl
     }
 
     protected abstract void init();
+
+    protected void failed(String msg)
+    {
+        act.runOnUiThread(() -> Toast.makeText(act, msg, Toast.LENGTH_LONG).show());
+    }
+
+    protected void failed(int msg)
+    {
+        act.runOnUiThread(() -> Toast.makeText(act, msg, Toast.LENGTH_LONG).show());
+    }
 }

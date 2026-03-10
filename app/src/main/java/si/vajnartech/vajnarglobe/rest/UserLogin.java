@@ -2,6 +2,8 @@ package si.vajnartech.vajnarglobe.rest;
 
 import android.widget.Toast;
 
+import com.vajnar.vajnargnss.OnFailInterface;
+
 import java.io.BufferedReader;
 
 import si.vajnartech.vajnarglobe.C;
@@ -15,9 +17,9 @@ public class UserLogin extends RestBase<UserObjR>
     private final Runnable runAfter;
 
 
-    public UserLogin(MainActivity act, String user, Runnable runAfter)
+    public UserLogin(String user, Runnable runAfter, OnFailInterface onFail)
     {
-        super(C.USER_API, "POST", act);
+        super(C.USER_API, "POST", onFail);
         this.user = user;
         this.runAfter = runAfter;
     }
@@ -25,12 +27,6 @@ public class UserLogin extends RestBase<UserObjR>
     @Override
     protected UserObjR backgroundFunc() {
         return callServer(new UserObj(user));
-    }
-
-    @Override
-    protected void onFail()
-    {
-        act.get().runOnUiThread(() -> Toast.makeText(act.get(), R.string.lets_register, Toast.LENGTH_LONG).show());
     }
 
     @Override

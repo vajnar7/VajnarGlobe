@@ -29,7 +29,9 @@ public class CasterLogin extends AsyncTask<String, String, TcpClient>
 
     protected NtripClient connectTask;
 
-    public CasterLogin(NtripClient connectTask) {
+    public CasterLogin(NtripClient connectTask, OnFailInterface onFail)
+    {
+        super(onFail);
         this.connectTask = connectTask;
     }
 
@@ -51,8 +53,10 @@ public class CasterLogin extends AsyncTask<String, String, TcpClient>
         try {
             client.connect();
             String error = onClientPrepared(client);
-            if (!error.isEmpty())
-                return null;
+            if (!error.isEmpty()) {
+
+                return null; // opozori uporabnika o napaki
+            }
             client.send(makeGGA());
             return client;
         } catch (IOException e) {

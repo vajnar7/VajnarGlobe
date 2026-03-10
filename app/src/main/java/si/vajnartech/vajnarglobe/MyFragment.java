@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
@@ -100,5 +101,15 @@ public abstract class MyFragment<V extends View> extends DialogFragment implemen
   public void buttonShow(int id, boolean visibility)
   {
     layout.findViewById(id).setVisibility(visibility ? View.VISIBLE : View.GONE);
+  }
+
+  protected void failed(String msg)
+  {
+    act.runOnUiThread(() -> Toast.makeText(act, msg, Toast.LENGTH_LONG).show());
+  }
+
+  protected void failed(int msg)
+  {
+    act.runOnUiThread(() -> Toast.makeText(act, msg, Toast.LENGTH_LONG).show());
   }
 }

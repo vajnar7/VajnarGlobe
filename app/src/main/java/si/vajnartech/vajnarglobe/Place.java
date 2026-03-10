@@ -2,7 +2,8 @@ package si.vajnartech.vajnarglobe;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.os.Bundle;
+
+import com.vajnar.vajnargnss.OnFailInterface;
 
 import java.util.ArrayList;
 
@@ -30,15 +31,19 @@ public class Place extends Area
   public void push(MainActivity act)
   {
     String user = new SharedPref(act).getString("username");
-    new Areas(act, geoPoints, areaName, user,
-            () -> new Areas("GET", act, "", user, null)
+    new Areas(geoPoints, areaName, user,
+            () -> new Areas("GET","", user, null,
+                    message -> act.failed(R.string.server_conn_error)),
+            message -> act.failed(R.string.server_conn_error)
     );
   }
 
   public void delete(MainActivity act) {
     String user = new SharedPref(act).getString("username");
-    new Areas("DELETE", act, areaName, user,
-            () -> new Areas("GET", act, "", user, null)
+    new Areas("DELETE", areaName, user,
+            () -> new Areas("GET", "", user, null,
+                    message -> act.failed(R.string.server_conn_error)),
+            message -> act.failed(R.string.server_conn_error)
     );
   }
 

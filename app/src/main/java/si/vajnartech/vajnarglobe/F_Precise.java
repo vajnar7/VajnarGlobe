@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 
 import com.vajnar.vajnargnss.NtripClient;
 import com.vajnar.vajnargnss.NtripInterface;
+import com.vajnar.vajnargnss.OnFailInterface;
 import com.vajnar.vajnargnss.logger.GnssLogger;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -67,18 +68,20 @@ public class F_Precise extends MyFragment<PreciseView> implements View.OnClickLi
 //                    myView.mvUp();
 //                    myView.mvDown();
 //                }
-
-                Toast.makeText(getContext(), R.string.start_message, Toast.LENGTH_LONG).show();
+                failed(R.string.start_message);
 //                gnssLogger.startNewLog();
 
-                if (myView.isInit()) {
+//                if (myView.isInit()) {
+                if (true) {
                     b.setText(R.string.stop);
                     hasStarted.set(true);
-                    client = new NtripClient(result -> new SendFile(act, result));
+                    client = new NtripClient(result -> new SendFile(result,
+                            message -> failed("Error sending RTCM data to server")),
+                            message -> failed("Error starting NTRIP client"));
 //                    new PrecisePosition(act,"START", myView.currentPoint.get(0), myView.currentPoint.get(1), 755.0);
                 }
                 else
-                    act.runOnUiThread(() -> Toast.makeText(act, R.string.no_crnt_position, Toast.LENGTH_LONG).show());
+                    failed(R.string.no_crnt_position);
             } else {
                 b.setText(R.string.start);
                 hasStarted.set(false);

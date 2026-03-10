@@ -2,6 +2,8 @@ package si.vajnartech.vajnarglobe.rest;
 
 import android.widget.Toast;
 
+import com.vajnar.vajnargnss.OnFailInterface;
+
 import java.io.BufferedReader;
 import java.net.HttpURLConnection;
 
@@ -18,16 +20,17 @@ public class PrecisePosition extends RestBase<PosObjR>
     protected String action;
     protected F_Precise frag;
 
-    public PrecisePosition(MainActivity act, String action, double lon, double lat, double h)
+    public PrecisePosition(String action, double lon, double lat, double h,
+                           OnFailInterface onFail)
     {
-        super(C.POS_API, "POST", act);
+        super(C.POS_API, "POST", onFail);
         position = new PosObj(lon, lat, h);
         this.action = action;
     }
 
-    public PrecisePosition(MainActivity act, String action, F_Precise f)
+    public PrecisePosition(String action, F_Precise f, OnFailInterface onFail)
     {
-        super(C.POS_API, "POST", act);
+        super(C.POS_API, "POST", onFail);
         position = new PosObj();
         this.action = action;
         frag = f;
@@ -37,15 +40,6 @@ public class PrecisePosition extends RestBase<PosObjR>
     protected PosObjR backgroundFunc()
     {
         return callServer(position);
-    }
-
-    @Override
-    protected void onFail()
-    {
-        if (responseCode == HttpURLConnection.HTTP_INTERNAL_ERROR)
-            act.get().runOnUiThread(() -> Toast.makeText(act.get(), R.string.invalid_gnss_data, Toast.LENGTH_LONG).show());
-        else
-            act.get().runOnUiThread(() -> Toast.makeText(act.get(), R.string.server_conn_error, Toast.LENGTH_LONG).show());
     }
 
     @Override

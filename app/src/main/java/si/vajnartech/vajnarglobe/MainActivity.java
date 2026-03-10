@@ -4,9 +4,10 @@ import android.os.Bundle;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
-import com.vajnar.vajnargnss.NtripClient;
+import com.vajnar.vajnargnss.OnFailInterface;
 import com.vajnar.vajnargnss.logger.GnssLogger;
 
 import androidx.annotation.NonNull;
@@ -74,7 +75,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
       setFragment("precise", F_Precise.class, new Bundle());
       F_Precise preciseFragment = (F_Precise) currentFragment;
       preciseFragment.setFileLogger(gnssLogger);
-      new Areas("GET", this, "", sp.getString("username"), null);
+      new Areas("GET", "", sp.getString("username"), null,
+              message -> failed(R.string.server_conn_error));
     }
   }
 
@@ -192,6 +194,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     builder.create();
     builder.show();
+  }
+
+  public void failed(String msg)
+  {
+    Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+  }
+
+  public void failed(int msg)
+  {
+    Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
   }
 }
 
