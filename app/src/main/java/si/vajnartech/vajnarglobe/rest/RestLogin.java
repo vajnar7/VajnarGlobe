@@ -120,6 +120,6 @@ class RestLogin<T extends RestBaseObject> extends AsyncTask<Integer, Integer, St
 
   protected void onFail()
   {
-    onFail.onFail("Server connection error");
+    onFail.onFail();
   }
 }

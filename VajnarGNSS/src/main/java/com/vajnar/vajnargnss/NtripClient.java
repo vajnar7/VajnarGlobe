@@ -17,7 +17,7 @@ public class NtripClient extends AsyncTask<TcpClient, byte[], byte[]>
     {
         super(onFail);
         this.ntripInterface = ntripInterface;
-        new CasterLogin(this, onFail).execute();
+        new CasterLogin(this, onFail, ntripInterface).execute();
     }
 
     public void stop()
@@ -42,7 +42,6 @@ public class NtripClient extends AsyncTask<TcpClient, byte[], byte[]>
         } catch (IOException e) {
             throw new RuntimeException(e);
         }}
-
 
         return result.toByteArray();
     }

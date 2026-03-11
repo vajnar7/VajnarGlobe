@@ -28,11 +28,14 @@ public class CasterLogin extends AsyncTask<String, String, TcpClient>
     private static final double myAlt = 752;
 
     protected NtripClient connectTask;
+    protected NtripInterface ntripInterface;
 
-    public CasterLogin(NtripClient connectTask, OnFailInterface onFail)
+    public CasterLogin(NtripClient connectTask, OnFailInterface onFail,
+                       NtripInterface ntripInterface)
     {
         super(onFail);
         this.connectTask = connectTask;
+        this.ntripInterface = ntripInterface;
     }
 
     @Override
@@ -54,10 +57,11 @@ public class CasterLogin extends AsyncTask<String, String, TcpClient>
             client.connect();
             String error = onClientPrepared(client);
             if (!error.isEmpty()) {
-
-                return null; // opozori uporabnika o napaki
+                onFail.onFail();
+                return null;
             }
             client.send(makeGGA());
+            ntripInterface.onNtripStarted();
             return client;
         } catch (IOException e) {
             throw new RuntimeException(e);

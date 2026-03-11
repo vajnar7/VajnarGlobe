@@ -68,16 +68,28 @@ public class F_Precise extends MyFragment<PreciseView> implements View.OnClickLi
 //                    myView.mvUp();
 //                    myView.mvDown();
 //                }
-                failed(R.string.start_message);
 //                gnssLogger.startNewLog();
 
 //                if (myView.isInit()) {
                 if (true) {
-                    b.setText(R.string.stop);
-                    hasStarted.set(true);
-                    client = new NtripClient(result -> new SendFile(result,
-                            message -> failed("Error sending RTCM data to server")),
-                            message -> failed("Error starting NTRIP client"));
+                    client = new NtripClient(new NtripInterface() {
+                        @Override
+                        public void onRtcmDataPrepared(byte[] result) {
+                            new SendFile(result,
+                                    () -> failed("Error sending RTCM data to server"));
+                        }
+
+                        @Override
+                        public void onNtripStarted() {
+                            b.setText(R.string.stop);
+                            hasStarted.set(true);
+                            failed(R.string.start_message);
+                        }
+                    }, () -> failed("Error starting NTRIP client"));
+
+//                    client = new NtripClient(result -> new SendFile(result,
+//                            () -> failed("Error sending RTCM data to server")),
+//                            () -> failed());
 //                    new PrecisePosition(act,"START", myView.currentPoint.get(0), myView.currentPoint.get(1), 755.0);
                 }
                 else

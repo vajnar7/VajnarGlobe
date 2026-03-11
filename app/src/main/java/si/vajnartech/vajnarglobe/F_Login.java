@@ -32,9 +32,8 @@ public class F_Login extends MyFragmentFlat
                     () -> new Areas("GET", "", pref.getString("username"), () -> {
                         pref.put("registered", true);
                         act.setFragment("capture", F_Capture.class, new Bundle());
-                    },
-                            message -> failed(R.string.server_conn_error)),
-                    message -> failed(R.string.server_conn_error));
+                    }, () -> failed(R.string.server_conn_error)),
+                    () -> failed(R.string.server_conn_error));
         } else if (view.getId() == R.id.b_register) {
             act.setFragmentFlat("register", F_Register.class, new Bundle());
         }

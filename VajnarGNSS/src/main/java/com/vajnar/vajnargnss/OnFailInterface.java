@@ -2,5 +2,5 @@ package com.vajnar.vajnargnss;
 
 public interface OnFailInterface
 {
-    void onFail(String message);
+    void onFail();
 }

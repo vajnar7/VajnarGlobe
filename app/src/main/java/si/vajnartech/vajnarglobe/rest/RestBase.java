@@ -100,7 +100,7 @@ public abstract class RestBase<T extends RestBaseObject> extends AsyncTask<Strin
           responseData = resj.toString();
           br.close();
           is.close();
-          failed(String.valueOf(responseCode));
+          failed();
         }
         return result;
       } finally {
@@ -111,18 +111,18 @@ public abstract class RestBase<T extends RestBaseObject> extends AsyncTask<Strin
       responseCode = SOCKET_TIMEOUT;
       serverException = e;
       responseMessage = "Timeout connecting to " + url;
-      failed(responseMessage);
+      failed();
     } catch (ConnectException e) {
       responseCode = CONNECT_EXCEPTION;
       serverException = e;
       responseMessage = "Connect exception";
-      failed(responseMessage);
+      failed();
     } catch (IOException e) {
       responseCode = IO_EXCEPTION;
       serverException = e;
       responseMessage = "IO exception";
       e.printStackTrace();
-      failed(responseMessage);
+      failed();
     }
 
     return null;
@@ -132,8 +132,8 @@ public abstract class RestBase<T extends RestBaseObject> extends AsyncTask<Strin
 
   protected abstract T deserialize(BufferedReader br);
 
-  private void failed(String msg)
+  private void failed()
   {
-    onFail.onFail("Connection to server failed: " + msg);
+    onFail.onFail();
   }
 }

@@ -33,8 +33,8 @@ public class Place extends Area
     String user = new SharedPref(act).getString("username");
     new Areas(geoPoints, areaName, user,
             () -> new Areas("GET","", user, null,
-                    message -> act.failed(R.string.server_conn_error)),
-            message -> act.failed(R.string.server_conn_error)
+                    () -> act.failed(R.string.server_conn_error)),
+            () -> act.failed(R.string.server_conn_error)
     );
   }
 
@@ -42,8 +42,8 @@ public class Place extends Area
     String user = new SharedPref(act).getString("username");
     new Areas("DELETE", areaName, user,
             () -> new Areas("GET", "", user, null,
-                    message -> act.failed(R.string.server_conn_error)),
-            message -> act.failed(R.string.server_conn_error)
+                    () -> act.failed(R.string.server_conn_error)),
+            () -> act.failed(R.string.server_conn_error)
     );
   }
 

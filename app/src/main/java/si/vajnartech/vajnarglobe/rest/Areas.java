@@ -45,7 +45,7 @@ public class Areas extends RestBase<AreasObj>
   {
     if (areasObj == null)
     {
-      onFail.onFail("Invalid response from server");
+      onFail.onFail();
       return;
     }
 

@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
       F_Precise preciseFragment = (F_Precise) currentFragment;
       preciseFragment.setFileLogger(gnssLogger);
       new Areas("GET", "", sp.getString("username"), null,
-              message -> failed(R.string.server_conn_error));
+              () -> failed(R.string.server_conn_error));
     }
   }
 
