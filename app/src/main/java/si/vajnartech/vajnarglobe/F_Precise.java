@@ -81,7 +81,7 @@ public class F_Precise extends MyFragment<PreciseView> implements View.OnClickLi
 
                         @Override
                         public void onNtripStarted() {
-                            b.setText(R.string.stop);
+                            act.runOnUiThread(() -> b.setText(R.string.stop));
                             hasStarted.set(true);
                             failed(R.string.start_message);
                         }

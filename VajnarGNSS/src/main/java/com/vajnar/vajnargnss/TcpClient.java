@@ -19,6 +19,8 @@ import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import kotlin.text.Charsets;
+
 public class TcpClient
 {
     protected String serverIp;

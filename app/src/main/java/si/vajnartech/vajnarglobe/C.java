@@ -20,7 +20,7 @@ public class C
   public static final String POS_API = SERVER_ADDRESS + "position/";
 
   public static final String HW_GNSS_DATA_API = "hwgnssdata/";
-  public static final String RTCM_NTRIP_DATA_API = "rtcmntripdata/";
+  public static final String RTCM_NTRIP_DATA_API = SERVER_ADDRESS + "rtcmntripdata/";
 
   public static final String TAG = "pepe";
 

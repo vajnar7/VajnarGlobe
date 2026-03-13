@@ -17,7 +17,7 @@ import java.util.Locale;
 public class CasterLogin extends AsyncTask<String, String, TcpClient>
 {
     private static final String mountPoint = "FRELIH";
-    private static final String userAgent = "Android #1 VajnarGlobe client";
+    private static final String userAgent = "Dumb uPyNTRIP Client/0.2";
     private static final String userNamePwd = "xxxx@xxxx.xxxx:none";
     private static final int ntripPort = 2101;
     private static final boolean ntripHost = false;
@@ -101,7 +101,7 @@ public class CasterLogin extends AsyncTask<String, String, TcpClient>
         if (ntripV2)
             request += "Ntrip-Version: Ntrip/2.0\r\n";
 
-        return request;
+        return request + "\r\n";
     }
 
     /** @noinspection ConstantValue*/
