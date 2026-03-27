@@ -73,6 +73,7 @@ public class F_Precise extends MyFragment<PreciseView> implements View.OnClickLi
 //                if (myView.isInit()) {
                 if (true) {
                     client = new NtripClient(new NtripInterface() {
+                        // TODO tale mora biti onNtripStopped.....
                         @Override
                         public void onRtcmDataPrepared(byte[] result) {
                             new SendFile(result,
@@ -84,6 +85,11 @@ public class F_Precise extends MyFragment<PreciseView> implements View.OnClickLi
                             act.runOnUiThread(() -> b.setText(R.string.stop));
                             hasStarted.set(true);
                             failed(R.string.start_message);
+                        }
+
+                        @Override
+                        public void onDataReceived(byte[] line) {
+                            // vpisi vrstico v file kot to dela un v Pythonu
                         }
                     }, () -> failed("Error starting NTRIP client"));
 

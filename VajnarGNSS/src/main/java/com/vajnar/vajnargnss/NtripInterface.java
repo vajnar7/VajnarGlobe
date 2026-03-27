@@ -4,4 +4,5 @@ public interface NtripInterface
 {
     void onRtcmDataPrepared(byte[] result);
     void onNtripStarted();
+    void onDataReceived(byte[] line);
 }

@@ -4,7 +4,7 @@ import java.nio.charset.StandardCharsets;
 
 public class FileObject
 {
-    String data;
+    public String data;
 
     public FileObject(byte[] result)
     {

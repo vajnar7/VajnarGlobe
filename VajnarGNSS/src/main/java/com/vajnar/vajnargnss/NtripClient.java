@@ -3,15 +3,19 @@ package com.vajnar.vajnargnss;
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 
 public class NtripClient extends AsyncTask<TcpClient, byte[], byte[]>
 {
+    String FILENAME = "base.rtcm3";
     private final ByteArrayOutputStream result = new ByteArrayOutputStream();
     private TcpClient client;
     protected NtripInterface ntripInterface;
+    private final Object fileLock = new Object();
 
     public NtripClient(NtripInterface ntripInterface, OnFailInterface onFail)
     {
@@ -36,9 +40,8 @@ public class NtripClient extends AsyncTask<TcpClient, byte[], byte[]>
 
         if (client != null) {
             try {
-            client.run(data -> {
-                publishProgress(data.toByteArray());
-            });
+                startNewLog();
+                client.run(data -> publishProgress(data.toByteArray()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }}
@@ -52,8 +55,32 @@ public class NtripClient extends AsyncTask<TcpClient, byte[], byte[]>
         try {
             Log.i("PEPE", Arrays.toString(value));
             result.write(value);
+            fos.write(value);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private void startNewLog()
+    {
+        synchronized (fileLock) {
+            File baseDirectory = new File(mContext.getFilesDir(), FILE_PREFIX);
+            File file = new File(baseDirectory, filename);
+        }
+    }
+
+    private void writeBytes()
+    {
+        File file = new File()
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(bytes);
+            fos.close();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
         }
     }
 
