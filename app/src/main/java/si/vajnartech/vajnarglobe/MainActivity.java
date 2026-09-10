@@ -66,7 +66,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     navigationView.setNavigationItemSelectedListener(this);
 
     SharedPref sp = new SharedPref(this);
-    if (!sp.getBool("registered")) {
+    C.isRegistered = sp.getBool("registered");
+    if (!C.isRegistered) {
       setFragmentFlat("login", F_Login.class, new Bundle());
     } else {
         new CmdGetAreas(() -> setFragment("precise", F_Precise.class, new Bundle()),

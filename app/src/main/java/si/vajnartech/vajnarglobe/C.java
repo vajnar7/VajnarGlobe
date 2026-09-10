@@ -11,6 +11,8 @@ public class C
 //  public static final String SERVER_ADDRESS = "http://192.168.1.10:13005/";
 //  public static final String SERVER_ADDRESS = "http://192.168.1.10:8007/";
 
+  public static Boolean isRegistered = false;
+
   public static final boolean DEBUG_MODE = true;
 
   public static final String AREAS_API    = SERVER_ADDRESS + "areas/";

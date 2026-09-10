@@ -33,6 +33,7 @@ public abstract class MyFragment<V extends View> extends DialogFragment implemen
   {
     LinearLayout res = new LinearLayout(act);
     res.setOrientation(LinearLayout.VERTICAL);
+    res.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
     layout = inflater.inflate(R.layout.bidr, container, false);
     res.addView(layout);

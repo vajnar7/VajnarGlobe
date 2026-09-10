@@ -14,12 +14,12 @@ public abstract class MyFragmentFlat extends DialogFragment implements View.OnCl
     MainActivity   act;
     protected View layout;
 
-    public LinearLayout createView(@NonNull LayoutInflater inflater, ViewGroup container, int layoutId)
+    public View createView(@NonNull LayoutInflater inflater, ViewGroup container, int layoutId)
     {
         layout = inflater.inflate(layoutId, container, false);
         init();
 
-        return (LinearLayout) layout;
+        return layout;
     }
 
     public static <T extends MyFragmentFlat> T instantiate(@NonNull Class<T> cls, MainActivity act)

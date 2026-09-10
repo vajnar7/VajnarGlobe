@@ -1,5 +1,7 @@
 package si.vajnartech.vajnarglobe.server;
 
+import si.vajnartech.vajnarglobe.C;
+
 public class ObjLogin
 {
     public String email;
@@ -10,6 +12,6 @@ public class ObjLogin
     {
         this.email = email;
         this.password = password;
-        this.registered = true;
+        this.registered = C.isRegistered;
     }
 }
