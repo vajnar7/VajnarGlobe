@@ -1,0 +1,12 @@
+package si.vajnartech.moonstalker.rest;
+
+public class RObjController
+{
+    public Boolean success;
+    public String message;
+    public String state;
+    public String error_data;
+    public String data;
+    public String warning;
+    public String info;
+}

@@ -19,6 +19,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentTransaction;
 import si.vajnartech.vajnarglobe.rest.Areas;
+import si.vajnartech.vajnarglobe.server.CmdGetAreas;
+import si.vajnartech.vajnarglobe.server.Login;
 // scroll na touch ne deva
 // ko capture novo areo in das construct ti nove ne narise razen ko s serverja spet nalozi
 // --crkne ko je aplikacija nafrisno dana v sistem GPS not granted
@@ -67,8 +69,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     if (!sp.getBool("registered")) {
       setFragmentFlat("login", F_Login.class, new Bundle());
     } else {
-      setFragment("precise", F_Precise.class, new Bundle());
-      new Areas("GET", this, "", sp.getString("username"), null);
+        new CmdGetAreas(() -> setFragment("precise", F_Precise.class, new Bundle()),
+                sp.getString("username"));
     }
   }
 

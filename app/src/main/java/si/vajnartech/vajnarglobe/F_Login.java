@@ -5,12 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import si.vajnartech.vajnarglobe.rest.Areas;
-import si.vajnartech.vajnarglobe.rest.UserLogin;
+import si.vajnartech.vajnarglobe.server.CmdGetAreas;
 
 public class F_Login extends MyFragmentFlat
 {
@@ -26,12 +24,12 @@ public class F_Login extends MyFragmentFlat
         if (view.getId() == R.id.b_login) {
             SharedPref pref = new SharedPref(act);
             pref.put("username", getUserContainer().getText().toString());
-
-            new UserLogin(act, pref.getString("username"),
-                    () -> new Areas("GET", act, "", pref.getString("username"), () -> {
-                pref.put("registered", true);
-                act.setFragment("capture", F_Capture.class, new Bundle());
-            }));
+            new CmdGetAreas(() -> {
+                                pref.put("registered", true);
+                                act.setFragment("precise", F_Precise.class, new Bundle());
+                            },
+                    pref.getString("username")
+            );
         } else if (view.getId() == R.id.b_register) {
             act.setFragmentFlat("register", F_Register.class, new Bundle());
         }

@@ -1,6 +1,8 @@
 package com.vajnar.vajnargnss.logger;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.location.GnssClock;
 import android.location.GnssMeasurement;
 import android.location.GnssMeasurementsEvent;
@@ -37,13 +39,13 @@ public class GnssLogger implements MeasurementListener
     private final Object fileLock = new Object();
     private BufferedWriter fileWriter;
     protected Context ctx;
-    private File file;
 
 
     public GnssLogger(Context ctx)
     {
         this.ctx = ctx;
     }
+    @SuppressWarnings({"unused", "ResultOfMethodCallIgnored"})
     public void startNewLog() {
         synchronized (fileLock) {
             File baseDirectory = new File(ctx.getFilesDir(), FILE_PREFIX);
@@ -78,8 +80,16 @@ public class GnssLogger implements MeasurementListener
                 currentFileWriter.write(VERSION_TAG);
                 String manufacturer = Build.MANUFACTURER;
                 String model = Build.MODEL;
+                String versionName;
+                try {
+                    PackageInfo pInfo = ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), 0);
+                    versionName = pInfo.versionName;
+                } catch (PackageManager.NameNotFoundException e) {
+                    versionName = "";
+                }
+
                 String fileVersion =
-                        ctx.getString(R.string.app_version)
+                        versionName
                                 + " Platform: "
                                 + Build.VERSION.RELEASE
                                 + " "
@@ -131,23 +141,27 @@ public class GnssLogger implements MeasurementListener
                 }
             }
 
-            file = currentFile;
             fileWriter = currentFileWriter;
             Toast.makeText(ctx, "File opened: " + currentFilePath, Toast.LENGTH_SHORT).show();
 
             // To make sure that files do not fill up the external storage:
             // - Remove all empty files
-            FileFilter filter = new FileToDeleteFilter(file);
-            for (File existingFile : baseDirectory.listFiles(filter)) {
-                existingFile.delete();
+            FileFilter filter = new FileToDeleteFilter(currentFile);
+            File[] filesToDelete = baseDirectory.listFiles(filter);
+            if (filesToDelete != null) {
+                for (File existingFile : filesToDelete) {
+                    existingFile.delete();
+                }
             }
             // - Trim the number of files with data
             File[] existingFiles = baseDirectory.listFiles();
-            int filesToDeleteCount = existingFiles.length - MAX_FILES_STORED;
-            if (filesToDeleteCount > 0) {
-                Arrays.sort(existingFiles);
-                for (int i = 0; i < filesToDeleteCount; ++i) {
-                    existingFiles[i].delete();
+            if (existingFiles != null) {
+                int filesToDeleteCount = existingFiles.length - MAX_FILES_STORED;
+                if (filesToDeleteCount > 0) {
+                    Arrays.sort(existingFiles);
+                    for (int i = 0; i < filesToDeleteCount; ++i) {
+                        existingFiles[i].delete();
+                    }
                 }
             }
         }
@@ -285,6 +299,7 @@ public class GnssLogger implements MeasurementListener
     @Override
     public void onTTFFReceived(long l) {}
 
+    @SuppressWarnings("deprecation")
     private void writeGnssMeasurementToFile(GnssClock clock, GnssMeasurement measurement)
             throws IOException {
         String clockStream =
@@ -336,12 +351,13 @@ public class GnssLogger implements MeasurementListener
     }
 
     private void logException(String errorMessage, Exception e) {
-        Log.e(MeasurementProvider.TAG + TAG, errorMessage, e);
+        Log.e(TAG, errorMessage, e);
         Toast.makeText(ctx, errorMessage, Toast.LENGTH_LONG).show();
     }
 
+    @SuppressWarnings("SameParameterValue")
     private void logError(String errorMessage) {
-        Log.e(MeasurementProvider.TAG + TAG, errorMessage);
+        Log.e(TAG, errorMessage);
         Toast.makeText(ctx, errorMessage, Toast.LENGTH_LONG).show();
     }
 
