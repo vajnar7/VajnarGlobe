@@ -13,7 +13,7 @@ public class C
 
   public static Boolean isRegistered = false;
 
-  public static final boolean DEBUG_MODE = true;
+  public static final boolean DEBUG_MODE = false;
 
   public static final String AREAS_API    = SERVER_ADDRESS + "areas/";
 

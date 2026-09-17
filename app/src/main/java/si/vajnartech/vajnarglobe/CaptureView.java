@@ -21,11 +21,17 @@ public class CaptureView extends GeoMap
   CaptureView(Context ctx)
   {
     super(ctx);
+    paint.setStrokeWidth(3.0f);
+    paint.setStyle(Paint.Style.STROKE);
+    paint.setAntiAlias(true);
   }
 
   CaptureView(MainActivity ctx, UpdateUI updateUI)
   {
     super(ctx, updateUI);
+    paint.setStrokeWidth(3.0f);
+    paint.setStyle(Paint.Style.STROKE);
+    paint.setAntiAlias(true);
     if (C.DEBUG_MODE) {
       new Handler().postDelayed(this::initLocation, 4700);
     }

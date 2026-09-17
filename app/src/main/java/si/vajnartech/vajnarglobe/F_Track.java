@@ -25,6 +25,9 @@ public class F_Track extends MyFragment<TrackView> implements View.OnClickListen
     myView = new TrackView(act, this);
     myView.setOnTouchListener(myView);
 
+    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, 0, 1.0f);
+    myView.setLayoutParams(params);
     res.addView(myView);
 
     return res;
@@ -40,6 +43,8 @@ public class F_Track extends MyFragment<TrackView> implements View.OnClickListen
     layout.findViewById(CANCEL_BUTTON).setVisibility(View.GONE);
     layout.findViewById(NEW_AREA_BUTTON).setVisibility(View.GONE);
     layout.findViewById(DELETE_AREA_BUTTON).setVisibility(View.GONE);
+    layout.findViewById(START_LOG_BUTTON).setOnClickListener(this);
+    layout.findViewById(STOP_LOG_BUTTON).setOnClickListener(this);
 
     if (C.DEBUG_MODE) {
       layout.findViewById(R.id.test_buttons).setVisibility(View.VISIBLE);
@@ -53,7 +58,6 @@ public class F_Track extends MyFragment<TrackView> implements View.OnClickListen
   @Override
   public void onClick(View v)
   {
-    // ko sklopis debug mode tole zakomentiraj
     if (C.DEBUG_MODE) {
       if (v.getId() == R.id.test_left) {
         myView.mvLeft();
@@ -72,6 +76,10 @@ public class F_Track extends MyFragment<TrackView> implements View.OnClickListen
     } else if (v.getId() == R.id.zoom_out) {
       C.Parameters.zoomOut();
       myView.invalidate();
+    } else if (v.getId() == START_LOG_BUTTON) {
+      myView.getLogger().startNewLog();
+    } else if (v.getId() == STOP_LOG_BUTTON) {
+      myView.getLogger().stopLogging();
     }
   }
 }

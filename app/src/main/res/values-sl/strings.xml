@@ -38,7 +38,7 @@
   <string name="delete_area">Ali ste prepričani, da želite zbrisati območje?</string>
   <string name="edit">urejanje</string>
   <string name="user_name">uporabnik</string>
-  <string name="same_as_email">porabniško ime je enako elektronskemu naslovu</string>
+  <string name="same_as_email">uporabniško ime je enako elektronskemu naslovu</string>
   <string name="password">geslo</string>
   <string name="login">prijava</string>
   <string name="register">registracija</string>
@@ -53,5 +53,6 @@
   <string name="stop">stop</string>
   <string name="no_crnt_position">Ni veljavne lokacija</string>
   <string name="invalid_gnss_data">Neveljavni vhodni navigacijski podatki</string>
-
+  <string name="start_log">pričetek beleženja</string>
+  <string name="stop_log">konec beleženja</string>
 </resources>

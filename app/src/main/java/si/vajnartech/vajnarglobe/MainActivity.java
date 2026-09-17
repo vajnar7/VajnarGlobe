@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.material.navigation.NavigationView;
 import com.vajnar.vajnargnss.NtripClient;
@@ -21,6 +22,11 @@ import androidx.fragment.app.FragmentTransaction;
 import si.vajnartech.vajnarglobe.rest.Areas;
 import si.vajnartech.vajnarglobe.server.CmdGetAreas;
 import si.vajnartech.vajnarglobe.server.Login;
+import com.vajnar.vajnargnss.logger.GPSProvider;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import android.Manifest;
+import android.content.pm.PackageManager;
 // scroll na touch ne deva
 // ko capture novo areo in das construct ti nove ne narise razen ko s serverja spet nalozi
 // --crkne ko je aplikacija nafrisno dana v sistem GPS not granted
@@ -43,6 +49,7 @@ import si.vajnartech.vajnarglobe.server.Login;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
+  private static final int PERMISSION_REQUEST_CODE = 1337;
   DialogFragment currentFragment = null;
 
   @Override
@@ -65,6 +72,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView = findViewById(R.id.nav_view);
     navigationView.setNavigationItemSelectedListener(this);
 
+    requestAppPermissions();
+
     SharedPref sp = new SharedPref(this);
     C.isRegistered = sp.getBool("registered");
     if (!C.isRegistered) {
@@ -72,6 +81,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     } else {
         new CmdGetAreas(() -> setFragment("precise", F_Precise.class, new Bundle()),
                 sp.getString("username"));
+    }
+  }
+
+  private void requestAppPermissions() {
+    if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+      ActivityCompat.requestPermissions(this, new String[]{
+              Manifest.permission.ACCESS_FINE_LOCATION,
+              Manifest.permission.ACCESS_COARSE_LOCATION
+      }, PERMISSION_REQUEST_CODE);
+    }
+  }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    if (requestCode == PERMISSION_REQUEST_CODE) {
+      if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        // Trigger registration in current view if applicable
+        if (currentFragment instanceof MyFragment) {
+          View view = ((MyFragment<?>) currentFragment).myView;
+          if (view instanceof GPSProvider) {
+            ((GPSProvider) view).register(this);
+          }
+        }
+      }
     }
   }
 

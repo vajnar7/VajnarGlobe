@@ -10,21 +10,28 @@ import android.location.GnssNavigationMessage;
 import android.location.GnssStatus;
 import android.location.Location;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class GnssLogger implements MeasurementListener
 {
@@ -37,6 +44,8 @@ public class GnssLogger implements MeasurementListener
     private static final int MAX_FILES_STORED = 100;
     private static final int MINIMUM_USABLE_FILE_SIZE_BYTES = 1000;
     private final Object fileLock = new Object();
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private final Handler uiHandler = new Handler(Looper.getMainLooper());
     private BufferedWriter fileWriter;
     protected Context ctx;
 
@@ -44,127 +53,149 @@ public class GnssLogger implements MeasurementListener
     public GnssLogger(Context ctx)
     {
         this.ctx = ctx;
+        List<File> res = listLogFiles();
+        File baseDirectory = new File(ctx.getFilesDir(), FILE_PREFIX);
+        String val = readLogFile(new File(baseDirectory, "gnss_log_2026_09_15_14_14_55.txt"));
+        Log.i("pepe", "TOMA");
     }
     @SuppressWarnings({"unused", "ResultOfMethodCallIgnored"})
     public void startNewLog() {
-        synchronized (fileLock) {
-            File baseDirectory = new File(ctx.getFilesDir(), FILE_PREFIX);
-            if (!baseDirectory.exists() && !baseDirectory.mkdirs()) {
-                logError("Could not create directory");
-                return;
-            }
-
-            SimpleDateFormat formatter = new SimpleDateFormat("yyy_MM_dd_HH_mm_ss", Locale.GERMAN);
-            Date now = new Date();
-            String fileName = String.format("%s_%s.txt", FILE_PREFIX, formatter.format(now));
-            File currentFile = new File(baseDirectory, fileName);
-            String currentFilePath = currentFile.getAbsolutePath();
-            BufferedWriter currentFileWriter;
-            try {
-                currentFileWriter = new BufferedWriter(new FileWriter(currentFile));
-            } catch (IOException e) {
-                logException("Could not open file zumra: " + currentFilePath, e);
-                return;
-            }
-
-            // initialize the contents of the file
-            try {
-                currentFileWriter.write(COMMENT_START);
-                currentFileWriter.newLine();
-                currentFileWriter.write(COMMENT_START);
-                currentFileWriter.write("Header Description:");
-                currentFileWriter.newLine();
-                currentFileWriter.write(COMMENT_START);
-                currentFileWriter.newLine();
-                currentFileWriter.write(COMMENT_START);
-                currentFileWriter.write(VERSION_TAG);
-                String manufacturer = Build.MANUFACTURER;
-                String model = Build.MODEL;
-                String versionName;
-                try {
-                    PackageInfo pInfo = ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), 0);
-                    versionName = pInfo.versionName;
-                } catch (PackageManager.NameNotFoundException e) {
-                    versionName = "";
+        executor.execute(() -> {
+            synchronized (fileLock) {
+                if (fileWriter != null) {
+                    try {
+                        fileWriter.close();
+                        fileWriter = null;
+                    } catch (IOException e) {
+                        logException("Error closing existing file writer", e);
+                    }
                 }
 
-                String fileVersion =
-                        versionName
-                                + " Platform: "
-                                + Build.VERSION.RELEASE
-                                + " "
-                                + "Manufacturer: "
-                                + manufacturer
-                                + " "
-                                + "Model: "
-                                + model;
-                currentFileWriter.write(fileVersion);
-                currentFileWriter.newLine();
-                currentFileWriter.write(COMMENT_START);
-                currentFileWriter.newLine();
-                currentFileWriter.write(COMMENT_START);
-                currentFileWriter.write(
-                        "Raw,ElapsedRealtimeMillis,TimeNanos,LeapSecond,TimeUncertaintyNanos,FullBiasNanos,"
-                                + "BiasNanos,BiasUncertaintyNanos,DriftNanosPerSecond,DriftUncertaintyNanosPerSecond,"
-                                + "HardwareClockDiscontinuityCount,Svid,TimeOffsetNanos,State,ReceivedSvTimeNanos,"
-                                + "ReceivedSvTimeUncertaintyNanos,Cn0DbHz,PseudorangeRateMetersPerSecond,"
-                                + "PseudorangeRateUncertaintyMetersPerSecond,"
-                                + "AccumulatedDeltaRangeState,AccumulatedDeltaRangeMeters,"
-                                + "AccumulatedDeltaRangeUncertaintyMeters,CarrierFrequencyHz,CarrierCycles,"
-                                + "CarrierPhase,CarrierPhaseUncertainty,MultipathIndicator,SnrInDb,"
-                                + "ConstellationType,AgcDb");
-                currentFileWriter.newLine();
-                currentFileWriter.write(COMMENT_START);
-                currentFileWriter.newLine();
-                currentFileWriter.write(COMMENT_START);
-                currentFileWriter.write(
-                        "Fix,Provider,Latitude,Longitude,Altitude,Speed,Accuracy,(UTC)TimeInMs");
-                currentFileWriter.newLine();
-                currentFileWriter.write(COMMENT_START);
-                currentFileWriter.newLine();
-                currentFileWriter.write(COMMENT_START);
-                currentFileWriter.write("Nav,Svid,Type,Status,MessageId,Sub-messageId,Data(Bytes)");
-                currentFileWriter.newLine();
-                currentFileWriter.write(COMMENT_START);
-                currentFileWriter.newLine();
-            } catch (IOException e) {
-                logException("Count not initialize file: " + currentFilePath, e);
-                return;
-            }
-
-            if (fileWriter != null) {
-                try {
-                    fileWriter.close();
-                } catch (IOException e) {
-                    logException("Unable to close all file streams.", e);
+                File baseDirectory = new File(ctx.getFilesDir(), FILE_PREFIX);
+                if (!baseDirectory.exists() && !baseDirectory.mkdirs()) {
+                    logError("Could not create directory");
                     return;
                 }
-            }
 
-            fileWriter = currentFileWriter;
-            Toast.makeText(ctx, "File opened: " + currentFilePath, Toast.LENGTH_SHORT).show();
-
-            // To make sure that files do not fill up the external storage:
-            // - Remove all empty files
-            FileFilter filter = new FileToDeleteFilter(currentFile);
-            File[] filesToDelete = baseDirectory.listFiles(filter);
-            if (filesToDelete != null) {
-                for (File existingFile : filesToDelete) {
-                    existingFile.delete();
+                SimpleDateFormat formatter = new SimpleDateFormat("yyy_MM_dd_HH_mm_ss", Locale.GERMAN);
+                Date now = new Date();
+                String fileName = String.format("%s_%s.txt", FILE_PREFIX, formatter.format(now));
+                File currentFile = new File(baseDirectory, fileName);
+                String currentFilePath = currentFile.getAbsolutePath();
+                BufferedWriter currentFileWriter;
+                try {
+                    currentFileWriter = new BufferedWriter(new FileWriter(currentFile));
+                } catch (IOException e) {
+                    logException("Could not open file: " + currentFilePath, e);
+                    return;
                 }
-            }
-            // - Trim the number of files with data
-            File[] existingFiles = baseDirectory.listFiles();
-            if (existingFiles != null) {
-                int filesToDeleteCount = existingFiles.length - MAX_FILES_STORED;
-                if (filesToDeleteCount > 0) {
-                    Arrays.sort(existingFiles);
-                    for (int i = 0; i < filesToDeleteCount; ++i) {
-                        existingFiles[i].delete();
+
+                // initialize the contents of the file
+                try {
+                    currentFileWriter.write(COMMENT_START);
+                    currentFileWriter.newLine();
+                    currentFileWriter.write(COMMENT_START);
+                    currentFileWriter.write("Header Description:");
+                    currentFileWriter.newLine();
+                    currentFileWriter.write(COMMENT_START);
+                    currentFileWriter.newLine();
+                    currentFileWriter.write(COMMENT_START);
+                    currentFileWriter.write(VERSION_TAG);
+                    String manufacturer = Build.MANUFACTURER;
+                    String model = Build.MODEL;
+                    String versionName;
+                    try {
+                        PackageInfo pInfo = ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), 0);
+                        versionName = pInfo.versionName;
+                    } catch (PackageManager.NameNotFoundException e) {
+                        versionName = "";
+                    }
+
+                    String fileVersion =
+                            versionName
+                                    + " Platform: "
+                                    + Build.VERSION.RELEASE
+                                    + " "
+                                    + "Manufacturer: "
+                                    + manufacturer
+                                    + " "
+                                    + "Model: "
+                                    + model;
+                    currentFileWriter.write(fileVersion);
+                    currentFileWriter.newLine();
+                    currentFileWriter.write(COMMENT_START);
+                    currentFileWriter.newLine();
+                    currentFileWriter.write(COMMENT_START);
+                    currentFileWriter.write(
+                            "Raw,ElapsedRealtimeMillis,TimeNanos,LeapSecond,TimeUncertaintyNanos,FullBiasNanos,"
+                                    + "BiasNanos,BiasUncertaintyNanos,DriftNanosPerSecond,DriftUncertaintyNanosPerSecond,"
+                                    + "HardwareClockDiscontinuityCount,Svid,TimeOffsetNanos,State,ReceivedSvTimeNanos,"
+                                    + "ReceivedSvTimeUncertaintyNanos,Cn0DbHz,PseudorangeRateMetersPerSecond,"
+                                    + "PseudorangeRateUncertaintyMetersPerSecond,"
+                                    + "AccumulatedDeltaRangeState,AccumulatedDeltaRangeMeters,"
+                                    + "AccumulatedDeltaRangeUncertaintyMeters,CarrierFrequencyHz,CarrierCycles,"
+                                    + "CarrierPhase,CarrierPhaseUncertainty,MultipathIndicator,SnrInDb,"
+                                    + "ConstellationType,AgcDb");
+                    currentFileWriter.newLine();
+                    currentFileWriter.write(COMMENT_START);
+                    currentFileWriter.newLine();
+                    currentFileWriter.write(COMMENT_START);
+                    currentFileWriter.write(
+                            "Fix,Provider,Latitude,Longitude,Altitude,Speed,Accuracy,(UTC)TimeInMs");
+                    currentFileWriter.newLine();
+                    currentFileWriter.write(COMMENT_START);
+                    currentFileWriter.newLine();
+                    currentFileWriter.write(COMMENT_START);
+                    currentFileWriter.write("Nav,Svid,Type,Status,MessageId,Sub-messageId,Data(Bytes)");
+                    currentFileWriter.newLine();
+                    currentFileWriter.write(COMMENT_START);
+                    currentFileWriter.newLine();
+                } catch (IOException e) {
+                    logException("Could not initialize file: " + currentFilePath, e);
+                    return;
+                }
+
+                fileWriter = currentFileWriter;
+                uiHandler.post(() -> Toast.makeText(ctx, "File opened: " + currentFilePath, Toast.LENGTH_SHORT).show());
+
+                // To make sure that files do not fill up the external storage:
+                // - Remove all empty files
+                FileFilter filter = new FileToDeleteFilter(currentFile);
+                File[] filesToDelete = baseDirectory.listFiles(filter);
+                if (filesToDelete != null) {
+                    for (File existingFile : filesToDelete) {
+                        existingFile.delete();
+                    }
+                }
+                // - Trim the number of files with data
+                File[] existingFiles = baseDirectory.listFiles();
+                if (existingFiles != null) {
+                    int filesToDeleteCount = existingFiles.length - MAX_FILES_STORED;
+                    if (filesToDeleteCount > 0) {
+                        Arrays.sort(existingFiles);
+                        for (int i = 0; i < filesToDeleteCount; ++i) {
+                            existingFiles[i].delete();
+                        }
                     }
                 }
             }
-        }
+        });
+    }
+
+    public void stopLogging() {
+        executor.execute(() -> {
+            synchronized (fileLock) {
+                if (fileWriter != null) {
+                    try {
+                        fileWriter.close();
+                        fileWriter = null;
+                        uiHandler.post(() -> Toast.makeText(ctx, "Logging stopped", Toast.LENGTH_SHORT).show());
+                    } catch (IOException e) {
+                        logException("Error closing file writer", e);
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -180,28 +211,30 @@ public class GnssLogger implements MeasurementListener
     @Override
     public void onLocationChanged(Location location)
     {
-        synchronized (fileLock) {
-            if (fileWriter == null) {
-                return;
+        executor.execute(() -> {
+            synchronized (fileLock) {
+                if (fileWriter == null) {
+                    return;
+                }
+                String locationStream =
+                        String.format(
+                                Locale.US,
+                                "Fix,%s,%f,%f,%f,%f,%f,%d",
+                                location.getProvider(),
+                                location.getLatitude(),
+                                location.getLongitude(),
+                                location.getAltitude(),
+                                location.getSpeed(),
+                                location.getAccuracy(),
+                                location.getTime());
+                try {
+                    fileWriter.write(locationStream);
+                    fileWriter.newLine();
+                } catch (IOException e) {
+                    logException(ERROR_WRITING_FILE, e);
+                }
             }
-            String locationStream =
-                    String.format(
-                            Locale.US,
-                            "Fix,%s,%f,%f,%f,%f,%f,%d",
-                            location.getProvider(),
-                            location.getLatitude(),
-                            location.getLongitude(),
-                            location.getAltitude(),
-                            location.getSpeed(),
-                            location.getAccuracy(),
-                            location.getTime());
-            try {
-                fileWriter.write(locationStream);
-                fileWriter.newLine();
-            } catch (IOException e) {
-                logException(ERROR_WRITING_FILE, e);
-            }
-        }
+        });
     }
 
     @Override
@@ -212,19 +245,21 @@ public class GnssLogger implements MeasurementListener
     @Override
     public void onGnssMeasurementsReceived(GnssMeasurementsEvent event)
     {
-        synchronized (fileLock) {
-            if (fileWriter == null) {
-                return;
-            }
-            GnssClock gnssClock = event.getClock();
-            for (GnssMeasurement measurement : event.getMeasurements()) {
-                try {
-                    writeGnssMeasurementToFile(gnssClock, measurement);
-                } catch (IOException e) {
-                    logException(ERROR_WRITING_FILE, e);
+        executor.execute(() -> {
+            synchronized (fileLock) {
+                if (fileWriter == null) {
+                    return;
+                }
+                GnssClock gnssClock = event.getClock();
+                for (GnssMeasurement measurement : event.getMeasurements()) {
+                    try {
+                        writeGnssMeasurementToFile(gnssClock, measurement);
+                    } catch (IOException e) {
+                        logException(ERROR_WRITING_FILE, e);
+                    }
                 }
             }
-        }
+        });
     }
 
     @Override
@@ -235,35 +270,37 @@ public class GnssLogger implements MeasurementListener
     @Override
     public void onGnssNavigationMessageReceived(GnssNavigationMessage navigationMessage)
     {
-        synchronized (fileLock) {
-            if (fileWriter == null) {
-                return;
-            }
-            StringBuilder builder = new StringBuilder("Nav");
-            builder.append(RECORD_DELIMITER);
-            builder.append(navigationMessage.getSvid());
-            builder.append(RECORD_DELIMITER);
-            builder.append(navigationMessage.getType());
-            builder.append(RECORD_DELIMITER);
-
-            int status = navigationMessage.getStatus();
-            builder.append(status);
-            builder.append(RECORD_DELIMITER);
-            builder.append(navigationMessage.getMessageId());
-            builder.append(RECORD_DELIMITER);
-            builder.append(navigationMessage.getSubmessageId());
-            byte[] data = navigationMessage.getData();
-            for (byte word : data) {
+        executor.execute(() -> {
+            synchronized (fileLock) {
+                if (fileWriter == null) {
+                    return;
+                }
+                StringBuilder builder = new StringBuilder("Nav");
                 builder.append(RECORD_DELIMITER);
-                builder.append(word);
+                builder.append(navigationMessage.getSvid());
+                builder.append(RECORD_DELIMITER);
+                builder.append(navigationMessage.getType());
+                builder.append(RECORD_DELIMITER);
+
+                int status = navigationMessage.getStatus();
+                builder.append(status);
+                builder.append(RECORD_DELIMITER);
+                builder.append(navigationMessage.getMessageId());
+                builder.append(RECORD_DELIMITER);
+                builder.append(navigationMessage.getSubmessageId());
+                byte[] data = navigationMessage.getData();
+                for (byte word : data) {
+                    builder.append(RECORD_DELIMITER);
+                    builder.append(word);
+                }
+                try {
+                    fileWriter.write(builder.toString());
+                    fileWriter.newLine();
+                } catch (IOException e) {
+                    logException(ERROR_WRITING_FILE, e);
+                }
             }
-            try {
-                fileWriter.write(builder.toString());
-                fileWriter.newLine();
-            } catch (IOException e) {
-                logException(ERROR_WRITING_FILE, e);
-            }
-        }
+        });
     }
 
     @Override
@@ -282,24 +319,75 @@ public class GnssLogger implements MeasurementListener
     @Override
     public void onNmeaReceived(long timestamp, String s)
     {
-        synchronized (fileLock) {
-            if (fileWriter == null) {
-                return;
+        executor.execute(() -> {
+            synchronized (fileLock) {
+                if (fileWriter == null) {
+                    return;
+                }
+                String nmeaStream = String.format(Locale.US, "NMEA,%s,%d", s.trim(), timestamp);
+                try {
+                    fileWriter.write(nmeaStream);
+                    fileWriter.newLine();
+                } catch (IOException e) {
+                    logException(ERROR_WRITING_FILE, e);
+                }
             }
-            String nmeaStream = String.format(Locale.US, "NMEA,%s,%d", s.trim(), timestamp);
-            try {
-                fileWriter.write(nmeaStream);
-                fileWriter.newLine();
-            } catch (IOException e) {
-                logException(ERROR_WRITING_FILE, e);
-            }
-        }
+        });
     }
 
     @Override
     public void onTTFFReceived(long l) {}
 
-    @SuppressWarnings("deprecation")
+    public List<File> listLogFiles() {
+        File baseDirectory = new File(ctx.getFilesDir(), FILE_PREFIX);
+        File[] files = baseDirectory.listFiles();
+        if (files == null) {
+            return new ArrayList<>();
+        }
+        List<File> fileList = new ArrayList<>(Arrays.asList(files));
+        fileList.sort((f1, f2) -> Long.compare(f2.lastModified(), f1.lastModified()));
+        return fileList;
+    }
+
+    public void deleteAllLogFiles() {
+        executor.execute(() -> {
+            synchronized (fileLock) {
+                if (fileWriter != null) {
+                    try {
+                        fileWriter.close();
+                        fileWriter = null;
+                    } catch (IOException e) {
+                        logException("Error closing file writer before deletion", e);
+                    }
+                }
+                File baseDirectory = new File(ctx.getFilesDir(), FILE_PREFIX);
+                File[] files = baseDirectory.listFiles();
+                if (files != null) {
+                    for (File file : files) {
+                        file.delete();
+                    }
+                }
+                uiHandler.post(() -> Toast.makeText(ctx, "All log files deleted", Toast.LENGTH_SHORT).show());
+            }
+        });
+    }
+
+    public String readLogFile(File file) {
+        synchronized (fileLock) {
+            StringBuilder content = new StringBuilder();
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    content.append(line).append("\n");
+                }
+            } catch (IOException e) {
+                logException("Could not read file: " + file.getAbsolutePath(), e);
+            }
+            return content.toString();
+        }
+    }
+
+
     private void writeGnssMeasurementToFile(GnssClock clock, GnssMeasurement measurement)
             throws IOException {
         String clockStream =
@@ -352,13 +440,13 @@ public class GnssLogger implements MeasurementListener
 
     private void logException(String errorMessage, Exception e) {
         Log.e(TAG, errorMessage, e);
-        Toast.makeText(ctx, errorMessage, Toast.LENGTH_LONG).show();
+        uiHandler.post(() -> Toast.makeText(ctx, errorMessage, Toast.LENGTH_LONG).show());
     }
 
     @SuppressWarnings("SameParameterValue")
     private void logError(String errorMessage) {
         Log.e(TAG, errorMessage);
-        Toast.makeText(ctx, errorMessage, Toast.LENGTH_LONG).show();
+        uiHandler.post(() -> Toast.makeText(ctx, errorMessage, Toast.LENGTH_LONG).show());
     }
 
     private static class FileToDeleteFilter implements FileFilter

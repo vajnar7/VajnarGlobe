@@ -3,6 +3,12 @@ package si.vajnartech.vajnarglobe.server;
 import android.util.Log;
 
 import java.io.BufferedReader;
+import java.util.ArrayList;
+
+import si.vajnartech.vajnarglobe.Area;
+import si.vajnartech.vajnarglobe.C;
+import si.vajnartech.vajnarglobe.GeoPoint;
+import si.vajnartech.vajnarglobe.Place;
 
 public class CmdGetAreas extends Controller<RObjAreas>
 {
@@ -33,9 +39,27 @@ public class CmdGetAreas extends Controller<RObjAreas>
     }
 
     @Override
-    protected void onPostExecute(RObjAreas areas)
+    protected void onPostExecute(RObjAreas response)
     {
-        Log.i("pepe", "Areas: " + areas);
+        if (response == null)
+        {
+            onFail();
+            return;
+        }
+
+        if (!response.areas.isEmpty()) {
+            C.areas.clear();
+            for (RObjArea a : response.areas) {
+                if (a.points.size() < 3) continue;
+                ArrayList<GeoPoint> points = new ArrayList<>();
+                for (RObjPoint p : a.points)
+                    points.add(new GeoPoint(Double.parseDouble(p.longitude), Double.parseDouble(p.latitude)));
+                Area newArea = new Place(a.name, points);
+                C.areas.put(a.name, newArea);
+                newArea.constructArea();
+            }
+        }
+
         if (runAfter != null)
             runAfter.run();
     }

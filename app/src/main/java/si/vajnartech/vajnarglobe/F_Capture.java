@@ -28,6 +28,9 @@ public class F_Capture extends MyFragment<CaptureView> implements View.OnClickLi
     myView = new CaptureView(act, this);
 
     myView.setOnTouchListener(myView);
+    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, 0, 1.0f);
+    myView.setLayoutParams(params);
     res.addView(myView);
 
     return res;
@@ -97,6 +100,10 @@ public class F_Capture extends MyFragment<CaptureView> implements View.OnClickLi
       deleteArea();
     } else if (v.getId() == CANCEL_BUTTON) {
       cancel();
+    } else if (v.getId() == START_LOG_BUTTON) {
+      myView.getLogger().startNewLog();
+    } else if (v.getId() == STOP_LOG_BUTTON) {
+      myView.getLogger().stopLogging();
     }
     // ko sklopis debug mode tole zakomentiraj
     if (C.DEBUG_MODE) {
@@ -131,6 +138,8 @@ public class F_Capture extends MyFragment<CaptureView> implements View.OnClickLi
     layout.findViewById(R.id.zoom_out).setOnClickListener(this);
     layout.findViewById(DELETE_AREA_BUTTON).setOnClickListener(this);
     layout.findViewById(CANCEL_BUTTON).setOnClickListener(this);
+    layout.findViewById(START_LOG_BUTTON).setOnClickListener(this);
+    layout.findViewById(STOP_LOG_BUTTON).setOnClickListener(this);
 
     buttonShow(MARK_BUTTON, false);
     buttonShow(CONSTRUCT_BUTTON, false);

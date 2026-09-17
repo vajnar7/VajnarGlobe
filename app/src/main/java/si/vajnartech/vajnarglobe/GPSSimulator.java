@@ -13,10 +13,15 @@ abstract class GPSSimulator extends GPS
   }
 
   @Override
-  protected void initGPSService(@NonNull MainActivity ctx)
+  protected void initGPSService(Context ctx)
   {
+    super.initGPSService(ctx);
+    location = new Location("GPS");
     location.setLatitude(C.DEF_LATITUDE);
     location.setLongitude(C.DEF_LONGITUDE);
+    if (C.DEBUG_MODE) {
+      startScheduler();
+    }
   }
 
   public void mvLeft()

@@ -1,49 +1,104 @@
 package com.vajnar.vajnargnss.logger;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.GnssMeasurementsEvent;
+import android.location.GnssNavigationMessage;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.SystemClock;
+import android.os.Build;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
-import java.util.Objects;
+import java.util.concurrent.Executor;
+import java.util.concurrent.TimeUnit;
 
-public abstract class GPSProvider extends View implements LocationListener, View.OnTouchListener
+public abstract class GPSProvider extends View implements View.OnTouchListener
 {
-    private boolean firstTime = true;
-    private boolean mLogLocations = true;
-    private boolean mLogNavigationMessages = true;
-    private boolean mLogMeasurements = true;
-    private boolean mLogStatuses = true;
-    private boolean mLogNmeas = true;
-    private long ttff = 0L;
-    private long registrationTimeNanos = 0L;
-    private long firstLocationTimeNanos = 0L;
+    private static final long LOCATION_RATE_GPS_MS = TimeUnit.SECONDS.toMillis(1L);
+    private static final long LOCATION_RATE_NETWORK_MS = TimeUnit.SECONDS.toMillis(60L);
 
-    private MeasurementListener logger;
+    private LocationManager locationManager;
+    Executor executor;
+    protected GnssNavigationMessage.Callback callbackNavigation;
+    protected GnssMeasurementsEvent.Callback callbackMeasurement;
+    protected LocationListener callbackLocation;
+    protected GnssLogger logger;
+    private boolean isRegistered = false;
 
-    public GPSProvider(Context context)
+    public GPSProvider(Context ctx)
     {
-        super(context);
+        super(ctx);
+        initGPSService(ctx);
+    }
+
+    protected void initGPSService(Context ctx)
+    {
+        logger = new GnssLogger(ctx);
+        locationManager = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
+        executor = ContextCompat.getMainExecutor(ctx);
+
+        callbackMeasurement = new GnssMeasurementsEvent.Callback() {
+            @Override
+            public void onGnssMeasurementsReceived(GnssMeasurementsEvent event) {
+                logger.onGnssMeasurementsReceived(event);
+            }
+        };
+
+        callbackNavigation = new GnssNavigationMessage.Callback() {
+            @Override
+            public void onGnssNavigationMessageReceived(GnssNavigationMessage event) {
+                logger.onGnssNavigationMessageReceived(event);
+            }
+        };
+
+        callbackLocation = location -> {
+            logger.onLocationChanged(location);
+            onLocationChanged(location);
+        };
     }
 
     @Override
-    public void onLocationChanged(@NonNull Location location)
-    {
-        if (firstTime && Objects.equals(location.getProvider(), LocationManager.GPS_PROVIDER)) {
-            if (mLogLocations) {
-                firstLocationTimeNanos = SystemClock.elapsedRealtimeNanos();
-                ttff = firstLocationTimeNanos - registrationTimeNanos;
-                logger.onTTFFReceived(ttff);
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        register(getContext());
+    }
 
-            }
-            firstTime = false;
+    protected abstract void onLocationChanged(@NonNull Location loc);
+
+    public void register(Context ctx)
+    {
+        if (isRegistered) return;
+
+        if (ActivityCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
         }
-        if (mLogLocations) {
-            logger.onLocationChanged(location);
+
+        locationManager.requestLocationUpdates(
+                LocationManager.NETWORK_PROVIDER,
+                LOCATION_RATE_NETWORK_MS,
+                0.0f /* minDistance */,
+                callbackLocation);
+        locationManager.requestLocationUpdates(
+                LocationManager.GPS_PROVIDER,
+                LOCATION_RATE_GPS_MS,
+                0.0f /* minDistance */,
+                callbackLocation);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            locationManager.registerGnssMeasurementsCallback(executor, callbackMeasurement);
+            locationManager.registerGnssNavigationMessageCallback(executor, callbackNavigation);
         }
+        isRegistered = true;
+    }
+
+    public GnssLogger getLogger() {
+        return logger;
     }
 }

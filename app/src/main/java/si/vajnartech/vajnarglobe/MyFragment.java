@@ -23,6 +23,8 @@ public abstract class MyFragment<V extends View> extends DialogFragment implemen
   protected static int CANCEL_BUTTON = R.id.b_cancel;
   protected static int PRECISE_NAVIGATION_BUTTONS = R.id.precise_navigation;
   protected static int START_STOP_BUTTON = R.id.b_precise;
+  protected static int START_LOG_BUTTON = R.id.b_start_log;
+  protected static int STOP_LOG_BUTTON = R.id.b_stop_log;
 
   MainActivity   act;
   TerminalWindow terminal = null;

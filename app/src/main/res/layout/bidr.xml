@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/backgroundColor"
     android:padding="16dp">
 
@@ -177,6 +177,33 @@
                 android:layout_weight="1"
                 android:layout_margin="4dp"
                 android:text="@string/str_zoom_out" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/b_start_log"
+                style="@style/RoundedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="4dp"
+                android:text="@string/start_log"
+                app:backgroundTint="@color/colorBtn4" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/b_stop_log"
+                style="@style/RoundedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="4dp"
+                android:text="@string/stop_log"
+                app:backgroundTint="@color/colorRead" />
         </LinearLayout>
     </LinearLayout>
 

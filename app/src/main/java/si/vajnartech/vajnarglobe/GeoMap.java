@@ -129,9 +129,10 @@ class GeoMap extends GPSSimulator implements Transform
   // na zacetku je treba poinicializirati lokacijo sploh ce ni GPS se up za DEBUG
   protected void initLocation()
   {
-    Location loc = new Location("");
+    Location loc = new Location("GPS");
     loc.setLongitude(C.DEF_LONGITUDE);
     loc.setLatitude(C.DEF_LATITUDE);
+    onLocationChanged(loc);
   }
 
   protected void updateCurrentArea(GeoPoint point)

@@ -37,6 +37,9 @@ public class F_Precise extends MyFragment<PreciseView> implements View.OnClickLi
         myView = new PreciseView(act, this);
         myView.setOnTouchListener(myView);
 
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, 0, 1.0f);
+        myView.setLayoutParams(params);
         res.addView(myView);
 
         return res;
@@ -54,10 +57,10 @@ public class F_Precise extends MyFragment<PreciseView> implements View.OnClickLi
         } else if (v.getId() == START_STOP_BUTTON) {
             Button b = layout.findViewById(v.getId());
             if (!hasStarted.get()) {
-                if (DEBUG_MODE) {
-                    myView.mvUp();
-                    myView.mvDown();
-                }
+//                if (DEBUG_MODE) {
+//                    myView.mvUp();
+//                    myView.mvDown();
+//                }
                 if (myView.isInit()) {
                     b.setText(R.string.stop);
                     hasStarted.set(true);
@@ -72,6 +75,10 @@ public class F_Precise extends MyFragment<PreciseView> implements View.OnClickLi
 //                new PrecisePosition(act, "STOP", this);
                 client.stop();
             }
+        } else if (v.getId() == START_LOG_BUTTON) {
+            myView.getLogger().startNewLog();
+        } else if (v.getId() == STOP_LOG_BUTTON) {
+            myView.getLogger().stopLogging();
         }
 
         // ko sklopis debug mode tole zakomentiraj
@@ -101,6 +108,8 @@ public class F_Precise extends MyFragment<PreciseView> implements View.OnClickLi
 
         layout.findViewById(PRECISE_NAVIGATION_BUTTONS).setVisibility(View.VISIBLE);
         layout.findViewById(START_STOP_BUTTON).setOnClickListener(this);
+        layout.findViewById(START_LOG_BUTTON).setOnClickListener(this);
+        layout.findViewById(STOP_LOG_BUTTON).setOnClickListener(this);
 
 
         if (DEBUG_MODE) {
