@@ -30,6 +30,7 @@ public abstract class GPSProvider extends View implements View.OnTouchListener
     protected GnssMeasurementsEvent.Callback callbackMeasurement;
     protected LocationListener callbackLocation;
     protected GnssLogger logger;
+    protected GnssLoggerEngine loggerEngine;
     private boolean isRegistered = false;
 
     public GPSProvider(Context ctx)
@@ -41,13 +42,15 @@ public abstract class GPSProvider extends View implements View.OnTouchListener
     protected void initGPSService(Context ctx)
     {
         logger = new GnssLogger(ctx);
+        loggerEngine = new GnssLoggerEngine(ctx);
         locationManager = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
         executor = ContextCompat.getMainExecutor(ctx);
 
         callbackMeasurement = new GnssMeasurementsEvent.Callback() {
             @Override
             public void onGnssMeasurementsReceived(GnssMeasurementsEvent event) {
-                logger.onGnssMeasurementsReceived(event);
+//                logger.onGnssMeasurementsReceived(event);
+                loggerEngine.processGnssEpoch(event);
             }
         };
 

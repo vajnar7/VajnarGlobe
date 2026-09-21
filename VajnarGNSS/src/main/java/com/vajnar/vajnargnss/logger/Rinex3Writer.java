@@ -14,14 +14,15 @@ public class Rinex3Writer {
         public double carrierPhase; // L1C (cycles), NaN if invalid
         public double doppler;      // D1C (Hz), NaN if invalid
         public double cn0;          // S1C (dB-Hz), NaN if invalid
-        public int lli = 0;         // Loss-of-Lock Indicator (0-7)
+        public int lli;         // Loss-of-Lock Indicator (0-7)
 
-        public SatObservation(String satPrn, double pseudorange, double carrierPhase, double doppler, double cn0) {
+        public SatObservation(String satPrn, double pseudorange, double carrierPhase, double doppler, double cn0, int lli) {
             this.satPrn = satPrn;
             this.pseudorange = pseudorange;
             this.carrierPhase = carrierPhase;
             this.doppler = doppler;
             this.cn0 = cn0;
+            this.lli = lli;
         }
     }
 

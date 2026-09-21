@@ -38,7 +38,8 @@ public final class LoggerTest
                 22415123.456,  // Pseudorange (m)
                 117793421.123, // Carrier Phase (cycles)
                 -1234.567,     // Doppler (Hz)
-                42.5           // C/N0 (dB-Hz)
+                42.5,           // C/N0 (dB-Hz)
+                0
         ));
 
         // Example Galileo Satellite #5 observation
@@ -47,7 +48,8 @@ public final class LoggerTest
                 24102938.881,
                 126782910.450,
                 892.110,
-                38.0
+                38.0,
+                0
         ));
 
         // 3. Write Epoch (Timestamp: Sept 17, 2026, 08:17:02.000 UTC)
